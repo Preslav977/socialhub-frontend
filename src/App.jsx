@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css";
+import { Outlet } from "react-router-dom";
 import { UserSignUpContext } from "./context/UserSignUpContext";
 
 export function App() {
@@ -12,13 +12,16 @@ export function App() {
     profile_picture: "",
     password: "",
     confirm_password: "",
+    followerNumber: 0,
+    followingNumber: 0,
+    posts: 0,
   });
 
   return (
     <>
-      <UserSignUpContext.Provider
-        value={[userSignUp, setUserSignUp]}
-      ></UserSignUpContext.Provider>
+      <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
+        <Outlet />
+      </UserSignUpContext.Provider>
     </>
   );
 }
