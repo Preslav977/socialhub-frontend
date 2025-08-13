@@ -1,0 +1,130 @@
+.gridFormWrapper {
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  min-height: 100vh;
+}
+
+.formFlexedContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.gridLeftSideImg {
+  max-width: 200px;
+  display: inline-block;
+}
+
+.joinUsPara {
+  font-size: 1.4rem;
+}
+
+.formFillInfoPara {
+  font-size: 0.95rem;
+  color: gray;
+  margin-bottom: 0.25em;
+}
+
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  gap: 0.25em;
+}
+
+.signUpForm > input,
+.formPasswordInputContainer > input {
+  background-color: #2b2a33;
+}
+
+.signUpForm > input,
+.formPasswordInputContainer > input,
+.signUpBtn {
+  color: #9a9ea9;
+  border-radius: 0.7em;
+  padding: 0.35em;
+}
+
+.signUpBtn {
+  margin-top: 0.25em;
+  background-color: black;
+  color: white;
+}
+
+.alreadyHaveAccountPara {
+  color: #9a9ea9;
+  margin-top: 0.25em;
+}
+
+a,
+a:visited {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.signUpForm > span {
+  color: red;
+  text-align: left;
+}
+
+.formPasswordInputContainer {
+  position: relative;
+}
+
+.formPasswordInputContainer > input {
+  width: 100%;
+}
+
+.showPasswordSvg {
+  width: 20px;
+  position: absolute;
+  right: 5%;
+  top: 20%;
+}
+
+.gridRightSideContainer {
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.gridRightSideHeader {
+  font-size: 3rem;
+  background-image: linear-gradient(#e65c00, #fff);
+  background-clip: text;
+  color: transparent;
+}
+
+.gridRightSidePara {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 1300px) {
+  .gridFormWrapper {
+    display: grid;
+    grid-template-columns: 375px 1fr;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .gridFormWrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .gridRightSideContainer {
+    display: none;
+  }
+
+  .signUpForm {
+    width: 80%;
+  }
+}

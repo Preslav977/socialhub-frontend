@@ -18,10 +18,10 @@ export function App() {
   });
 
   return (
-    <>
+    <main>
       <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
         <Outlet />
       </UserSignUpContext.Provider>
-    </>
+    </main>
   );
 }
