@@ -90,6 +90,8 @@ export function SignUpForm() {
           <label htmlFor="username"></label>
           <input
             type="text"
+            name="username"
+            id="username"
             {...register("username", {
               required: true,
               minLength: 1,
@@ -110,6 +112,8 @@ export function SignUpForm() {
           <label htmlFor="display_name"></label>
           <input
             type="text"
+            name="display_name"
+            id="display_name"
             {...register("display_name", { required: true })}
             aria-invalid={errors.display_name ? "true" : "false"}
           />
@@ -128,6 +132,8 @@ export function SignUpForm() {
           <label htmlFor="password"></label>
           <div className={styles.formPasswordInputContainer}>
             <input
+              name="password"
+              id="password"
               type={showPassword ? "text" : "password"}
               {...register("password", {
                 required: true,
@@ -159,6 +165,8 @@ export function SignUpForm() {
 
           <div className={styles.formPasswordInputContainer}>
             <input
+              name="confirm_password"
+              id="confirm_password"
               type={showConfirmPassword ? "text" : "password"}
               {...register("confirm_password", {
                 required: true,
@@ -205,7 +213,7 @@ export function SignUpForm() {
         <img
           className={styles.gridRightSideImage}
           src="./socialhub-black.png"
-          alt=""
+          alt="socialhub logo"
         />
       </div>
     </div>

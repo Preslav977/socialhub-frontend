@@ -62,3 +62,21 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingSpinner {
+  animation: spin 2000ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  width: 30px;
+  height: 30px;
+}

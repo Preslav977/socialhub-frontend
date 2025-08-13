@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { UserLogInContext } from "./context/UserLogInContext";
 import { UserSignUpContext } from "./context/UserSignUpContext";
 
 export function App() {
@@ -17,11 +18,15 @@ export function App() {
     posts: 0,
   });
 
+  const [userLogIn, setUserLogIn] = useState();
+
   return (
     <main>
-      <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
-        <Outlet />
-      </UserSignUpContext.Provider>
+      <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
+        <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
+          <Outlet />
+        </UserSignUpContext.Provider>
+      </UserLogInContext.Provider>
     </main>
   );
 }
