@@ -68,4 +68,38 @@ describe("should render SignUpForm", () => {
       screen.queryByText("Confirm password is required").textContent,
     ).toMatch(/confirm password is required/i);
   });
+
+  it("should not render the span errors when the inputs are not empty", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    await user.type(screen.queryByLabelText("display_name"), "preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
+
+    const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
+
+    await user.click(signUpBtn);
+
+    expect(screen.queryByText("Username is required")).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByText("Display name is required"),
+    ).not.toBeInTheDocument();
+
+    expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByText("Confirm password is required"),
+    ).not.toBeInTheDocument();
+  });
 });

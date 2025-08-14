@@ -92,6 +92,7 @@ export function SignUpForm() {
             type="text"
             name="username"
             id="username"
+            aria-label="username"
             {...register("username", {
               required: true,
               minLength: 1,
@@ -114,6 +115,7 @@ export function SignUpForm() {
             type="text"
             name="display_name"
             id="display_name"
+            aria-label="display_name"
             {...register("display_name", { required: true })}
             aria-invalid={errors.display_name ? "true" : "false"}
           />
@@ -134,6 +136,7 @@ export function SignUpForm() {
             <input
               name="password"
               id="password"
+              aria-label="password"
               type={showPassword ? "text" : "password"}
               {...register("password", {
                 required: true,
@@ -148,7 +151,7 @@ export function SignUpForm() {
               src={
                 !showPassword ? "./show password.svg" : "./hide password.svg"
               }
-              alt=""
+              alt="show or hide password eye"
             />
           </div>
 
@@ -167,6 +170,7 @@ export function SignUpForm() {
             <input
               name="confirm_password"
               id="confirm_password"
+              aria-label="confirm_password"
               type={showConfirmPassword ? "text" : "password"}
               {...register("confirm_password", {
                 required: true,
