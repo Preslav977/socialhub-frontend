@@ -101,7 +101,7 @@ export function SignUpForm() {
           />
           <span role="alert">{usernameError}</span>
           {errors.username?.type === "required" && (
-            <span role="alert">User name is required</span>
+            <span role="alert">Username is required</span>
           )}
           {errors.username?.type === "minLength" ||
             (errors.username?.type === "maxLength" && (
