@@ -1,6 +1,6 @@
 .gridFormWrapper {
   display: grid;
-  grid-template-columns: 500px 1fr;
+  grid-template-columns: var(--grid--template--cols--forms);
   min-height: 100vh;
 }
 
@@ -23,7 +23,7 @@
 
 .formFillLoginInfoPara {
   font-size: 0.95rem;
-  color: gray;
+  color: var(--paragraph--main-color);
   margin-bottom: 0.25em;
 }
 
@@ -35,12 +35,12 @@
 }
 
 .logInForm > input {
-  background-color: #2b2a33;
+  background-color: var(--input--main-background-color);
 }
 
 .logInForm > input,
 .logInBtn {
-  color: #9a9ea9;
+  color: var(--input--main-color);
   border-radius: 0.7em;
   padding: 0.35em;
 }
@@ -59,18 +59,13 @@
 
 .guestLoginBtn {
   margin-top: 0.25em;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 165, 0) 10%,
-    rgb(197, 76, 197) 70%,
-    rgba(0, 0, 255) 90%
-  );
+  background: var(--guest-login-btn-linear-gradient);
   transition: 0.35s background ease-in-out;
   color: white;
 }
 
 .dontHaveAnAccountPara {
-  color: #9a9ea9;
+  color: var(--input--main-color);
   margin-top: 0.25em;
   text-align: left;
 }
@@ -102,7 +97,7 @@ a:hover {
 
 .gridRightSideHeader {
   font-size: 3rem;
-  background-image: linear-gradient(90deg, #eb8948, #fff);
+  background-image: var(--grid--linear--gradient);
   background-clip: text;
   color: transparent;
 }

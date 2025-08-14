@@ -12,11 +12,12 @@ export function LogInForm() {
 
   const [loading, setLoading] = useState(false);
 
+  const [loginOrGuestUser, setLoginOrGuestUser] = useState(false);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -36,8 +37,6 @@ export function LogInForm() {
 
       if (response.status >= 400) {
         setInvalidCredentials("Password or Username is incorrect");
-
-        setLoading(false);
       }
       const { token } = await response.json();
 
@@ -66,13 +65,13 @@ export function LogInForm() {
 
       const { token } = await response.json();
 
-      console.log(token);
-
       localStorage.setItem("token", token);
 
       setLoading(true);
     } catch (error) {
       throw error;
+    } finally {
+      setLoginOrGuestUser(false);
     }
   };
 
@@ -92,7 +91,11 @@ export function LogInForm() {
         </div>
         <form
           className={styles.logInForm}
-          onSubmit={handleSubmit(onGuestSubmit)}
+          onSubmit={
+            !loginOrGuestUser
+              ? handleSubmit(onSubmit)
+              : handleSubmit(onGuestSubmit)
+          }
         >
           <label htmlFor="username"></label>
           <input
@@ -124,11 +127,10 @@ export function LogInForm() {
             <span role="alert">Password is required</span>
           )}
 
-          {/* <button className={styles.logInBtn}>Login</button> */}
+          <button className={styles.logInBtn}>Login</button>
 
           <button
-            type="submit"
-            onClick={onGuestSubmit}
+            onClick={() => setLoginOrGuestUser(true)}
             className={styles.guestLoginBtn}
           >
             Guest User
