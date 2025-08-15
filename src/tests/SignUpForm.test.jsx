@@ -196,7 +196,83 @@ describe("should render SignUpForm", () => {
     const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
 
     await user.click(signUpBtn);
+  });
 
-    // screen.debug();
+  it("should display errors if the username, and display name are taken", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const userSigningUpError = {
+      usernameError: "Username is already taken",
+      displayNameError: "Display name is already taken",
+      signUpUser,
+    };
+
+    async function signUpUser() {
+      fetch("http://localhost/signup", {
+        body: {
+          username: "preslaw",
+          display_name: "preslaw",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+        },
+      });
+    }
+
+    const spy = vi
+      .spyOn(userSigningUpError, "signUpUser")
+      .mockImplementation(() => "Username is already taken");
+
+    expect(userSigningUpError.usernameError).toEqual(
+      "Username is already taken",
+    );
+
+    vi.spyOn(userSigningUpError, "signUpUser").mockImplementation(
+      () => "Display name is already taken",
+    );
+
+    expect(userSigningUpError.displayNameError).toEqual(
+      "Display name is already taken",
+    );
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("display_name"), "preslaw");
+
+    expect(screen.queryByLabelText("display_name").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
+
+    expect(screen.queryByLabelText("confirm_password").value).toEqual(
+      "12345678B",
+    );
+
+    const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
+
+    await user.click(signUpBtn);
+
+    screen.debug();
+
+    await screen.findByText("Username is already taken");
+
+    await screen.findByText("Display name is already taken");
   });
 });
