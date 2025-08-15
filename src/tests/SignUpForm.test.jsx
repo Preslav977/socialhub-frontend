@@ -269,10 +269,50 @@ describe("should render SignUpForm", () => {
 
     await user.click(signUpBtn);
 
-    screen.debug();
-
     await screen.findByText("Username is already taken");
 
     await screen.findByText("Display name is already taken");
+  });
+
+  it("should navigate to login form and render the form", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.click(screen.queryByText("Login"));
+
+    screen.debug();
+
+    expect(screen.queryByText("Welcome back!").textContent).toMatch(
+      /welcome back!/i,
+    );
+
+    expect(
+      screen.queryByText("Please fill your login details").textContent,
+    ).toMatch(/please fill your login details/i);
+
+    expect(screen.queryByRole("button", { name: "Login" })).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("button", { name: "Guest User" }),
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText("Don't have an account?").textContent).toMatch(
+      /don't have an account?/i,
+    );
+
+    expect(screen.queryByText("Sign Up").textContent).toMatch(/sign up/i);
+
+    expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
+      /socialhub/i,
+    );
+
+    expect(screen.queryByText("Your network, improved.").textContent).toMatch(
+      /your network, improved./i,
+    );
   });
 });
