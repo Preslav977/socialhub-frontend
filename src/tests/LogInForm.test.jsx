@@ -151,7 +151,55 @@ describe("should render LogInForm", () => {
     await user.click(screen.queryByRole("button", { name: "Login" }));
 
     expect(await screen.findByAltText("loading spinner")).toBeInTheDocument();
+  });
+
+  it("should render an error if wrong credentials are provided", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const userLogInErr = {
+      errorMsg: "Password or Username is incorrect",
+      logInUser,
+    };
+
+    async function logInUser() {
+      fetch("http://localhost/login", {
+        body: {
+          errorMsg: "Password or Username is incorrect",
+          logInUser,
+        },
+      });
+    }
+
+    const mock = vi
+      .spyOn(userLogInErr, "logInUser")
+      .mockImplementationOnce(() => "Password or Username is incorrect");
+
+    expect(mock()).toEqual("Password or Username is incorrect");
+
+    mock.mockImplementationOnce(() => false);
+
+    expect(mock()).toEqual(false);
+
+    await user.type(screen.queryByLabelText("username"), "preslaw123");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw123");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
 
     screen.debug();
+
+    expect(
+      screen.queryByText("Password or Username is incorrect").textContent,
+    ).toMatch(/password or username is incorrect/i);
   });
 });
