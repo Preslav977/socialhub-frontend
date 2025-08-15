@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe, expect } from "vitest";
+import { afterEach, describe, expect, vi } from "vitest";
 import { routes } from "../router/routes";
 
 describe("should render SignUpForm", () => {
@@ -101,5 +101,102 @@ describe("should render SignUpForm", () => {
     expect(
       screen.queryByText("Confirm password is required"),
     ).not.toBeInTheDocument();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("should render a user information when signup", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const userSigningUp = {
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 0,
+      followingNumber: 0,
+      posts: 0,
+      signUpUser,
+    };
+
+    async function signUpUser() {
+      fetch("http://localhost/signup", {
+        body: {
+          username: "preslaw",
+          display_name: "preslaw",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+        },
+      });
+    }
+
+    const mock = vi
+      .spyOn(userSigningUp, "signUpUser")
+      .mockImplementation(() => "preslaw");
+
+    expect(userSigningUp.username).toEqual("preslaw");
+
+    expect(userSigningUp.display_name).toEqual("preslaw");
+
+    mock.mockImplementationOnce(() => "");
+
+    expect(userSigningUp.bio).toEqual("");
+
+    expect(userSigningUp.website).toEqual("");
+
+    expect(userSigningUp.github).toEqual("");
+
+    expect(userSigningUp.profile_picture).toEqual("");
+
+    mock.mockImplementationOnce(() => 0);
+
+    expect(userSigningUp.followersNumber).toEqual(0);
+
+    expect(userSigningUp.followingNumber).toEqual(0);
+
+    expect(userSigningUp.posts).toEqual(0);
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("display_name"), "preslaw");
+
+    expect(screen.queryByLabelText("display_name").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
+
+    expect(screen.queryByLabelText("confirm_password").value).toEqual(
+      "12345678B",
+    );
+
+    const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
+
+    await user.click(signUpBtn);
+
+    // screen.debug();
   });
 });
