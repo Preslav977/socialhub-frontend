@@ -60,4 +60,30 @@ describe("should render LogInForm", () => {
       /password is required/i,
     );
   });
+
+  it("should't render span errors if the inputs are not empty", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    screen.debug();
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByText("Username is required")).not.toBeInTheDocument();
+
+    expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
+  });
 });

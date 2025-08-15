@@ -102,7 +102,7 @@ export function LogInForm() {
             type="text"
             name="username"
             id="username"
-            aria-level="username"
+            aria-label="username"
             {...register("username", {
               required: true,
             })}
