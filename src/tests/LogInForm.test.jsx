@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe } from "vitest";
+import { afterEach, describe, expect, vi } from "vitest";
 import { routes } from "../router/routes";
 
 describe("should render LogInForm", () => {
@@ -70,8 +70,6 @@ describe("should render LogInForm", () => {
 
     const user = userEvent.setup();
 
-    screen.debug();
-
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
     expect(screen.queryByLabelText("username").value).toEqual("preslaw");
@@ -85,5 +83,75 @@ describe("should render LogInForm", () => {
     expect(screen.queryByText("Username is required")).not.toBeInTheDocument();
 
     expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("should render loading spinner when successfully login", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const userLogIn = {
+      username: "preslaw",
+      password: "12345678B",
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
+      logInUser,
+    };
+
+    async function logInUser() {
+      fetch("http://localhost/login", {
+        body: {
+          username: "preslaw",
+          password: "12345678B",
+          token:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
+        },
+      });
+    }
+
+    const mock = vi
+      .spyOn(userLogIn, "logInUser")
+      .mockImplementationOnce(() => "preslaw");
+
+    expect(mock()).toEqual("preslaw");
+
+    mock.mockImplementationOnce(() => "12345678B");
+
+    expect(mock()).toEqual("12345678B");
+
+    mock.mockImplementationOnce(
+      () =>
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
+    );
+
+    expect(mock()).toEqual(
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
+    );
+
+    mock.mockImplementationOnce(() => true);
+
+    expect(mock()).toBe(true);
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(await screen.findByAltText("loading spinner")).toBeInTheDocument();
+
+    screen.debug();
   });
 });

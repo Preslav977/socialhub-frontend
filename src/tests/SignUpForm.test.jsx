@@ -151,29 +151,17 @@ describe("should render SignUpForm", () => {
 
     const mock = vi
       .spyOn(userSigningUp, "signUpUser")
-      .mockImplementation(() => "preslaw");
+      .mockImplementationOnce(() => "preslaw");
 
-    expect(userSigningUp.username).toEqual("preslaw");
-
-    expect(userSigningUp.display_name).toEqual("preslaw");
+    expect(mock()).toEqual("preslaw");
 
     mock.mockImplementationOnce(() => "");
 
-    expect(userSigningUp.bio).toEqual("");
-
-    expect(userSigningUp.website).toEqual("");
-
-    expect(userSigningUp.github).toEqual("");
-
-    expect(userSigningUp.profile_picture).toEqual("");
+    expect(mock()).toEqual("");
 
     mock.mockImplementationOnce(() => 0);
 
-    expect(userSigningUp.followersNumber).toEqual(0);
-
-    expect(userSigningUp.followingNumber).toEqual(0);
-
-    expect(userSigningUp.posts).toEqual(0);
+    expect(mock()).toEqual(0);
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -231,21 +219,15 @@ describe("should render SignUpForm", () => {
       });
     }
 
-    const spy = vi
+    const mock = vi
       .spyOn(userSigningUpError, "signUpUser")
       .mockImplementation(() => "Username is already taken");
 
-    expect(userSigningUpError.usernameError).toEqual(
-      "Username is already taken",
-    );
+    expect(mock()).toEqual("Username is already taken");
 
-    vi.spyOn(userSigningUpError, "signUpUser").mockImplementation(
-      () => "Display name is already taken",
-    );
+    mock.mockImplementation(() => "Display name is already taken");
 
-    expect(userSigningUpError.displayNameError).toEqual(
-      "Display name is already taken",
-    );
+    expect(mock()).toEqual("Display name is already taken");
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 

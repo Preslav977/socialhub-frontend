@@ -37,14 +37,15 @@ export function LogInForm() {
 
       if (response.status >= 400) {
         setInvalidCredentials("Password or Username is incorrect");
+      } else {
+        const { token } = await response.json();
+
+        localStorage.setItem("token", token);
+
+        setInvalidCredentials("");
+
+        setLoading(true);
       }
-      const { token } = await response.json();
-
-      localStorage.setItem("token", token);
-
-      setInvalidCredentials("");
-
-      setLoading(true);
     } catch (error) {
       throw error;
     }
