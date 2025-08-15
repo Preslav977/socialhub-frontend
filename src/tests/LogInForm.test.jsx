@@ -1,10 +1,11 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { describe } from "vitest";
 import { routes } from "../router/routes";
 
 describe("should render LogInForm", () => {
-  it("should render the form with its content", () => {
+  it("should render the form with it's content", () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login"],
     });
@@ -37,6 +38,26 @@ describe("should render LogInForm", () => {
 
     expect(screen.queryByText("Your network, improved.").textContent).toMatch(
       /your network, improved./i,
+    );
+  });
+
+  it("should render span errors if the inputs are empty", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByText("Username is required").textContent).toMatch(
+      /username is required/i,
+    );
+
+    expect(screen.queryByText("Password is required").textContent).toMatch(
+      /password is required/i,
     );
   });
 });

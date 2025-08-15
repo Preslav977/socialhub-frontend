@@ -102,6 +102,7 @@ export function LogInForm() {
             type="text"
             name="username"
             id="username"
+            aria-level="username"
             {...register("username", {
               required: true,
             })}
@@ -117,6 +118,7 @@ export function LogInForm() {
             type="password"
             name="password"
             id="password"
+            aria-label="password"
             {...register("password", {
               required: true,
             })}

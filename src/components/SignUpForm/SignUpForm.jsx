@@ -191,7 +191,7 @@ export function SignUpForm() {
                   ? "./show password.svg"
                   : "./hide password.svg"
               }
-              alt=""
+              alt="show or hide password eye"
             />
           </div>
 
