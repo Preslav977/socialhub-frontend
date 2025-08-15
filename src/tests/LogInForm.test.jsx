@@ -196,10 +196,72 @@ describe("should render LogInForm", () => {
 
     await user.click(screen.queryByRole("button", { name: "Login" }));
 
-    screen.debug();
-
     expect(
       screen.queryByText("Password or Username is incorrect").textContent,
     ).toMatch(/password or username is incorrect/i);
+  });
+
+  it("should render loading spinner on guest user login", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const guestUserLogIn = {
+      username: "preslaw",
+      password: "12345678B",
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
+      logInGuestUser,
+    };
+
+    async function logInGuestUser() {
+      fetch("http://localhost/login_guest", {
+        body: {
+          username: "test",
+          password: "12345678B",
+          token:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
+        },
+      });
+    }
+
+    const mock = vi
+      .spyOn(guestUserLogIn, "logInGuestUser")
+      .mockImplementationOnce(() => "test");
+
+    expect(mock()).toEqual("test");
+
+    mock.mockImplementationOnce(() => "12345678B");
+
+    expect(mock()).toEqual("12345678B");
+
+    mock.mockImplementationOnce(
+      () =>
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
+    );
+
+    expect(mock()).toEqual(
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
+    );
+
+    mock.mockImplementationOnce(() => true);
+
+    expect(mock()).toBe(true);
+
+    await user.type(screen.queryByLabelText("username"), "test");
+
+    expect(screen.queryByLabelText("username").value).toEqual("test");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Guest User" }));
+
+    expect(await screen.findByAltText("loading spinner")).toBeInTheDocument();
   });
 });
