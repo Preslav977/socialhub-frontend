@@ -285,8 +285,6 @@ describe("should render SignUpForm", () => {
 
     await user.click(screen.queryByText("Login"));
 
-    screen.debug();
-
     expect(screen.queryByText("Welcome back!").textContent).toMatch(
       /welcome back!/i,
     );
