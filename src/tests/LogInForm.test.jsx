@@ -264,4 +264,42 @@ describe("should render LogInForm", () => {
 
     expect(await screen.findByAltText("loading spinner")).toBeInTheDocument();
   });
+
+  it("should navigate to signup form and render the form", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/signup"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.click(screen.queryByText("Sign Up"));
+
+    expect(screen.queryByText("Join us Today!").textContent).toMatch(
+      /join us today!/i,
+    );
+
+    expect(
+      screen.queryByText("Please fill in your details above below").textContent,
+    ).toMatch(/please fill in your details above below/i);
+
+    expect(
+      screen.queryByRole("button", { name: "Sign up" }),
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText("Already have an account?").textContent).toMatch(
+      /already have an account?/i,
+    );
+
+    expect(screen.queryByText("Login").textContent).toMatch(/login/i);
+
+    expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
+      /socialhub/i,
+    );
+
+    expect(screen.queryByText("Your network, improved.").textContent).toMatch(
+      /your network, improved./i,
+    );
+  });
 });
