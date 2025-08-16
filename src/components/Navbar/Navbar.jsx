@@ -30,7 +30,11 @@ export function Navbar() {
               alt="user default profile picture"
             />
           ) : (
-            <img src={profile_picture} alt="user profile picture" />
+            <img
+              className={styles.userProfilePictureImg}
+              src={profile_picture}
+              alt="user profile picture"
+            />
           )}
         </Link>
       </ul>

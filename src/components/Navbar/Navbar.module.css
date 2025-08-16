@@ -13,7 +13,8 @@
 }
 
 .homeLinkImage,
-.userDefaultProfileImg {
+.userDefaultProfileImg,
+.userProfilePictureImg {
   width: 50px;
 }
 
@@ -26,7 +27,8 @@
   align-items: center;
 }
 
-.userDefaultProfileImg {
+.userDefaultProfileImg,
+.userProfilePictureImg {
   border-radius: 50px;
 }
 

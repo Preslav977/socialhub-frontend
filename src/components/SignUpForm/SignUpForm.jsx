@@ -6,6 +6,8 @@ import { UserSignUpContext } from "../../context/UserSignUpContext";
 
 import { Link } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+
 import styles from "./SignUpForm.module.css";
 
 export function SignUpForm() {
@@ -18,6 +20,8 @@ export function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -53,6 +57,8 @@ export function SignUpForm() {
           confirm_password: confirm_password,
         }),
       });
+
+      navigate("/login");
 
       if (response.status >= 400) {
         const errors = await response.json();

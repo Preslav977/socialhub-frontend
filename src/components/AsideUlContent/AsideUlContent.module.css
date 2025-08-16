@@ -1,0 +1,29 @@
+.asideUlContainer img {
+  width: 30px;
+}
+
+.asideUlContainer li {
+  list-style: none;
+  display: flex;
+  padding: 0.35em 1em;
+  margin-bottom: 1.5em;
+  border-radius: 1em;
+  transition: transform 0.25s ease-in-out;
+  cursor: pointer;
+}
+
+.asideUlContainer a {
+  color: white;
+  display: flex;
+  gap: 1em;
+  text-decoration: none;
+}
+
+.asideUlContainer a:visited {
+  color: white;
+}
+
+.asideUlContainer li:hover {
+  background-color: gray;
+  transform: translateX(-5px);
+}

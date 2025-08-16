@@ -1,3 +1,4 @@
+import { AsideUlContent } from "../components/AsideUlContent/AsideUlContent";
 import { Navbar } from "../components/Navbar/Navbar";
 import styles from "./MainGridInterface.module.css";
 
@@ -6,7 +7,9 @@ export function MainGridInterface() {
     <>
       <Navbar />
       <main className={styles.mainGridContainer}>
-        <aside></aside>
+        <aside>
+          <AsideUlContent />
+        </aside>
 
         <section></section>
 

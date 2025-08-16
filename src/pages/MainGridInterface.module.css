@@ -1,6 +1,6 @@
 .mainGridContainer {
   display: grid;
-  grid-template-columns: 500px 1fr 500px;
+  grid-template-columns: 450px 1fr 500px;
   height: 100vh;
   outline: 2px solid black;
 }
@@ -9,4 +9,13 @@ aside,
 section:first-child,
 section:last-child {
   outline: 2px solid black;
+}
+
+aside {
+  background-color: black;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2em;
+  padding-right: 3em;
+  position: sticky;
 }
