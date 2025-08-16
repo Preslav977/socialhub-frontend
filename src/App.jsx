@@ -21,12 +21,12 @@ export function App() {
   const [userLogIn, setUserLogIn] = useState();
 
   return (
-    <main>
+    <>
       <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
         <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
           <Outlet />
         </UserSignUpContext.Provider>
       </UserLogInContext.Provider>
-    </main>
+    </>
   );
 }

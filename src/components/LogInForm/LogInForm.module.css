@@ -53,14 +53,14 @@
 .logInBtn {
   margin-top: 0.25em;
   background-color: black;
-  transition: 0.35s background-color ease-in-out;
+  transition: 0.25s background-color ease-in-out;
   color: white;
 }
 
 .guestLoginBtn {
   margin-top: 0.25em;
   background: var(--guest-login-btn-linear-gradient);
-  transition: 0.35s background ease-in-out;
+  transition: 0.25s background ease-in-out;
   color: white;
 }
 

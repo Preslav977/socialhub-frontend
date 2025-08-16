@@ -1,0 +1,12 @@
+.mainGridContainer {
+  display: grid;
+  grid-template-columns: 500px 1fr 500px;
+  height: 100vh;
+  outline: 2px solid black;
+}
+
+aside,
+section:first-child,
+section:last-child {
+  outline: 2px solid black;
+}

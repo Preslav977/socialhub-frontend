@@ -50,7 +50,7 @@
 .signUpBtn {
   margin-top: 0.25em;
   background-color: black;
-  transition: 0.35s background-color ease-in-out;
+  transition: 0.25s background-color ease-in-out;
   color: white;
 }
 

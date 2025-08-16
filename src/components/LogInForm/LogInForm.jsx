@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./LogInForm.module.css";
@@ -13,6 +13,8 @@ export function LogInForm() {
   const [loading, setLoading] = useState(false);
 
   const [loginOrGuestUser, setLoginOrGuestUser] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -40,11 +42,25 @@ export function LogInForm() {
       } else {
         const { token } = await response.json();
 
-        localStorage.setItem("token", token);
+        const bearerToken = `Bearer ${token}`;
+
+        localStorage.setItem("token", bearerToken);
 
         setInvalidCredentials("");
 
         setLoading(true);
+
+        const loggedInUser = await fetch(`${localhostURL}/users/details`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+
+        const resultLoggedInUser = await loggedInUser.json();
+
+        setUserLogIn(resultLoggedInUser);
+
+        navigate("/home");
       }
     } catch (error) {
       throw error;
@@ -66,9 +82,23 @@ export function LogInForm() {
 
       const { token } = await response.json();
 
-      localStorage.setItem("token", token);
+      const bearerToken = `Bearer ${token}`;
+
+      localStorage.setItem("token", bearerToken);
 
       setLoading(true);
+
+      const loggedInGuestUser = await fetch(`${localhostURL}/users/details`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+
+      const resultLoggedInGuestUser = await loggedInGuestUser.json();
+
+      setUserLogIn(resultLoggedInGuestUser);
+
+      navigate("/home");
     } catch (error) {
       throw error;
     } finally {

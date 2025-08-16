@@ -1,0 +1,37 @@
+.navbarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background-color: black;
+}
+
+.homeLinkContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeLinkImage,
+.userDefaultProfileImg {
+  width: 50px;
+}
+
+.homeLinkPara {
+  color: white;
+}
+
+.rightSideFlexUlContainer {
+  display: flex;
+  align-items: center;
+}
+
+.userDefaultProfileImg {
+  border-radius: 50px;
+}
+
+.homeLinkContainer:hover,
+.userDefaultProfileImg:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
