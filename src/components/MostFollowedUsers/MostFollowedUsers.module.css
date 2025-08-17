@@ -1,8 +1,10 @@
-.latestUsersContainer {
+.mostFollowedUsersContainer {
   display: flex;
   gap: 1em;
   align-items: center;
   margin-bottom: 0.5em;
+  /* outline: 2px solid rebeccapurple; */
+  /* justify-content: space-evenly; */
 }
 
 hr {
@@ -10,19 +12,21 @@ hr {
   margin-bottom: 0.5em;
 }
 
-.latestUsersImg {
+.mostFollowedUsersImg {
   width: 40px;
   border-radius: 50%;
 }
 
-.lastUsersUserAndDisplayNameContainer {
+.mostFollowedUsersUserNameAndDisplayNameContainer {
   display: flex;
   flex-direction: column;
   line-height: 1.35;
+  width: 100%;
 }
 
 .followOrUnfollowButton {
   padding: 0.25em 1em;
   border-radius: 1em;
-  margin-left: 1.5em;
+
+  /* margin-left: 1.5em; */
 }

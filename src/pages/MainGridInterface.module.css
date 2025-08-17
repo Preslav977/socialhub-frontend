@@ -19,7 +19,8 @@ aside {
   padding-right: 3em;
 }
 
-.latestUsersContainerWrapper {
+.latestUsersContainerWrapper,
+.mostFollowedUsersContainerWrapper {
   outline: 2px solid red;
   max-width: 275px;
   padding: 0.5em;

@@ -1,7 +1,7 @@
 import { localhostURL } from "../../utility/localhostURL";
 
-const fetchLatestUsers = async () => {
-  const response = await fetch(`${localhostURL}/users/latest`, {
+const fetchMostFollowedUsers = async () => {
+  const response = await fetch(`${localhostURL}/users/followed`, {
     mode: "cors",
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -15,4 +15,4 @@ const fetchLatestUsers = async () => {
   return response.json();
 };
 
-export const latestUsersPromise = fetchLatestUsers();
+export const mostFollowedUsersPromise = fetchMostFollowedUsers();
