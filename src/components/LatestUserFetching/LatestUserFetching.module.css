@@ -1,0 +1,28 @@
+.latestUsersContainer {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+hr {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.latestUsersImg {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.lastUsersUserAndDisplayNameContainer {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.followOrUnfollowButton {
+  padding: 0.25em 1em;
+  border-radius: 1em;
+  margin-left: 1.5em;
+}

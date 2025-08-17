@@ -1,13 +1,12 @@
 import { AsideUlContent } from "../components/AsideUlContent/AsideUlContent";
-import { Navbar } from "../components/Navbar/Navbar";
+import { LatestUserFetching } from "../components/LatestUserFetching/LatestUsersFetching";
+// import { Navbar } from "../components/Navbar/Navbar";
 import styles from "./MainGridInterface.module.css";
-
-// console.log(fetchLatestUsers());
 
 export function MainGridInterface() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <main className={styles.mainGridContainer}>
         <aside>
           <AsideUlContent />
@@ -15,7 +14,11 @@ export function MainGridInterface() {
 
         <section></section>
 
-        <section></section>
+        <section>
+          <div className={styles.latestUsersContainerWrapper}>
+            <LatestUserFetching />
+          </div>
+        </section>
       </main>
     </>
   );
