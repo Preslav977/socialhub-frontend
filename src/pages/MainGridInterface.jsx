@@ -1,7 +1,9 @@
 import { AsideUlContent } from "../components/AsideUlContent/AsideUlContent";
-import { LatestUserFetching } from "../components/LatestUsersFetching/LatestUsersFetching";
-import { MostFollowedUsers } from "../components/MostFollowedUsers/MostFollowedUsers";
 // import { Navbar } from "../components/Navbar/Navbar";
+import { Suspense } from "react";
+import { LatestUserFetching } from "../components/LatestUsersFetching/LatestUsersFetching";
+import { Loading } from "../components/Loading/Loading";
+import { MostFollowedUsers } from "../components/MostFollowedUsers/MostFollowedUsers";
 import styles from "./MainGridInterface.module.css";
 
 export function MainGridInterface() {
@@ -17,11 +19,22 @@ export function MainGridInterface() {
 
         <section>
           <div className={styles.latestUsersContainerWrapper}>
-            <LatestUserFetching />
+            <Suspense fallback={<Loading />}>
+              <LatestUserFetching />
+            </Suspense>
           </div>
 
           <div className={styles.mostFollowedUsersContainerWrapper}>
-            <MostFollowedUsers />
+            <Suspense fallback={<Loading />}>
+              <MostFollowedUsers />
+            </Suspense>
+          </div>
+
+          <div className={styles.announcementsContainer}>
+            <p>Announcements</p>
+            <hr />
+            <li>Added latest users feature</li>
+            <li>Added most followed users feature</li>
           </div>
         </section>
       </main>
