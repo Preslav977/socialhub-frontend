@@ -1,11 +1,16 @@
-import { use } from "react";
-import { latestUsersPromise } from "../../api/fetchLatestUsers";
+import { useFetchLatestUsers } from "../../api/useFetchLatestUsers";
 import styles from "./LatestUsersFetching.module.css";
 
 export function LatestUserFetching() {
-  const latestUsers = use(latestUsersPromise);
+  const { latestUsers, loading, error } = useFetchLatestUsers();
 
-  console.log("Latest users", latestUsers);
+  if (loading) {
+    return <p>Loading latest users...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <>

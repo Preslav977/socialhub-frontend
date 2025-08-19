@@ -1,11 +1,16 @@
-import { use } from "react";
-import { mostFollowedUsersPromise } from "../../api/fetchMostFollowedUsers";
+import { useFetchMostFollowedUsers } from "../../api/useFetchMostFollowedUsers";
 import styles from "./MostFollowedUsers.module.css";
 
 export function MostFollowedUsers() {
-  const mostFollowedUsers = use(mostFollowedUsersPromise);
+  const { mostFollowedUsers, loading, error } = useFetchMostFollowedUsers();
 
-  // console.log("Most followed", mostFollowedUsers);
+  if (loading) {
+    return <p>Loading most followed users...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <>

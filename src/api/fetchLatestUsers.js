@@ -1,21 +1,22 @@
 import { localhostURL } from "../../utility/localhostURL";
 
 const fetchLatestUsers = async () => {
-  const response = await fetch(`${localhostURL}/users/latest`, {
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: localStorage.getItem("token"),
-    },
-  });
+  try {
+    const response = await fetch(`${localhostURL}/users/latest`, {
+      mode: "cors",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    });
 
-  // console.log(response);
+    if (response.status >= 400) {
+      return response.status;
+    }
 
-  if (response.status >= 400) {
-    return response.status;
+    return response.json();
+  } catch (error) {
+    throw error;
   }
-
-  return response.json();
 };
 
 export const latestUsersPromise = fetchLatestUsers();

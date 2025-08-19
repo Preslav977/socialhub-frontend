@@ -3,13 +3,13 @@ import { AsideUlContent } from "../components/AsideUlContent/AsideUlContent";
 import { LatestUserFetching } from "../components/LatestUsersFetching/LatestUsersFetching";
 import { Loading } from "../components/Loading/Loading";
 import { MostFollowedUsers } from "../components/MostFollowedUsers/MostFollowedUsers";
-import { Navbar } from "../components/Navbar/Navbar";
+// import { Navbar } from "../components/Navbar/Navbar";
 import styles from "./MainGridInterface.module.css";
 
 export function MainGridInterface() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <main className={styles.mainGridContainer}>
         <aside className={styles.mainGridAsideNavigation}>
           <AsideUlContent />
@@ -19,9 +19,9 @@ export function MainGridInterface() {
 
         <section className={styles.mainGridRightSectionContainer}>
           <div className={styles.latestUsersContainer}>
-            <Suspense fallback={<Loading />}>
-              <LatestUserFetching />
-            </Suspense>
+            {/* <Suspense fallback={<Loading />}> */}
+            <LatestUserFetching />
+            {/* </Suspense> */}
           </div>
 
           <div className={styles.mostFollowedUsersContainer}>
