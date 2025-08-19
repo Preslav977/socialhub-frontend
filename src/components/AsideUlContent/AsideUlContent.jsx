@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
-
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./AsideUlContent.module.css";
 
 export function AsideUlContent() {
-  const [visitedLink, setVisitedLink] = useState("");
+  const [visitedLink, setVisitedLink] = useState("/home");
 
   return (
     <ul className={styles.asideUlContainer}>

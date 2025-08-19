@@ -1,15 +1,46 @@
+import { useContext } from "react";
+import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchLatestUsers } from "../../api/useFetchLatestUsers";
+import { UserLogInContext } from "../../context/UserLogInContext";
+import { Error } from "../Error/Error";
 import styles from "./LatestUsersFetching.module.css";
 
 export function LatestUserFetching() {
   const { latestUsers, loading, error } = useFetchLatestUsers();
 
+  const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
+
   if (loading) {
-    return <p>Loading latest users...</p>;
+    // return <Loading message={"latest users"} />;
+    return <p>Loading: latest users...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <Error error={"latest users"} />;
+  }
+
+  async function followLatestUsers(user) {
+    try {
+      const response = await fetch(
+        `${localhostURL}/users/following/${user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            id: user.id,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      setUserLogIn(result);
+    } catch (error) {
+      throw error;
+    }
   }
 
   return (
@@ -20,15 +51,28 @@ export function LatestUserFetching() {
         <div className={styles.latestUsersContainer} key={user.id}>
           <img
             className={styles.latestUsersImg}
-            src="./user-default-profile-picture.jpg"
-            alt="user default profile picture"
+            src={
+              user.profile_picture === ""
+                ? "./user-default-profile-picture.jpg"
+                : user.profile_picture
+            }
+            alt="user profile picture"
           />
           <div className={styles.lastUsersUserNameAndDisplayNameContainer}>
             <p>{user.username}</p>
             <p>{user.display_name}</p>
           </div>
           <div className={styles.followOrUnfollowButtonContainer}>
-            <button className={styles.followOrUnfollowButton}>Follow</button>
+            <button
+              onClick={() => followLatestUsers(user)}
+              className={styles.followOrUnfollowButton}
+            >
+              {!userLogIn.following.some(
+                (followedUser) => followedUser.id === user.id,
+              )
+                ? "Follow"
+                : "Unfollow"}
+            </button>
           </div>
         </div>
       ))}
