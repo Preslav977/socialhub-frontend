@@ -1,30 +1,30 @@
-import { AsideUlContent } from "../components/AsideUlContent/AsideUlContent";
-// import { Navbar } from "../components/Navbar/Navbar";
 import { Suspense } from "react";
+import { AsideUlContent } from "../components/AsideUlContent/AsideUlContent";
 import { LatestUserFetching } from "../components/LatestUsersFetching/LatestUsersFetching";
 import { Loading } from "../components/Loading/Loading";
 import { MostFollowedUsers } from "../components/MostFollowedUsers/MostFollowedUsers";
+import { Navbar } from "../components/Navbar/Navbar";
 import styles from "./MainGridInterface.module.css";
 
 export function MainGridInterface() {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <main className={styles.mainGridContainer}>
-        <aside>
+        <aside className={styles.mainGridAsideNavigation}>
           <AsideUlContent />
         </aside>
 
         <section></section>
 
-        <section>
-          <div className={styles.latestUsersContainerWrapper}>
+        <section className={styles.mainGridRightSectionContainer}>
+          <div className={styles.latestUsersContainer}>
             <Suspense fallback={<Loading />}>
               <LatestUserFetching />
             </Suspense>
           </div>
 
-          <div className={styles.mostFollowedUsersContainerWrapper}>
+          <div className={styles.mostFollowedUsersContainer}>
             <Suspense fallback={<Loading />}>
               <MostFollowedUsers />
             </Suspense>

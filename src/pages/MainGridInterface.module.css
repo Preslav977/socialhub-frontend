@@ -2,27 +2,26 @@
   display: grid;
   grid-template-columns: 450px 1fr 500px;
   height: 100vh;
-  outline: 2px solid black;
+  outline: 2px solid var(--paragraph--main-color);
 }
 
-aside,
-section:first-child,
-section:last-child {
-  outline: 2px solid black;
-}
-
-aside {
-  background-color: black;
+.mainGridAsideNavigation {
+  background-color: var(--main-bg-color);
   display: flex;
   justify-content: flex-end;
   padding-top: 2em;
   padding-right: 3em;
 }
 
-.latestUsersContainerWrapper,
-.mostFollowedUsersContainerWrapper,
+.mainGridRightSectionContainer {
+  background-color: var(--main-bg-color);
+  color: var(--paragraph--secondary-color);
+}
+
+.latestUsersContainer,
+.mostFollowedUsersContainer,
 .announcementsContainer {
-  outline: 2px solid red;
+  outline: 2px solid var(--paragraph--main-color);
   max-width: 275px;
   padding: 0.5em;
   margin-top: 1em;

@@ -3,8 +3,6 @@
   gap: 1em;
   align-items: center;
   margin-bottom: 0.5em;
-  /* outline: 2px solid rebeccapurple; */
-  /* justify-content: space-evenly; */
 }
 
 hr {
@@ -27,6 +25,4 @@ hr {
 .followOrUnfollowButton {
   padding: 0.25em 1em;
   border-radius: 1em;
-
-  /* margin-left: 1.5em; */
 }

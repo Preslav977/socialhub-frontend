@@ -13,17 +13,17 @@
 }
 
 .asideUlContainer a {
-  color: white;
+  color: var(--paragraph--secondary-color);
   display: flex;
   gap: 1em;
   text-decoration: none;
 }
 
 .asideUlContainer a:visited {
-  color: white;
+  color: var(--paragraph--secondary-color);
 }
 
 .asideUlContainer li:hover {
-  background-color: gray;
+  background-color: var(--paragraph--main-color);
   transform: translateX(-5px);
 }

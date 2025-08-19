@@ -52,16 +52,16 @@
 
 .logInBtn {
   margin-top: 0.25em;
-  background-color: black;
+  background-color: var(--input--main-background-color);
   transition: 0.25s background-color ease-in-out;
-  color: white;
+  color: var(--paragraph--secondary-color);
 }
 
 .guestLoginBtn {
   margin-top: 0.25em;
   background: var(--guest-login-btn-linear-gradient);
   transition: 0.25s background ease-in-out;
-  color: white;
+  color: var(--paragraph--secondary-color);
 }
 
 .dontHaveAnAccountPara {
@@ -72,7 +72,7 @@
 
 a,
 a:visited {
-  color: black;
+  color: var(--input--main-background-color);
   text-decoration: none;
   margin-left: 0.25em;
 }
@@ -87,8 +87,8 @@ a:hover {
 }
 
 .gridRightSideContainer {
-  background-color: black;
-  color: white;
+  background-color: var(--main-bg-color);
+  color: var(--paragraph--secondary-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -107,14 +107,14 @@ a:hover {
 }
 
 .logInBtn:hover {
-  background-color: white;
-  color: black;
+  background-color: var(--paragraph--secondary-color);
+  color: var(--input--main-background-color);
   cursor: pointer;
 }
 
 .guestLoginBtn:hover {
-  background: white;
-  color: black;
+  background: var(--paragraph--secondary-color);
+  color: var(--input--main-background-color);
   cursor: pointer;
 }
 

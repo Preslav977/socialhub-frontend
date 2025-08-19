@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1em;
-  background-color: black;
+  background-color: var(--main-bg-color);
 }
 
 .homeLinkContainer {
@@ -19,7 +19,7 @@
 }
 
 .homeLinkPara {
-  color: white;
+  color: var(--paragraph--secondary-color);
 }
 
 .rightSideFlexUlContainer {

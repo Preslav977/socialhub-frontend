@@ -49,9 +49,9 @@
 
 .signUpBtn {
   margin-top: 0.25em;
-  background-color: black;
+  background-color: var(--input--main-background-color);
   transition: 0.25s background-color ease-in-out;
-  color: white;
+  color: var(--paragraph--secondary-color);
 }
 
 .alreadyHaveAccountPara {
@@ -62,7 +62,7 @@
 
 a,
 a:visited {
-  color: black;
+  color: var(--input--main-background-color);
   text-decoration: none;
 }
 
@@ -91,8 +91,8 @@ a:hover {
 }
 
 .gridRightSideContainer {
-  background-color: black;
-  color: white;
+  background-color: var(--main-bg-color);
+  color: var(--paragraph--secondary-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,8 +111,8 @@ a:hover {
 }
 
 .signUpBtn:hover {
-  background-color: white;
-  color: black;
+  background-color: var(--paragraph--secondary-color);
+  color: var(--input--main-background-color);
   cursor: pointer;
 }
 
