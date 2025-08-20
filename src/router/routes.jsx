@@ -3,6 +3,7 @@ import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectApp } from "../components/ProtectApp/ProtectApp";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
+import { CreatePost } from "../pages/CreatePost";
 import { MainGridInterface } from "../pages/MainGridInterface";
 
 export const routes = [
@@ -23,7 +24,7 @@ export const routes = [
         path: "/home",
         element: (
           <ProtectRoutes>
-            <MainGridInterface></MainGridInterface>
+            <MainGridInterface pageProp={<CreatePost />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },

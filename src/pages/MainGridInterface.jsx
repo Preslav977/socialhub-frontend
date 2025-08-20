@@ -6,7 +6,7 @@ import { MostFollowedUsers } from "../components/MostFollowedUsers/MostFollowedU
 import { Navbar } from "../components/Navbar/Navbar";
 import styles from "./MainGridInterface.module.css";
 
-export function MainGridInterface() {
+export function MainGridInterface({ pageProp }) {
   return (
     <>
       <Navbar />
@@ -15,7 +15,9 @@ export function MainGridInterface() {
           <AsideUlContent />
         </aside>
 
-        <section></section>
+        <section className={styles.mainGridSectionContainer}>
+          {pageProp}
+        </section>
 
         <section className={styles.mainGridRightSectionContainer}>
           <div className={styles.latestUsersContainer}>
