@@ -1,7 +1,7 @@
 .mainGridContainer {
   display: grid;
   grid-template-columns: 450px 1fr 500px;
-  height: 100vh;
+  min-height: 100vh;
   outline: 2px solid var(--paragraph--main-color);
 }
 

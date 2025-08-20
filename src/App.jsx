@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { UserLogInContext } from "./context/UserLogInContext";
+import {
+  UserIsLoggedInContext,
+  UserLogInContext,
+} from "./context/UserLogInContext";
 import { UserSignUpContext } from "./context/UserSignUpContext";
 
 export function App() {
@@ -20,13 +23,19 @@ export function App() {
 
   const [userLogIn, setUserLogIn] = useState();
 
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
   return (
     <>
-      <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
-        <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
-          <Outlet />
-        </UserSignUpContext.Provider>
-      </UserLogInContext.Provider>
+      <UserIsLoggedInContext.Provider
+        value={[isUserLoggedIn, setIsUserLoggedIn]}
+      >
+        <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
+          <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
+            <Outlet />
+          </UserSignUpContext.Provider>
+        </UserLogInContext.Provider>
+      </UserIsLoggedInContext.Provider>
     </>
   );
 }

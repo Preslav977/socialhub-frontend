@@ -2,11 +2,16 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
-import { UserLogInContext } from "../../context/UserLogInContext";
+import {
+  UserIsLoggedInContext,
+  UserLogInContext,
+} from "../../context/UserLogInContext";
 import styles from "./LogInForm.module.css";
 
 export function LogInForm() {
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
+
+  const [isUserLoggedIn, setIsUserLoggedIn] = useContext(UserIsLoggedInContext);
 
   const [invalidCredentials, setInvalidCredentials] = useState("");
 
@@ -60,6 +65,8 @@ export function LogInForm() {
 
         setUserLogIn(resultLoggedInUser);
 
+        setIsUserLoggedIn(true);
+
         navigate("/home");
       }
     } catch (error) {
@@ -97,6 +104,8 @@ export function LogInForm() {
       const resultLoggedInGuestUser = await loggedInGuestUser.json();
 
       setUserLogIn(resultLoggedInGuestUser);
+
+      setIsUserLoggedIn(true);
 
       navigate("/home");
     } catch (error) {
