@@ -3,6 +3,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchLatestUsers } from "../../api/useFetchLatestUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";
+import { Loading } from "../Loading/Loading";
 import styles from "./LatestUsersFetching.module.css";
 
 export function LatestUserFetching() {
@@ -11,8 +12,7 @@ export function LatestUserFetching() {
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
   if (loading) {
-    // return <Loading message={"latest users"} />;
-    return <p>Loading: latest users...</p>;
+    return <Loading message={"latest users"} />;
   }
 
   if (error) {

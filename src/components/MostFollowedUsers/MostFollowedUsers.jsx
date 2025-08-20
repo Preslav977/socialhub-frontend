@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchMostFollowedUsers } from "../../api/useFetchMostFollowedUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";

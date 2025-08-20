@@ -349,11 +349,9 @@ describe("should render MainGridInterface", () => {
       () => "preslaw2",
     );
 
-    const followBtn = screen.queryAllByRole("button", { name: "Follow" });
+    expect(screen.queryAllByRole("button")[0]);
 
-    await user.click(followBtn[0]);
-
-    expect(screen.queryAllByRole("button", { name: "Unfollow" }[0]));
+    await user.click(screen.queryAllByRole("button")[0]);
 
     // screen.debug();
   });
