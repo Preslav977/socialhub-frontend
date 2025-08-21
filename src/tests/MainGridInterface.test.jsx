@@ -429,4 +429,88 @@ describe("should render MainGridInterface", () => {
 
     expect(screen.queryByPlaceholderText("Please type to create a tag."));
   });
+
+  it("should login, navigate and render create post errors", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/home", "/create"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const userLogIn = {
+      username: "preslaw",
+      password: "12345678B",
+      token: "token",
+      logInUser,
+    };
+
+    async function logInUser() {
+      fetch("http://localhost/login", {
+        body: {
+          username: "preslaw",
+          password: "12345678B",
+          token: "token",
+        },
+      });
+    }
+
+    const mock = vi
+      .spyOn(userLogIn, "logInUser")
+      .mockImplementationOnce(() => "preslaw");
+
+    expect(mock()).toEqual("preslaw");
+
+    mock.mockImplementationOnce(() => "12345678B");
+
+    expect(mock()).toEqual("12345678B");
+
+    mock.mockImplementationOnce(() => "token");
+
+    expect(mock()).toEqual("token");
+
+    mock.mockImplementationOnce(() => true);
+
+    expect(mock()).toBe(true);
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(await screen.findByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
+
+    await user.click(screen.queryByText("Create"));
+
+    expect(screen.queryByPlaceholderText("Share whats happening..."));
+
+    expect(screen.queryByText("0/2000")).toBeInTheDocument();
+
+    expect(screen.queryByRole("button", { name: "Post" })).toBeInTheDocument();
+
+    expect(screen.queryByText("Tags:").textContent).toMatch(/tags/i);
+
+    expect(screen.queryByPlaceholderText("Please type to create a tag."));
+
+    await user.click(screen.queryByRole("button", { name: "Post" }));
+
+    expect(screen.queryByText("Content is required").textContent).toMatch(
+      /content is required/i,
+    );
+
+    expect(screen.queryByText("Tag is required").textContent).toMatch(
+      /tag is required/i,
+    );
+  });
 });
