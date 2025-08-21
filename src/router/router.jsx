@@ -5,7 +5,8 @@ import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectApp } from "../components/ProtectApp/ProtectApp";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
-import { MainGridInterface } from "../pages/MainGridInterface";
+import { MainGridInterface } from "../pages/MainGrindInterface/MainGridInterface";
+import { Settings } from "../pages/Settings/Settings";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={<CreatePost />}></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/settings",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface pageProp={<Settings />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },

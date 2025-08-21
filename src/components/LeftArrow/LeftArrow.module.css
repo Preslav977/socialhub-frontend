@@ -1,0 +1,12 @@
+.leftArrowFlexContainer {
+  padding: 1em;
+  display: flex;
+  gap: 2em;
+  color: white;
+  outline: 2px solid white;
+  max-width: 960px;
+}
+
+.leftArrowSVG {
+  width: 20px;
+}
