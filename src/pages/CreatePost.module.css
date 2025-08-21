@@ -1,9 +1,9 @@
 .formCreatePostContainer {
-  outline: 2px solid white;
+  outline: 2px solid var(--paragraph--secondary-color);
   max-width: 960px;
   height: 100%;
-  background-color: black;
-  color: white;
+  background-color: var(--main-bg-color);
+  color: var(--paragraph--secondary-color);
 }
 
 .formTextarea {
@@ -12,8 +12,8 @@
   border: none;
   resize: none;
   padding: 2em;
-  background-color: black;
-  color: white;
+  background-color: var(--main-bg-color);
+  color: var(--paragraph--secondary-color);
 }
 
 .formFlexedControlsContainer {
@@ -34,11 +34,11 @@
 }
 
 .formControlsImg:hover,
-input[type="file"]:hover {
+.formControlsUploadingImg:hover {
   cursor: pointer;
 }
 
-input[type="file"] {
+.formControlsUploadingImg {
   position: relative;
   width: 20px;
   z-index: 1;
@@ -73,4 +73,7 @@ input[type="file"] {
   border: 0;
   border-radius: 0.5em;
   padding: 0.25em 0;
+  background-color: var(--main-bg-color);
+  color: var(--paragraph--secondary-color);
+  outline: 2px solid var(--paragraph--secondary-color);
 }

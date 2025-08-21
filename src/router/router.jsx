@@ -23,10 +23,18 @@ export const router = createBrowserRouter([
         path: "/home",
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<CreatePost />}></MainGridInterface>
+            <MainGridInterface pageProp={""}></MainGridInterface>
           </ProtectRoutes>
         ),
         index: true,
+      },
+      {
+        path: "/create",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface pageProp={<CreatePost />}></MainGridInterface>
+          </ProtectRoutes>
+        ),
       },
     ],
   },

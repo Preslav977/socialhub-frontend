@@ -24,6 +24,14 @@ export const routes = [
         path: "/home",
         element: (
           <ProtectRoutes>
+            <MainGridInterface pageProp={""}></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/create",
+        element: (
+          <ProtectRoutes>
             <MainGridInterface pageProp={<CreatePost />}></MainGridInterface>
           </ProtectRoutes>
         ),

@@ -21,6 +21,11 @@ hr {
   line-height: 1.35;
 }
 
+.lastUserNameAnchor {
+  color: white;
+  margin: 0;
+}
+
 .followOrUnfollowButton {
   padding: 0.25em 1em;
   border-radius: 1em;

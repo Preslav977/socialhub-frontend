@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { localhostURL } from "../../utility/localhostURL";
 import { UserLogInContext } from "../context/UserLogInContext";
 import styles from "./CreatePost.module.css";
@@ -10,6 +11,8 @@ export function CreatePost() {
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
   const [checkIfImgIsUploaded, setCheckIfImageIsUploaded] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -35,11 +38,11 @@ export function CreatePost() {
         }),
       });
 
-      const result = await response.json();
-
-      console.log(result);
+      await response.json();
 
       reset();
+
+      navigate("/home");
     } catch (error) {
       throw error;
     } finally {
@@ -55,7 +58,7 @@ export function CreatePost() {
     formData.append("authorId", Number(userLogIn.id));
 
     try {
-      const response = await fetch(`${localhostURL}/posts/with-image`, {
+      await fetch(`${localhostURL}/posts/with-image`, {
         method: "POST",
         headers: {
           Authorization: localStorage.getItem("token"),
@@ -63,9 +66,9 @@ export function CreatePost() {
         body: formData,
       });
 
-      const result = await response.json();
-
       reset();
+
+      navigate("/home");
     } catch (error) {
       throw error;
     } finally {
@@ -125,6 +128,7 @@ export function CreatePost() {
           />
           <label htmlFor="file"></label>
           <input
+            className={styles.formControlsUploadingImg}
             onClick={() => setCheckIfImageIsUploaded(true)}
             type="file"
             name="file"
@@ -154,6 +158,7 @@ export function CreatePost() {
           name="tag"
           id="tag"
           aria-label="tag"
+          placeholder="Please type to create a tag."
           {...register("tag", {
             required: true,
             minLength: 1,
@@ -162,12 +167,12 @@ export function CreatePost() {
         />
 
         {errors.tag?.type === "required" && (
-          <span role="alert">Tags are required</span>
+          <span role="alert">Tag is required</span>
         )}
 
         {errors.tag?.type === "minLength" ||
           (errors.tag?.type === "maxLength" && (
-            <span role="alert">Tag must be between 1 and 2000 characters</span>
+            <span role="alert">Tag must be between 1 and 30 characters</span>
           ))}
       </div>
     </form>

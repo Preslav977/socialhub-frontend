@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { useFetchMostFollowedUsers } from "../../api/useFetchMostFollowedUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";
@@ -60,7 +61,12 @@ export function MostFollowedUsers() {
           <div
             className={styles.mostFollowedUsersUserNameAndDisplayNameContainer}
           >
-            <p>{user.username}</p>
+            <Link
+              className={styles.mostFollowedUserNameAnchor}
+              to={`/users/${user.id}`}
+            >
+              <p>{user.username}</p>
+            </Link>
             <p>{user.display_name}</p>
           </div>
           <div className={styles.followOrUnfollowButtonContainer}>

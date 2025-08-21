@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchLatestUsers } from "../../api/useFetchLatestUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
@@ -59,7 +60,12 @@ export function LatestUserFetching() {
             alt="user profile picture"
           />
           <div className={styles.lastUsersUserNameAndDisplayNameContainer}>
-            <p>{user.username}</p>
+            <Link
+              className={styles.lastUserNameAnchor}
+              to={`/users/${user.id}`}
+            >
+              <p>{user.username}</p>
+            </Link>
             <p>{user.display_name}</p>
           </div>
           <div className={styles.followOrUnfollowButtonContainer}>
