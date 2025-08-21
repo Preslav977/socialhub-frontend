@@ -513,4 +513,129 @@ describe("should render MainGridInterface", () => {
       /tag is required/i,
     );
   });
+
+  it("should login, navigate and create a post", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/home", "/create"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const userLogIn = {
+      username: "preslaw",
+      password: "12345678B",
+      token: "token",
+      logInUser,
+    };
+
+    async function logInUser() {
+      fetch("http://localhost/login", {
+        body: {
+          username: "preslaw",
+          password: "12345678B",
+          token: "token",
+        },
+      });
+    }
+
+    const mock = vi
+      .spyOn(userLogIn, "logInUser")
+      .mockImplementationOnce(() => "preslaw");
+
+    expect(mock()).toEqual("preslaw");
+
+    mock.mockImplementationOnce(() => "12345678B");
+
+    expect(mock()).toEqual("12345678B");
+
+    mock.mockImplementationOnce(() => "token");
+
+    expect(mock()).toEqual("token");
+
+    mock.mockImplementationOnce(() => true);
+
+    expect(mock()).toBe(true);
+
+    const post = {
+      content: "post",
+      tag: "tag",
+      likes: 0,
+      comments: 0,
+      createdAt: new Date(),
+      authorId: 1,
+      createPost,
+    };
+
+    async function createPost() {
+      fetch("http://localhost/posts", {
+        body: {
+          content: "post",
+          tag: "tag",
+          likes: 0,
+          comments: 0,
+          createdAt: new Date(),
+          authorId: 1,
+        },
+      });
+    }
+
+    const createPostMock = vi
+      .spyOn(post, "createPost")
+      .mockImplementationOnce(() => "post");
+
+    expect(createPostMock()).toEqual("post");
+
+    createPostMock.mockImplementationOnce(() => "tag");
+
+    expect(createPostMock()).toEqual("tag");
+
+    createPostMock.mockImplementationOnce(() => 0);
+
+    expect(createPostMock()).toEqual(0);
+
+    createPostMock.mockImplementationOnce(() => 1);
+
+    expect(createPostMock()).toEqual(1);
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(await screen.findByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
+
+    await user.click(screen.queryByText("Create"));
+
+    expect(screen.queryByPlaceholderText("Share whats happening..."));
+
+    expect(screen.queryByText("0/2000")).toBeInTheDocument();
+
+    expect(screen.queryByRole("button", { name: "Post" })).toBeInTheDocument();
+
+    expect(screen.queryByText("Tags:").textContent).toMatch(/tags/i);
+
+    expect(screen.queryByPlaceholderText("Please type to create a tag."));
+
+    await user.type(screen.queryByLabelText("content"), "post");
+
+    expect(screen.queryByLabelText("content").value).toEqual("post");
+
+    await user.type(screen.queryByLabelText("tag"), "tag");
+
+    expect(screen.queryByLabelText("tag").value).toEqual("tag");
+
+    await user.click(screen.queryByRole("button", { name: "Post" }));
+  });
 });
