@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { localhostURL } from "../../utility/localhostURL";
-import { UserLogInContext } from "../context/UserLogInContext";
+import { localhostURL } from "../../../utility/localhostURL";
+import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./CreatePost.module.css";
 
 export function CreatePost() {

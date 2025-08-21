@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { AsideUlContent } from "../components/AsideUlContent/AsideUlContent";
-import { LatestUserFetching } from "../components/LatestUsersFetching/LatestUsersFetching";
+import { LatestUser } from "../components/LatestUsers/LatestUsers";
 import { Loading } from "../components/Loading/Loading";
 import { MostFollowedUsers } from "../components/MostFollowedUsers/MostFollowedUsers";
 import { Navbar } from "../components/Navbar/Navbar";
@@ -21,7 +21,7 @@ export function MainGridInterface({ pageProp }) {
 
         <section className={styles.mainGridRightSectionContainer}>
           <div className={styles.latestUsersContainer}>
-            <LatestUserFetching />
+            <LatestUser />
           </div>
 
           <div className={styles.mostFollowedUsersContainer}>

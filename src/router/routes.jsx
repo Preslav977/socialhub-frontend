@@ -1,9 +1,9 @@
 import { App } from "../App";
+import { CreatePost } from "../components/CreatePost/CreatePost";
 import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectApp } from "../components/ProtectApp/ProtectApp";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
-import { CreatePost } from "../pages/CreatePost";
 import { MainGridInterface } from "../pages/MainGridInterface";
 
 export const routes = [

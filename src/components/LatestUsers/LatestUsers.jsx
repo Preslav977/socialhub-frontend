@@ -5,9 +5,9 @@ import { useFetchLatestUsers } from "../../api/useFetchLatestUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";
 import { Loading } from "../Loading/Loading";
-import styles from "./LatestUsersFetching.module.css";
+import styles from "./LatestUsers.module.css";
 
-export function LatestUserFetching() {
+export function LatestUser() {
   const { latestUsers, loading, error } = useFetchLatestUsers();
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
@@ -54,7 +54,7 @@ export function LatestUserFetching() {
             className={styles.latestUsersImg}
             src={
               user.profile_picture === ""
-                ? "./user-default-profile-picture.jpg"
+                ? "./user-default-pfp.jpg"
                 : user.profile_picture
             }
             alt="user profile picture"

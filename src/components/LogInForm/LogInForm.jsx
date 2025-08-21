@@ -121,7 +121,7 @@ export function LogInForm() {
         <div className={styles.gridLefSideContainer}>
           <img
             className={styles.gridLeftSideImg}
-            src="./socialhub-black.png"
+            src="./socialhub.png"
             alt="socialhub logo"
           />
           <p className={styles.welcomeBackPara}>Welcome back!</p>
@@ -214,7 +214,7 @@ export function LogInForm() {
         <p className={styles.gridRightSidePara}>Your network, improved.</p>
         <img
           className={styles.gridRightSideImg}
-          src="./socialhub-black.png"
+          src="./socialhub.png"
           alt="socialhub logo"
         />
       </div>
