@@ -1,0 +1,38 @@
+.flexedSearchForUsersWrapper {
+  /* outline: 2px solid white; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2em;
+  gap: 2em;
+  color: white;
+}
+
+.flexedSearchUsersContainer {
+  display: flex;
+  gap: 0.25em;
+  width: 60%;
+}
+
+.searchForUserSVG {
+  width: 20px;
+}
+
+.searchForUserInput {
+  width: 100%;
+  border-radius: 0.5em;
+  padding: 0.25em 0;
+}
+
+.test {
+  /* outline: 2px solid beige; */
+
+  width: 100%;
+}
+
+@media screen and (max-width: 940px) {
+  .flexedSearchUsersContainer {
+    width: 100%;
+  }
+}

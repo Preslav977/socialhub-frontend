@@ -8,9 +8,7 @@ export function Settings() {
       <LeftArrow textProp={"Settings"} />
       <p className={styles.accountPara}>Account</p>
       <Link
-        onClick={() => {
-          localStorage.clear();
-        }}
+        onClick={() => localStorage.clear()}
         to={"/login"}
         className={styles.settingsFlexContainer}
       >

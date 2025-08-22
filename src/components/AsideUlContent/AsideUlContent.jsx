@@ -29,8 +29,8 @@ export function AsideUlContent() {
         onClick={() => setVisitedLink("/users")}
         style={{ backgroundColor: visitedLink === "/users" ? "gray" : "" }}
       >
-        <Link to="/users">
-          <img src="./users.svg" alt="users" />
+        <Link to="/search">
+          <img src="./users.svg" alt="search for users" />
           <span>Users</span>
         </Link>
       </li>
