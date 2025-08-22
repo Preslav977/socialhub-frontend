@@ -4,154 +4,128 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { describe, expect, vi } from "vitest";
 import { routes } from "../router/routes";
 
-const spiedFetch = vi.spyOn(global, "fetch");
-
 describe("should render LogInForm", () => {
-  // it("should render the form with it's content", () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/login"],
-  //   });
+  it("should render the form with it's content", () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
 
-  //   render(<RouterProvider router={router} />);
+    render(<RouterProvider router={router} />);
 
-  //   expect(screen.queryByText("Welcome back!").textContent).toMatch(
-  //     /welcome back!/i,
-  //   );
+    expect(screen.queryByText("Welcome back!").textContent).toMatch(
+      /welcome back!/i,
+    );
 
-  //   expect(
-  //     screen.queryByText("Please fill your login details").textContent,
-  //   ).toMatch(/please fill your login details/i);
+    expect(
+      screen.queryByText("Please fill your login details").textContent,
+    ).toMatch(/please fill your login details/i);
 
-  //   expect(screen.queryByRole("button", { name: "Login" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Login" })).toBeInTheDocument();
 
-  //   expect(
-  //     screen.queryByRole("button", { name: "Guest User" }),
-  //   ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Guest User" }),
+    ).toBeInTheDocument();
 
-  //   expect(screen.queryByText("Don't have an account?").textContent).toMatch(
-  //     /don't have an account?/i,
-  //   );
+    expect(screen.queryByText("Don't have an account?").textContent).toMatch(
+      /don't have an account?/i,
+    );
 
-  //   expect(screen.queryByText("Sign Up").textContent).toMatch(/sign up/i);
+    expect(screen.queryByText("Sign Up").textContent).toMatch(/sign up/i);
 
-  //   expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
-  //     /socialhub/i,
-  //   );
+    expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
+      /socialhub/i,
+    );
 
-  //   expect(screen.queryByText("Your network, improved.").textContent).toMatch(
-  //     /your network, improved./i,
-  //   );
-  // });
+    expect(screen.queryByText("Your network, improved.").textContent).toMatch(
+      /your network, improved./i,
+    );
+  });
 
-  // it("should render span errors if the inputs are empty", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/login"],
-  //   });
+  it("should render span errors if the inputs are empty", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
 
-  //   render(<RouterProvider router={router} />);
+    render(<RouterProvider router={router} />);
 
-  //   const user = userEvent.setup();
+    const user = userEvent.setup();
 
-  //   await user.click(screen.queryByRole("button", { name: "Login" }));
+    await user.click(screen.queryByRole("button", { name: "Login" }));
 
-  //   expect(screen.queryByText("Username is required").textContent).toMatch(
-  //     /username is required/i,
-  //   );
+    expect(screen.queryByText("Username is required").textContent).toMatch(
+      /username is required/i,
+    );
 
-  //   expect(screen.queryByText("Password is required").textContent).toMatch(
-  //     /password is required/i,
-  //   );
-  // });
+    expect(screen.queryByText("Password is required").textContent).toMatch(
+      /password is required/i,
+    );
+  });
 
-  // it("should't render span errors if the inputs are not empty", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/login"],
-  //   });
+  it("should't render span errors if the inputs are not empty", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
 
-  //   render(<RouterProvider router={router} />);
+    render(<RouterProvider router={router} />);
 
-  //   const user = userEvent.setup();
+    const user = userEvent.setup();
 
-  //   await user.type(screen.queryByLabelText("username"), "preslaw");
+    const spiedFetch = vi.spyOn(global, "fetch");
 
-  //   expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+    spiedFetch
+      .mockResolvedValueOnce(Response.json("token"))
+      .mockResolvedValueOnce(
+        Response.json({ username: "preslaw", password: "12345678B" }),
+      );
 
-  //   await user.type(screen.queryByLabelText("password"), "12345678B");
+    await user.type(screen.queryByLabelText("username"), "preslaw");
 
-  //   expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
 
-  //   await user.click(screen.queryByRole("button", { name: "Login" }));
+    await user.type(screen.queryByLabelText("password"), "12345678B");
 
-  //   expect(screen.queryByText("Username is required")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
 
-  //   expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
-  // });
+    await user.click(screen.queryByRole("button", { name: "Login" }));
 
-  // it("should render loading spinner when successfully login", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/login"],
-  //   });
+    expect(screen.queryByText("Username is required")).not.toBeInTheDocument();
 
-  //   render(<RouterProvider router={router} />);
+    expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
 
-  //   const user = userEvent.setup();
+    spiedFetch.mockRestore();
+  });
 
-  //   const userLogIn = {
-  //     username: "preslaw",
-  //     password: "12345678B",
-  //     token:
-  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
-  //     logInUser,
-  //   };
+  it("should render loading spinner when successfully login", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
 
-  //   async function logInUser() {
-  //     fetch("http://localhost/login", {
-  //       body: {
-  //         username: "preslaw",
-  //         password: "12345678B",
-  //         token:
-  //           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
-  //       },
-  //     });
-  //   }
+    render(<RouterProvider router={router} />);
 
-  //   const mock = vi
-  //     .spyOn(userLogIn, "logInUser")
-  //     .mockImplementationOnce(() => "preslaw");
+    const user = userEvent.setup();
 
-  //   expect(mock()).toEqual("preslaw");
+    const spiedFetch = vi.spyOn(global, "fetch");
 
-  //   mock.mockImplementationOnce(() => "12345678B");
+    spiedFetch
+      .mockResolvedValueOnce(Response.json("token"))
+      .mockResolvedValueOnce(
+        Response.json({ username: "preslaw", password: "12345678B" }),
+      );
 
-  //   expect(mock()).toEqual("12345678B");
+    await user.type(screen.queryByLabelText("username"), "preslaw");
 
-  //   mock.mockImplementationOnce(
-  //     () =>
-  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
-  //   );
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
 
-  //   expect(mock()).toEqual(
-  //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
-  //   );
+    await user.type(screen.queryByLabelText("password"), "12345678B");
 
-  //   mock.mockImplementationOnce(() => true);
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
 
-  //   expect(mock()).toBe(true);
+    await user.click(screen.queryByRole("button", { name: "Login" }));
 
-  //   logInUser();
+    expect(await screen.findByAltText("loading spinner"));
 
-  //   await user.type(screen.queryByLabelText("username"), "preslaw");
-
-  //   expect(screen.queryByLabelText("username").value).toEqual("preslaw");
-
-  //   await user.type(screen.queryByLabelText("password"), "12345678B");
-
-  //   expect(screen.queryByLabelText("password").value).toEqual("12345678B");
-
-  //   await user.click(screen.queryByRole("button", { name: "Login" }));
-
-  //   expect(await screen.findByAltText("loading spinner")).toBeInTheDocument();
-  // });
+    spiedFetch.mockRestore();
+  });
 
   it("should render an error if wrong credentials are provided", async () => {
     const router = createMemoryRouter(routes, {
@@ -161,6 +135,8 @@ describe("should render LogInForm", () => {
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
+
+    const spiedFetch = vi.spyOn(global, "fetch");
 
     const userLogInErr = {
       errorMsg: "Password or Username is incorrect",
@@ -182,8 +158,6 @@ describe("should render LogInForm", () => {
 
     await user.click(screen.queryByRole("button", { name: "Login" }));
 
-    screen.debug();
-
     expect(
       screen.queryByText("Password or Username is incorrect").textContent,
     ).toMatch(/password or username is incorrect/i);
@@ -191,105 +165,77 @@ describe("should render LogInForm", () => {
     spiedFetch.mockRestore();
   });
 
-  // it("should render loading spinner on guest user login", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/login"],
-  //   });
+  it("should render loading spinner on guest user login", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
 
-  //   render(<RouterProvider router={router} />);
+    render(<RouterProvider router={router} />);
 
-  //   const user = userEvent.setup();
+    const user = userEvent.setup();
 
-  //   const guestUserLogIn = {
-  //     username: "preslaw",
-  //     password: "12345678B",
-  //     token:
-  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
-  //     logInGuestUser,
-  //   };
+    const spiedFetch = vi.spyOn(global, "fetch");
 
-  //   async function logInGuestUser() {
-  //     fetch("http://localhost/login_guest", {
-  //       body: {
-  //         username: "test",
-  //         password: "12345678B",
-  //         token:
-  //           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
-  //       },
-  //     });
-  //   }
+    spiedFetch
+      .mockResolvedValueOnce(Response.json("token"))
+      .mockResolvedValueOnce(
+        Response.json({
+          username: "preslaw",
+          password: "12345678B",
+          role: "guest",
+        }),
+      );
 
-  //   const mock = vi
-  //     .spyOn(guestUserLogIn, "logInGuestUser")
-  //     .mockImplementationOnce(() => "test");
+    await user.type(screen.queryByLabelText("username"), "test");
 
-  //   expect(mock()).toEqual("test");
+    expect(screen.queryByLabelText("username").value).toEqual("test");
 
-  //   mock.mockImplementationOnce(() => "12345678B");
+    await user.type(screen.queryByLabelText("password"), "12345678B");
 
-  //   expect(mock()).toEqual("12345678B");
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
 
-  //   mock.mockImplementationOnce(
-  //     () =>
-  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
-  //   );
+    await user.click(screen.queryByRole("button", { name: "Guest User" }));
 
-  //   expect(mock()).toEqual(
-  //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU0NDU5ODYwLCJleHAiOjE3NTQ0NjEzNjB9.49YsQnJmqxDZdA4Vycf9Gzy1tjmj758B_ZJBBeuZE5U",
-  //   );
+    expect(await screen.findByAltText("loading spinner"));
 
-  //   mock.mockImplementationOnce(() => true);
+    spiedFetch.mockRestore();
+  });
 
-  //   expect(mock()).toBe(true);
+  it("should navigate to signup form and render the form", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/signup"],
+    });
 
-  //   await user.type(screen.queryByLabelText("username"), "test");
+    render(<RouterProvider router={router} />);
 
-  //   expect(screen.queryByLabelText("username").value).toEqual("test");
+    const user = userEvent.setup();
 
-  //   await user.type(screen.queryByLabelText("password"), "12345678B");
+    await user.click(screen.queryByText("Sign Up"));
 
-  //   expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+    expect(screen.queryByText("Join us Today!").textContent).toMatch(
+      /join us today!/i,
+    );
 
-  //   await user.click(screen.queryByRole("button", { name: "Guest User" }));
+    expect(
+      screen.queryByText("Please fill in your details above below").textContent,
+    ).toMatch(/please fill in your details above below/i);
 
-  //   expect(await screen.findByAltText("loading spinner")).toBeInTheDocument();
-  // });
+    expect(
+      screen.queryByRole("button", { name: "Sign up" }),
+    ).toBeInTheDocument();
 
-  // it("should navigate to signup form and render the form", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/login", "/signup"],
-  //   });
+    expect(screen.queryByText("Already have an account?").textContent).toMatch(
+      /already have an account?/i,
+    );
 
-  //   render(<RouterProvider router={router} />);
+    expect(screen.queryByText("Login").textContent).toMatch(/login/i);
 
-  //   const user = userEvent.setup();
+    expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
+      /socialhub/i,
+    );
 
-  //   await user.click(screen.queryByText("Sign Up"));
-
-  //   expect(screen.queryByText("Join us Today!").textContent).toMatch(
-  //     /join us today!/i,
-  //   );
-
-  //   expect(
-  //     screen.queryByText("Please fill in your details above below").textContent,
-  //   ).toMatch(/please fill in your details above below/i);
-
-  //   expect(
-  //     screen.queryByRole("button", { name: "Sign up" }),
-  //   ).toBeInTheDocument();
-
-  //   expect(screen.queryByText("Already have an account?").textContent).toMatch(
-  //     /already have an account?/i,
-  //   );
-
-  //   expect(screen.queryByText("Login").textContent).toMatch(/login/i);
-
-  //   expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
-  //     /socialhub/i,
-  //   );
-
-  //   expect(screen.queryByText("Your network, improved.").textContent).toMatch(
-  //     /your network, improved./i,
-  //   );
-  // });
+    expect(screen.queryByText("Your network, improved.").textContent).toMatch(
+      /your network, improved./i,
+    );
+  });
 });
