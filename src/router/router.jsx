@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import { App } from "../App";
 import { CreatePost } from "../components/CreatePost/CreatePost";
 import { LogInForm } from "../components/LogInForm/LogInForm";
-import { ProtectApp } from "../components/ProtectApp/ProtectApp";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SearchForUser } from "../components/SearchForUser/SearchForUser";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
@@ -12,24 +11,21 @@ import { Settings } from "../pages/Settings/Settings";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <ProtectApp path={"/"}>
-        <App />
-      </ProtectApp>
-    ),
+    element: <App />,
     errorElement: "",
     children: [
-      { path: "/signup", element: <SignUpForm /> },
-      { path: "/login", element: <LogInForm /> },
       {
-        path: "/home",
+        index: true,
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={""}></MainGridInterface>
           </ProtectRoutes>
         ),
-        index: true,
       },
+
+      { path: "/signup", element: <SignUpForm /> },
+      { path: "/login", element: <LogInForm /> },
+
       {
         path: "/create",
         element: (

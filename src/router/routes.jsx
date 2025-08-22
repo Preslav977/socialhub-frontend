@@ -17,19 +17,21 @@ export const routes = [
       </ProtectApp>
     ),
     children: [
-      { path: "/signup", element: <SignUpForm /> },
       {
-        path: "/login",
-        element: <LogInForm />,
-      },
-      {
-        path: "/home",
+        index: true,
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={""}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
+
+      { path: "/signup", element: <SignUpForm /> },
+      {
+        path: "/login",
+        element: <LogInForm />,
+      },
+
       {
         path: "/create",
         element: (
