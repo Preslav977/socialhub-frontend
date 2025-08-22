@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { describe } from "vitest";
 import { routes } from "../router/routes";
@@ -11,325 +12,278 @@ describe("should render SignUpForm", () => {
 
     render(<RouterProvider router={router} />);
 
-    screen.debug();
+    expect(screen.queryByText("Join us Today!").textContent).toMatch(
+      /join us today!/i,
+    );
 
-    // expect(screen.queryByText("Join us Today!").textContent).toMatch(
-    //   /join us today!/i,
-    // );
+    expect(
+      screen.queryByText("Please fill in your details above below").textContent,
+    ).toMatch(/please fill in your details above below/i);
 
-    // expect(
-    //   screen.queryByText("Please fill in your details above below").textContent,
-    // ).toMatch(/please fill in your details above below/i);
+    expect(
+      screen.queryByRole("button", { name: "Sign up" }),
+    ).toBeInTheDocument();
 
-    // expect(
-    //   screen.queryByRole("button", { name: "Sign up" }),
-    // ).toBeInTheDocument();
+    expect(screen.queryByText("Already have an account?").textContent).toMatch(
+      /already have an account?/i,
+    );
 
-    // expect(screen.queryByText("Already have an account?").textContent).toMatch(
-    //   /already have an account?/i,
-    // );
+    expect(screen.queryByText("Login").textContent).toMatch(/login/i);
 
-    // expect(screen.queryByText("Login").textContent).toMatch(/login/i);
+    expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
+      /socialhub/i,
+    );
 
-    // expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
-    //   /socialhub/i,
-    // );
-
-    // expect(screen.queryByText("Your network, improved.").textContent).toMatch(
-    //   /your network, improved./i,
-    // );
+    expect(screen.queryByText("Your network, improved.").textContent).toMatch(
+      /your network, improved./i,
+    );
   });
 
-  // it("should render the span errors when the inputs are empty", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/signup"],
-  //   });
+  it("should render the span errors when the inputs are empty", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
 
-  //   render(<RouterProvider router={router} />);
+    render(<RouterProvider router={router} />);
 
-  //   const user = userEvent.setup();
+    const user = userEvent.setup();
 
-  //   const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
+    const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
 
-  //   await user.click(signUpBtn);
+    await user.click(signUpBtn);
 
-  //   const spiedFetch = vi.spyOn(global, "fetch");
+    const spiedFetch = vi.spyOn(global, "fetch");
 
-  //   spiedFetch.mockResolvedValueOnce(
-  //     Response.json({
-  //       username: "preslaw",
-  //       display_name: "preslaw",
-  //       bio: "",
-  //       website: "",
-  //       github: "",
-  //       password: "12345678B",
-  //       confirm_password: "12345678B",
-  //       profile_picture: "",
-  //       followersNumber: 0,
-  //       followingNumber: 0,
-  //       posts: 0,
-  //     }),
-  //   );
-
-  //   expect(screen.queryByText("Username is required").textContent).toMatch(
-  //     /username is required/i,
-  //   );
-
-  //   expect(screen.queryByText("Display name is required").textContent).toMatch(
-  //     /display name is required/i,
-  //   );
-
-  //   expect(screen.queryByText("Password is required").textContent).toMatch(
-  //     /password is required/i,
-  //   );
-
-  //   expect(
-  //     screen.queryByText("Confirm password is required").textContent,
-  //   ).toMatch(/confirm password is required/i);
-
-  //   spiedFetch.mockRestore();
-  // });
-
-  // it("should not render the span errors when the inputs are not empty", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/signup"],
-  //   });
-
-  //   render(<RouterProvider router={router} />);
-
-  //   const user = userEvent.setup();
-
-  //   const spiedFetch = vi.spyOn(global, "fetch");
-
-  //   spiedFetch.mockResolvedValueOnce(
-  //     Response.json({
-  //       username: "preslaw",
-  //       display_name: "preslaw",
-  //       bio: "",
-  //       website: "",
-  //       github: "",
-  //       password: "12345678B",
-  //       confirm_password: "12345678B",
-  //       profile_picture: "",
-  //       followersNumber: 0,
-  //       followingNumber: 0,
-  //       posts: 0,
-  //     }),
-  //   );
+    spiedFetch.mockResolvedValueOnce(
+      Response.json({
+        username: "preslaw",
+        display_name: "preslaw",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "",
+        followersNumber: 0,
+        followingNumber: 0,
+        posts: 0,
+      }),
+    );
+
+    expect(screen.queryByText("Username is required").textContent).toMatch(
+      /username is required/i,
+    );
 
-  //   await user.type(screen.queryByLabelText("username"), "preslaw");
+    expect(screen.queryByText("Display name is required").textContent).toMatch(
+      /display name is required/i,
+    );
 
-  //   await user.type(screen.queryByLabelText("display_name"), "preslaw");
+    expect(screen.queryByText("Password is required").textContent).toMatch(
+      /password is required/i,
+    );
 
-  //   await user.type(screen.queryByLabelText("password"), "12345678B");
+    expect(
+      screen.queryByText("Confirm password is required").textContent,
+    ).toMatch(/confirm password is required/i);
 
-  //   await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
+    spiedFetch.mockRestore();
+  });
 
-  //   const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
+  it("should not render the span errors when the inputs are not empty", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
 
-  //   await user.click(signUpBtn);
+    render(<RouterProvider router={router} />);
 
-  //   expect(screen.queryByText("Username is required")).not.toBeInTheDocument();
+    const user = userEvent.setup();
 
-  //   expect(
-  //     screen.queryByText("Display name is required"),
-  //   ).not.toBeInTheDocument();
+    const spiedFetch = vi.spyOn(global, "fetch");
 
-  //   expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
+    spiedFetch.mockResolvedValueOnce(
+      Response.json({
+        username: "preslaw",
+        display_name: "preslaw",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "",
+        followersNumber: 0,
+        followingNumber: 0,
+        posts: 0,
+      }),
+    );
 
-  //   expect(
-  //     screen.queryByText("Confirm password is required"),
-  //   ).not.toBeInTheDocument();
+    await user.type(screen.queryByLabelText("username"), "preslaw");
 
-  //   spiedFetch.mockRestore();
-  // });
+    await user.type(screen.queryByLabelText("display_name"), "preslaw");
 
-  // it("should render a user information when signup", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/signup"],
-  //   });
+    await user.type(screen.queryByLabelText("password"), "12345678B");
 
-  //   render(<RouterProvider router={router} />);
-
-  //   const user = userEvent.setup();
-
-  //   const userSigningUp = {
-  //     username: "preslaw",
-  //     display_name: "preslaw",
-  //     bio: "",
-  //     website: "",
-  //     github: "",
-  //     password: "12345678B",
-  //     confirm_password: "12345678B",
-  //     profile_picture: "",
-  //     followersNumber: 0,
-  //     followingNumber: 0,
-  //     posts: 0,
-  //     signUpUser,
-  //   };
+    await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
 
-  //   async function signUpUser() {
-  //     fetch("http://localhost/signup", {
-  //       body: {
-  //         username: "preslaw",
-  //         display_name: "preslaw",
-  //         bio: "",
-  //         website: "",
-  //         github: "",
-  //         password: "12345678B",
-  //         confirm_password: "12345678B",
-  //         profile_picture: "",
-  //         followersNumber: 0,
-  //         followingNumber: 0,
-  //         posts: 0,
-  //       },
-  //     });
-  //   }
+    const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
 
-  //   const mock = vi
-  //     .spyOn(userSigningUp, "signUpUser")
-  //     .mockImplementationOnce(() => "preslaw");
+    await user.click(signUpBtn);
 
-  //   expect(mock()).toEqual("preslaw");
+    expect(screen.queryByText("Username is required")).not.toBeInTheDocument();
 
-  //   mock.mockImplementationOnce(() => "");
+    expect(
+      screen.queryByText("Display name is required"),
+    ).not.toBeInTheDocument();
 
-  //   expect(mock()).toEqual("");
+    expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
 
-  //   mock.mockImplementationOnce(() => 0);
+    expect(
+      screen.queryByText("Confirm password is required"),
+    ).not.toBeInTheDocument();
 
-  //   expect(mock()).toEqual(0);
+    spiedFetch.mockRestore();
+  });
 
-  //   await user.type(screen.queryByLabelText("username"), "preslaw");
+  it("should render a user information when signup", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
 
-  //   expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+    render(<RouterProvider router={router} />);
 
-  //   await user.type(screen.queryByLabelText("display_name"), "preslaw");
+    const user = userEvent.setup();
 
-  //   expect(screen.queryByLabelText("display_name").value).toEqual("preslaw");
+    const spiedFetch = vi.spyOn(global, "fetch");
 
-  //   await user.type(screen.queryByLabelText("password"), "12345678B");
+    spiedFetch.mockResolvedValueOnce(
+      Response.json({
+        username: "preslaw",
+        display_name: "preslaw",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "",
+        followersNumber: 0,
+        followingNumber: 0,
+        posts: 0,
+      }),
+    );
 
-  //   expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+    await user.type(screen.queryByLabelText("username"), "preslaw");
 
-  //   await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
 
-  //   expect(screen.queryByLabelText("confirm_password").value).toEqual(
-  //     "12345678B",
-  //   );
+    await user.type(screen.queryByLabelText("display_name"), "preslaw");
 
-  //   const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
+    expect(screen.queryByLabelText("display_name").value).toEqual("preslaw");
 
-  //   await user.click(signUpBtn);
-  // });
+    await user.type(screen.queryByLabelText("password"), "12345678B");
 
-  // it("should display errors if the username, and display name are taken", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/signup"],
-  //   });
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
 
-  //   render(<RouterProvider router={router} />);
+    await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
 
-  //   const user = userEvent.setup();
+    expect(screen.queryByLabelText("confirm_password").value).toEqual(
+      "12345678B",
+    );
 
-  //   const userSigningUpError = {
-  //     usernameError: "Username is already taken",
-  //     displayNameError: "Display name is already taken",
-  //     signUpUser,
-  //   };
+    const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
 
-  //   async function signUpUser() {
-  //     fetch("http://localhost/signup", {
-  //       body: {
-  //         username: "preslaw",
-  //         display_name: "preslaw",
-  //         bio: "",
-  //         website: "",
-  //         github: "",
-  //         password: "12345678B",
-  //         confirm_password: "12345678B",
-  //         profile_picture: "",
-  //         followersNumber: 0,
-  //         followingNumber: 0,
-  //         posts: 0,
-  //       },
-  //     });
-  //   }
+    await user.click(signUpBtn);
 
-  //   const mock = vi
-  //     .spyOn(userSigningUpError, "signUpUser")
-  //     .mockImplementation(() => "Username is already taken");
+    spiedFetch.mockRestore();
+  });
 
-  //   expect(mock()).toEqual("Username is already taken");
+  it("should display errors if the username, and display name are taken", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
 
-  //   mock.mockImplementation(() => "Display name is already taken");
+    render(<RouterProvider router={router} />);
 
-  //   expect(mock()).toEqual("Display name is already taken");
+    const user = userEvent.setup();
 
-  //   await user.type(screen.queryByLabelText("username"), "preslaw");
+    const spiedFetch = vi.spyOn(global, "fetch");
 
-  //   expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+    spiedFetch.mockResolvedValueOnce(
+      Response.json(
+        [
+          { msg: "Username is already taken" },
+          { msg: "Display name is already taken" },
+        ],
+        { status: 400 },
+      ),
+    );
 
-  //   await user.type(screen.queryByLabelText("display_name"), "preslaw");
+    await user.type(screen.queryByLabelText("username"), "preslaw");
 
-  //   expect(screen.queryByLabelText("display_name").value).toEqual("preslaw");
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
 
-  //   await user.type(screen.queryByLabelText("password"), "12345678B");
+    await user.type(screen.queryByLabelText("display_name"), "preslaw");
 
-  //   expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+    expect(screen.queryByLabelText("display_name").value).toEqual("preslaw");
 
-  //   await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
+    await user.type(screen.queryByLabelText("password"), "12345678B");
 
-  //   expect(screen.queryByLabelText("confirm_password").value).toEqual(
-  //     "12345678B",
-  //   );
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
 
-  //   const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
+    await user.type(screen.queryByLabelText("confirm_password"), "12345678B");
 
-  //   await user.click(signUpBtn);
+    expect(screen.queryByLabelText("confirm_password").value).toEqual(
+      "12345678B",
+    );
 
-  //   await screen.findByText("Username is already taken");
+    const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
 
-  //   await screen.findByText("Display name is already taken");
-  // });
+    await user.click(signUpBtn);
 
-  // it("should navigate to login form and render the form", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/signup"],
-  //   });
+    screen.debug();
 
-  //   render(<RouterProvider router={router} />);
+    screen.queryByText("Username is already taken");
 
-  //   const user = userEvent.setup();
+    screen.queryByText("Display name is already taken");
 
-  //   await user.click(screen.queryByText("Login"));
+    spiedFetch.mockRestore();
+  });
 
-  //   expect(screen.queryByText("Welcome back!").textContent).toMatch(
-  //     /welcome back!/i,
-  //   );
+  it("should navigate to login form and render the form", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
 
-  //   expect(
-  //     screen.queryByText("Please fill your login details").textContent,
-  //   ).toMatch(/please fill your login details/i);
+    render(<RouterProvider router={router} />);
 
-  //   expect(screen.queryByRole("button", { name: "Login" })).toBeInTheDocument();
+    const user = userEvent.setup();
 
-  //   expect(
-  //     screen.queryByRole("button", { name: "Guest User" }),
-  //   ).toBeInTheDocument();
+    await user.click(screen.queryByText("Login"));
 
-  //   expect(screen.queryByText("Don't have an account?").textContent).toMatch(
-  //     /don't have an account?/i,
-  //   );
+    expect(screen.queryByText("Welcome back!").textContent).toMatch(
+      /welcome back!/i,
+    );
 
-  //   expect(screen.queryByText("Sign Up").textContent).toMatch(/sign up/i);
+    expect(
+      screen.queryByText("Please fill your login details").textContent,
+    ).toMatch(/please fill your login details/i);
 
-  //   expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
-  //     /socialhub/i,
-  //   );
+    expect(screen.queryByRole("button", { name: "Login" })).toBeInTheDocument();
 
-  //   expect(screen.queryByText("Your network, improved.").textContent).toMatch(
-  //     /your network, improved./i,
-  //   );
-  // });
+    expect(
+      screen.queryByRole("button", { name: "Guest User" }),
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText("Don't have an account?").textContent).toMatch(
+      /don't have an account?/i,
+    );
+
+    expect(screen.queryByText("Sign Up").textContent).toMatch(/sign up/i);
+
+    expect(screen.queryByRole("heading", { level: 1 }).textContent).toMatch(
+      /socialhub/i,
+    );
+
+    expect(screen.queryByText("Your network, improved.").textContent).toMatch(
+      /your network, improved./i,
+    );
+  });
 });
