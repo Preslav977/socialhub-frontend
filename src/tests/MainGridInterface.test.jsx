@@ -5,7 +5,7 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { routes } from "../router/routes";
 
 describe("should render MainGridInterface", () => {
@@ -574,7 +574,7 @@ describe("should render MainGridInterface", () => {
     spiedFetch.mockRestore();
   });
 
-  it.only("should login, navigate and create a post", async () => {
+  it("should login, navigate and create a post", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/create"],
       initialIndex: 0,
@@ -668,7 +668,7 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.queryByRole("button", { name: "Login" }));
 
-    expect(await screen.queryByAltText("loading spinner")).toBeInTheDocument();
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
 
     await waitForElementToBeRemoved(
       () => screen.queryByAltText("loading spinner"),
@@ -698,5 +698,110 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryByLabelText("tag").value).toEqual("tag");
 
     await user.click(screen.queryByRole("button", { name: "Post" }));
+  });
+
+  it.only("should login navigate to settings and render the component", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/settings"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const spiedFetch = vi.spyOn(global, "fetch");
+
+    spiedFetch
+      .mockResolvedValueOnce(Response.json("token"))
+      .mockResolvedValueOnce(
+        Response.json({
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followedBy: [],
+          following: [],
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+        }),
+      )
+
+      .mockResolvedValueOnce(
+        Response.json([
+          {
+            id: 2,
+            username: "preslaw",
+            display_name: "preslaw",
+          },
+          {
+            id: 3,
+            username: "preslaw1",
+            display_name: "preslaw1",
+          },
+          {
+            id: 4,
+            username: "preslaw2",
+            display_name: "preslaw2",
+          },
+        ]),
+      )
+
+      .mockResolvedValueOnce(
+        Response.json([
+          {
+            id: 5,
+            username: "test",
+            display_name: "test",
+          },
+          {
+            id: 6,
+            username: "test1",
+            display_name: "test1",
+          },
+          {
+            id: 7,
+            username: "test2",
+            display_name: "test2",
+          },
+        ]),
+      );
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(
+      () => screen.queryByAltText("loading spinner"),
+      {
+        timeout: 1000,
+      },
+    );
+
+    await user.click(screen.queryByText("Settings"));
+
+    screen.debug();
+
+    expect(screen.queryAllByText("Settings")[1].textContent).toMatch(
+      /settings/i,
+    );
+
+    expect(screen.queryByText("Account").textContent).toMatch(/account/i);
+
+    expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
   });
 });
