@@ -698,6 +698,8 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryByLabelText("tag").value).toEqual("tag");
 
     await user.click(screen.queryByRole("button", { name: "Post" }));
+
+    spiedFetch.mockRestore();
   });
 
   it("should login navigate to settings and render the component", async () => {
@@ -801,6 +803,8 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryByText("Account").textContent).toMatch(/account/i);
 
     expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
+
+    spiedFetch.mockRestore();
   });
 
   it("should login navigate to settings and logout", async () => {
@@ -906,9 +910,11 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
 
     await user.click(screen.queryByText("Logout"));
+
+    spiedFetch.mockRestore();
   });
 
-  it.only("should login and navigate to users and render its content", async () => {
+  it("should login and navigate to users and render its content", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/users"],
       initialIndex: 0,
@@ -1005,5 +1011,7 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryAllByPlaceholderText("Enter a username"));
 
     expect(screen.queryByText("No results").textContent).toMatch(/no results/i);
+
+    spiedFetch.mockRestore();
   });
 });

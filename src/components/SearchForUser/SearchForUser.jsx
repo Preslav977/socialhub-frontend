@@ -49,6 +49,7 @@ export function SearchForUser() {
           name="query"
           id="query"
           placeholder="Enter a username"
+          aria-label="query"
         />
       </div>
       <div className={styles.showFoundOrNotUsersContainer}>
