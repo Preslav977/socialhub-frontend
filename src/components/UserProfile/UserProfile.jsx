@@ -1,45 +1,189 @@
-import { useContext } from "react";
-import { UserLogInContext } from "../../context/UserLogInContext";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import { localhostURL } from "../../../utility/localhostURL";
+import { useFetchUser } from "../../api/useFetchUser";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
 import styles from "./UserProfile.module.css";
 
 export function UserProfile() {
-  const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
+  const { userDetails, setUserDetails, error, loading } = useFetchUser();
 
-  const { profile_picture } = userLogIn;
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
+
+  const [usernameError, setUsernameError] = useState("");
+
+  const [displayNameError, setDisplayNameError] = useState("");
+
+  const [editProfile, setEditProfile] = useState(false);
+
+  const { id } = useParams();
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error...</p>;
+  }
+
+  const {
+    profile_picture,
+    username,
+    display_name,
+    followersNumber,
+    followingNumber,
+    posts,
+    bio,
+    website,
+    github,
+  } = userDetails;
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    // console.log(formData);
+
+    try {
+      const response = await fetch(`${localhostURL}/users/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+        body: formData,
+      });
+
+      if (response.status >= 400) {
+        const errors = await response.json();
+
+        errors.forEach((err) => {
+          if (err.msg.startsWith("Username")) {
+            setUsernameError(err.msg);
+          } else {
+            setDisplayNameError(err.msg);
+          }
+        });
+      } else {
+        reset();
+
+        const result = await response.json();
+
+        setUserDetails(result);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
 
   return (
     <>
       <LeftArrow textProp={"Profile"} />
-      <form className={styles.userProfileWrapper}>
+      <form
+        onSubmit={(e) => handleSubmit(onSubmit(e))}
+        className={styles.userProfileWrapper}
+      >
         <div className={styles.userProfileFlexContainer}>
-          <img
-            className={styles.userProfileImg}
-            src={
-              profile_picture === "" ? "/user-default-pfp.jpg" : profile_picture
-            }
-            alt="users profile picture"
-          />
+          {editProfile ? (
+            <>
+              <label htmlFor="file"></label>
+              <input type="file" name="file" id="file" />
+            </>
+          ) : (
+            <img
+              className={styles.userProfileImg}
+              src={
+                profile_picture === ""
+                  ? "/user-default-pfp.jpg"
+                  : profile_picture
+              }
+              alt="users profile picture"
+            />
+          )}
           <div>
             <div className={styles.userCredentials}>
-              <p>{userLogIn.username}</p>
+              {editProfile ? (
+                <>
+                  <label htmlFor="username"></label>
+                  <input
+                    className={styles.userProfilePrimaryInput}
+                    type="text"
+                    name="username"
+                    id="username"
+                    aria-label="username"
+                    {...register("username", {
+                      required: true,
+                      minLength: 1,
+                      maxLength: 30,
+                    })}
+                    aria-invalid={errors.username ? "true" : "false"}
+                  />
+                </>
+              ) : (
+                <p>{username}</p>
+              )}
 
-              <p>{userLogIn.display_name}</p>
+              <span role="alert">{usernameError}</span>
+
+              {errors.username?.type === "required" && (
+                <span role="alert">Username is required</span>
+              )}
+              {errors.username?.type === "minLength" ||
+                (errors.username?.type === "maxLength" && (
+                  <span role="alert">
+                    Username must be between 1 and 30 characters
+                  </span>
+                ))}
+
+              {editProfile ? (
+                <>
+                  <label htmlFor="display_name"></label>
+                  <input
+                    className={styles.userProfilePrimaryInput}
+                    type="text"
+                    name="display_name"
+                    id="display_name"
+                    aria-label="display_name"
+                    {...register("display_name", { required: true })}
+                    aria-invalid={errors.display_name ? "true" : "false"}
+                  />
+                </>
+              ) : (
+                <p>{display_name}</p>
+              )}
+
+              <span role="alert">{displayNameError}</span>
+
+              {errors.display_name?.type === "required" && (
+                <span role="alert">Display name is required</span>
+              )}
+              {errors.display_name?.type === "minLength" ||
+                (errors.display_name?.type === "maxLength" && (
+                  <span role="alert">
+                    Display name must be between 1 and 30 characters
+                  </span>
+                ))}
             </div>
 
             <div className={styles.userProfileStatistics}>
               <div>
-                <p>{userLogIn.followersNumber}</p>
+                <p>{followersNumber}</p>
                 <p>Followers</p>
               </div>
 
               <div>
-                <p>{userLogIn.followingNumber}</p>
+                <p>{followingNumber}</p>
                 <p>Following</p>
               </div>
 
               <div>
-                <p>{userLogIn.posts}</p>
+                <p>{posts}</p>
                 <p>Posts</p>
               </div>
             </div>
@@ -47,20 +191,50 @@ export function UserProfile() {
         </div>
 
         <div className={styles.userProfileWebsites}>
-          <p>Bio</p>
+          {editProfile ? (
+            <input
+              className={styles.userProfileSecondaryInput}
+              type="text"
+              name="bio"
+              id="bio"
+              aria-label="bio"
+            />
+          ) : (
+            <p>{bio}</p>
+          )}
 
           <div className={styles.userProfileSVGFlexContainer}>
             <img className={styles.userProfileSVG} src="/website.svg" alt="" />
-            <p>Website</p>
+            {editProfile ? (
+              <input
+                className={styles.userProfileSecondaryInput}
+                type="text"
+                name="website"
+                id="website"
+                aria-label="website"
+              />
+            ) : (
+              <p>{website}</p>
+            )}
           </div>
 
           <div className={styles.userProfileSVGFlexContainer}>
             <img className={styles.userProfileSVG} src="/github.svg" alt="" />
-            <p>Github</p>
+            {editProfile ? (
+              <input
+                className={styles.userProfileSecondaryInput}
+                type="text"
+                name="github"
+                id="github"
+                aria-label="github"
+              />
+            ) : (
+              <p>{github}</p>
+            )}
           </div>
         </div>
-        <button>Edit</button>
-        <button>Save Changes</button>
+        <button onClick={() => setEditProfile(true)}>Edit</button>
+        <button type="submit">Save Changes</button>
       </form>
     </>
   );

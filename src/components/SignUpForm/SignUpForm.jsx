@@ -36,10 +36,10 @@ export function SignUpForm() {
 
     const signUpUser = {
       ...userSignUp,
-      username: username,
-      display_name: display_name,
-      password: password,
-      confirm_password: confirm_password,
+      username,
+      display_name,
+      password,
+      confirm_password,
     };
 
     setUserSignUp(signUpUser);
@@ -51,10 +51,10 @@ export function SignUpForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
-          display_name: display_name,
-          password: password,
-          confirm_password: confirm_password,
+          username,
+          display_name,
+          password,
+          confirm_password,
         }),
       });
 
