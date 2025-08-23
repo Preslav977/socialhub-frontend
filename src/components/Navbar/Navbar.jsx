@@ -22,7 +22,7 @@ export function Navbar() {
       </ul>
 
       <ul className={styles.rightSideFlexUlContainer}>
-        <Link className={styles.userProfileLinkContainer} to={`/users/${id}`}>
+        <Link className={styles.userProfileLinkContainer} to={`/profile/${id}`}>
           {profile_picture === "" ? (
             <img
               className={styles.userDefaultProfileImg}

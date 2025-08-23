@@ -1,7 +1,7 @@
 .settingsFlexWrapper {
   height: 100%;
-  outline: 2px solid white;
-  color: white;
+  outline: 2px solid var(--paragraph--secondary-color);
+  color: var(--paragraph--secondary-color);
   max-width: 960px;
 }
 
@@ -9,9 +9,9 @@
   display: flex;
   align-items: center;
   padding: 1em;
-  color: white;
+  color: var(--paragraph--secondary-color);
   gap: 0.25em;
-  background-color: lightgray;
+  background-color: var(--paragraph--main-color);
   border-radius: 0.5em;
   width: 97%;
   margin: 0 auto;

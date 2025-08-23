@@ -68,7 +68,7 @@ export function SearchForUser() {
                 alt="user profile picture"
               />
               <div className={styles.foundUserNameContainer}>
-                <Link to={`/users/${foundUser.id}`}>
+                <Link to={`/profile/${foundUser.id}`}>
                   <p>{foundUser.username}</p>
                 </Link>
                 <p>{foundUser.display_name}</p>

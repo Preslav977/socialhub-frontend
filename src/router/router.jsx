@@ -5,6 +5,7 @@ import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SearchForUser } from "../components/SearchForUser/SearchForUser";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
+import { UserProfile } from "../components/UserProfile/UserProfile";
 import { MainGridInterface } from "../pages/MainGrindInterface/MainGridInterface";
 import { Settings } from "../pages/Settings/Settings";
 
@@ -47,6 +48,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={<SearchForUser />}></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/profile/:id",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface pageProp={<UserProfile />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },

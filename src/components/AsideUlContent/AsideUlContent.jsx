@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./AsideUlContent.module.css";
 
 export function AsideUlContent() {
   const [visitedLink, setVisitedLink] = useState("/");
+
+  const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
   return (
     <ul className={styles.asideUlContainer}>
@@ -56,7 +59,7 @@ export function AsideUlContent() {
         onClick={() => setVisitedLink("/profile")}
         style={{ backgroundColor: visitedLink === "/profile" ? "gray" : "" }}
       >
-        <Link to="/profile">
+        <Link to={`/profile/${userLogIn.id}`}>
           <img src="./profile.svg" alt="profile" />
           <span>Profile</span>
         </Link>

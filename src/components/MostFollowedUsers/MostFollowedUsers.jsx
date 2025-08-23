@@ -63,7 +63,7 @@ export function MostFollowedUsers() {
           >
             <Link
               className={styles.mostFollowedUserNameAnchor}
-              to={`/users/${user.id}`}
+              to={`/profile/${user.id}`}
             >
               <p>{user.username}</p>
             </Link>

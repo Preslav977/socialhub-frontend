@@ -1,0 +1,39 @@
+.userProfileWrapper {
+  padding: 1.5em;
+  color: white;
+  outline: 2px solid green;
+}
+
+.userProfileFlexContainer {
+  display: flex;
+  align-items: center;
+  gap: 15em;
+}
+
+.userProfileStatistics {
+  display: flex;
+  text-align: center;
+  gap: 2em;
+}
+
+.userCredentials {
+  text-align: center;
+}
+
+.userProfileWebsites {
+  margin-top: 1.5em;
+}
+
+.userProfileImg {
+  width: 250px;
+  border-radius: 50%;
+}
+
+.userProfileSVGFlexContainer {
+  display: flex;
+  gap: 0.5em;
+}
+
+.userProfileSVG {
+  width: 20px;
+}

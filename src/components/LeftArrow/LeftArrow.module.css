@@ -2,8 +2,8 @@
   padding: 1em;
   display: flex;
   gap: 2em;
-  color: white;
-  outline: 2px solid white;
+  color: var(--paragraph--secondary-color);
+  outline: 2px solid var(--paragraph--secondary-color);
   max-width: 960px;
   margin: 0;
 }
@@ -19,7 +19,7 @@
 }
 
 .leftArrowImgContainer:hover {
-  background-color: lightgray;
+  background-color: var(--paragraph--main-color);
 }
 
 .leftArrowSVG {

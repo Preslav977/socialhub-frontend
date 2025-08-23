@@ -4,10 +4,10 @@ import styles from "./LeftArrow.module.css";
 export function LeftArrow({ textProp }) {
   return (
     <div className={styles.leftArrowFlexContainer}>
-      <Link className={styles.leftArrowImgContainer} to={"/home"}>
+      <Link className={styles.leftArrowImgContainer} to={"/"}>
         <img
           className={styles.leftArrowSVG}
-          src="./left-arrow.svg"
+          src="/left-arrow.svg"
           alt="go back to home"
         />
       </Link>
