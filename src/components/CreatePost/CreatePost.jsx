@@ -42,7 +42,7 @@ export function CreatePost() {
 
       reset();
 
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       throw error;
     } finally {
@@ -68,7 +68,7 @@ export function CreatePost() {
 
       reset();
 
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       throw error;
     } finally {

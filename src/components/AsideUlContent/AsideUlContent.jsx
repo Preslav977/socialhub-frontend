@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 import styles from "./AsideUlContent.module.css";
 
 export function AsideUlContent() {
-  const [visitedLink, setVisitedLink] = useState("/home");
+  const [visitedLink, setVisitedLink] = useState("/");
 
   return (
     <ul className={styles.asideUlContainer}>
       <li
-        onClick={() => setVisitedLink("/home")}
-        style={{ backgroundColor: visitedLink === "/home" ? "gray" : "" }}
+        onClick={() => setVisitedLink("/")}
+        style={{ backgroundColor: visitedLink === "/" ? "gray" : "" }}
       >
-        <Link to="/home">
+        <Link to="/">
           <img src="./home.svg" alt="home" />
           <span>Home</span>
         </Link>

@@ -67,7 +67,7 @@ export function LogInForm() {
 
         setIsUserLoggedIn(true);
 
-        navigate("/home");
+        navigate("/");
       }
     } catch (error) {
       throw error;
@@ -107,7 +107,7 @@ export function LogInForm() {
 
       setIsUserLoggedIn(true);
 
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       throw error;
     } finally {

@@ -1,7 +1,5 @@
-import { Suspense } from "react";
 import { AsideUlContent } from "../../components/AsideUlContent/AsideUlContent";
 import { LatestUser } from "../../components/LatestUsers/LatestUsers";
-import { Loading } from "../../components/Loading/Loading";
 import { MostFollowedUsers } from "../../components/MostFollowedUsers/MostFollowedUsers";
 import { Navbar } from "../../components/Navbar/Navbar";
 import styles from "./MainGridInterface.module.css";
@@ -25,9 +23,7 @@ export function MainGridInterface({ pageProp }) {
           </div>
 
           <div className={styles.mostFollowedUsersContainer}>
-            <Suspense fallback={<Loading />}>
-              <MostFollowedUsers />
-            </Suspense>
+            <MostFollowedUsers />
           </div>
 
           <div className={styles.announcementsContainer}>
