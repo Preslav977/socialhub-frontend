@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import styles from "./SearchForUser.module.css";
 
@@ -51,12 +51,29 @@ export function SearchForUser() {
           placeholder="Enter a username"
         />
       </div>
-
-      <div className={styles.test}>
+      <div className={styles.showFoundOrNotUsersContainer}>
         {!user ? (
           <p>No results</p>
         ) : (
-          user.map((foundUser) => <div>{foundUser.username}</div>)
+          user.map((foundUser) => (
+            <div key={foundUser.id} className={styles.foundUsersContainer}>
+              <img
+                className={styles.foundUserProfileImg}
+                src={
+                  foundUser.profile_picture === ""
+                    ? "./user-default-pfp.jpg"
+                    : foundUser.profile_picture
+                }
+                alt="user profile picture"
+              />
+              <div className={styles.foundUserNameContainer}>
+                <Link to={`/users/${foundUser.id}`}>
+                  <p>{foundUser.username}</p>
+                </Link>
+                <p>{foundUser.display_name}</p>
+              </div>
+            </div>
+          ))
         )}
       </div>
     </form>

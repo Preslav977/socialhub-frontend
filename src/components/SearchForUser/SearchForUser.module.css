@@ -25,10 +25,39 @@
   padding: 0.25em 0;
 }
 
-.test {
+.showFoundOrNotUsersContainer {
   /* outline: 2px solid beige; */
-
+  text-align: center;
   width: 100%;
+}
+
+.foundUsersContainer {
+  /* outline: 2px solid green; */
+  display: flex;
+  /* text-align: left; */
+  align-items: center;
+  gap: 1em;
+}
+
+.foundUserProfileImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.foundUserNameContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.foundUserNameContainer a {
+  color: white;
+  text-decoration: none;
+  margin: 0;
+}
+
+.foundUserNameContainer a:visited {
+  color: white;
 }
 
 @media screen and (max-width: 940px) {
