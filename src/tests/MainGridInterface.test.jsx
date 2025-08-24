@@ -1014,7 +1014,127 @@ describe("should render MainGridInterface", () => {
     spiedFetch.mockRestore();
   });
 
-  it.only("should login and navigate to profile", async () => {
+  it("should login and navigate to profile", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/profile/1"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const spiedFetch = vi.spyOn(global, "fetch");
+
+    spiedFetch
+      .mockResolvedValueOnce(Response.json("token"))
+      .mockResolvedValueOnce(
+        Response.json({
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followedBy: [],
+          following: [],
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+        }),
+      )
+
+      .mockResolvedValueOnce(
+        Response.json([
+          {
+            id: 2,
+            username: "preslaw",
+            display_name: "preslaw",
+          },
+          {
+            id: 3,
+            username: "preslaw1",
+            display_name: "preslaw1",
+          },
+          {
+            id: 4,
+            username: "preslaw2",
+            display_name: "preslaw2",
+          },
+        ]),
+      )
+
+      .mockResolvedValueOnce(
+        Response.json([
+          {
+            id: 5,
+            username: "test",
+            display_name: "test",
+          },
+          {
+            id: 6,
+            username: "test1",
+            display_name: "test1",
+          },
+          {
+            id: 7,
+            username: "test2",
+            display_name: "test2",
+          },
+        ]),
+      );
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
+
+    await user.click(screen.queryByText("Profile"));
+
+    // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    screen.queryByText("Loading...");
+
+    screen.debug();
+
+    expect(screen.queryAllByText("preslaw")[0].textContent).toMatch(/preslaw/i);
+
+    expect(screen.queryAllByText(0)[0]).toBeInTheDocument();
+
+    expect(screen.queryByText("Followers").textContent).toMatch(/followers/i);
+
+    expect(screen.queryAllByText(0)[1]).toBeInTheDocument();
+
+    expect(screen.queryByText("Following").textContent).toMatch(/following/i);
+
+    expect(screen.queryAllByText(0)[2]).toBeInTheDocument();
+
+    expect(screen.queryAllByText("Posts")[0].textContent).toMatch(/posts/i);
+
+    expect(screen.queryByRole("button", { name: "Edit" })).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("button", { name: "Save Changes" }),
+    ).toBeInTheDocument();
+
+    expect(screen.queryAllByText("Posts")[1].textContent).toMatch(/posts/i);
+  });
+
+  it.only("should login navigate to profile and edit it", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/profile/1"],
       initialIndex: 0,
@@ -1090,11 +1210,11 @@ describe("should render MainGridInterface", () => {
       .mockResolvedValueOnce(
         Response.json({
           id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
+          username: "preslaww",
+          display_name: "preslaww",
+          bio: "bio",
+          website: "website",
+          github: "github",
           password: "12345678B",
           confirm_password: "12345678B",
           profile_picture: "",
@@ -1128,8 +1248,6 @@ describe("should render MainGridInterface", () => {
 
     screen.queryByText("Loading...");
 
-    screen.debug();
-
     expect(screen.queryAllByText("preslaw")[0].textContent).toMatch(/preslaw/i);
 
     expect(screen.queryAllByText(0)[0]).toBeInTheDocument();
@@ -1151,5 +1269,27 @@ describe("should render MainGridInterface", () => {
     ).toBeInTheDocument();
 
     expect(screen.queryAllByText("Posts")[1].textContent).toMatch(/posts/i);
+
+    // screen.debug();
+
+    await user.click(screen.queryByRole("button", { name: "Edit" }));
+
+    await user.type(screen.queryByLabelText("username"), "preslaww");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaww");
+
+    await user.type(screen.queryByLabelText("display_name"), "preslaww");
+
+    expect(screen.queryByLabelText("display_name").value).toEqual("preslaww");
+
+    await user.click(screen.queryByLabelText("file"));
+
+    const file = new File(["image"], "image.png", { type: "image/png" });
+
+    const bgImageInput = screen.queryByLabelText("file");
+
+    await user.upload(bgImageInput, file);
+
+    await user.click(screen.queryByRole("button", { name: "Save Changes" }));
   });
 });

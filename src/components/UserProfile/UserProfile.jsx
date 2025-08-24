@@ -44,8 +44,6 @@ export function UserProfile() {
     github,
   } = userDetails;
 
-  console.log(userDetails);
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -84,7 +82,7 @@ export function UserProfile() {
         reset();
       }
     } catch (error) {
-      throw error;
+      // throw error;
     }
   };
 
@@ -125,6 +123,7 @@ export function UserProfile() {
                 type="file"
                 name="file"
                 id="file"
+                aria-label="file"
                 required
               />
             </>
