@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { App } from "../App";
 import { CreatePost } from "../components/CreatePost/CreatePost";
-import { LatestAndMostFollowedUsers } from "../components/LatestAndMostFollowedUsers/LatestAndMostFollowedUsers";
 import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SearchForUser } from "../components/SearchForUser/SearchForUser";
@@ -20,10 +19,7 @@ export const router = createBrowserRouter([
         index: true,
         element: (
           <ProtectRoutes>
-            <MainGridInterface
-              middlePageProp={""}
-              rightPageProp={<LatestAndMostFollowedUsers />}
-            ></MainGridInterface>
+            <MainGridInterface pageProp={""}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -35,9 +31,7 @@ export const router = createBrowserRouter([
         path: "/create",
         element: (
           <ProtectRoutes>
-            <MainGridInterface
-              middlePageProp={<CreatePost />}
-            ></MainGridInterface>
+            <MainGridInterface pageProp={<CreatePost />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -45,9 +39,7 @@ export const router = createBrowserRouter([
         path: "/settings",
         element: (
           <ProtectRoutes>
-            <MainGridInterface
-              middlePageProp={<Settings />}
-            ></MainGridInterface>
+            <MainGridInterface pageProp={<Settings />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -55,9 +47,7 @@ export const router = createBrowserRouter([
         path: "/search",
         element: (
           <ProtectRoutes>
-            <MainGridInterface
-              middlePageProp={<SearchForUser />}
-            ></MainGridInterface>
+            <MainGridInterface pageProp={<SearchForUser />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -65,9 +55,7 @@ export const router = createBrowserRouter([
         path: "/profile/:id",
         element: (
           <ProtectRoutes>
-            <MainGridInterface
-              middlePageProp={<UserProfile />}
-            ></MainGridInterface>
+            <MainGridInterface pageProp={<UserProfile />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
