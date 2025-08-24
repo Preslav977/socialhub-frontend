@@ -1,10 +1,8 @@
 import { AsideUlContent } from "../../components/AsideUlContent/AsideUlContent";
-import { LatestUser } from "../../components/LatestUsers/LatestUsers";
-import { MostFollowedUsers } from "../../components/MostFollowedUsers/MostFollowedUsers";
 import { Navbar } from "../../components/Navbar/Navbar";
 import styles from "./MainGridInterface.module.css";
 
-export function MainGridInterface({ pageProp }) {
+export function MainGridInterface({ middlePageProp, rightPageProp }) {
   return (
     <>
       <Navbar />
@@ -14,24 +12,11 @@ export function MainGridInterface({ pageProp }) {
         </aside>
 
         <section className={styles.mainGridSectionContainer}>
-          {pageProp}
+          {middlePageProp}
         </section>
 
         <section className={styles.mainGridRightSectionContainer}>
-          <div className={styles.latestUsersContainer}>
-            <LatestUser />
-          </div>
-
-          <div className={styles.mostFollowedUsersContainer}>
-            <MostFollowedUsers />
-          </div>
-
-          <div className={styles.announcementsContainer}>
-            <p>Announcements</p>
-            <hr />
-            <li>Added latest users feature</li>
-            <li>Added most followed users feature</li>
-          </div>
+          {rightPageProp}
         </section>
       </main>
     </>

@@ -1,5 +1,6 @@
 import { App } from "../App";
 import { CreatePost } from "../components/CreatePost/CreatePost";
+import { LatestAndMostFollowedUsers } from "../components/LatestAndMostFollowedUsers/LatestAndMostFollowedUsers";
 import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SearchForUser } from "../components/SearchForUser/SearchForUser";
@@ -17,7 +18,10 @@ export const routes = [
         index: true,
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={""}></MainGridInterface>
+            <MainGridInterface
+              middlePageProp={""}
+              rightPageProp={<LatestAndMostFollowedUsers />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -32,7 +36,9 @@ export const routes = [
         path: "/create",
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<CreatePost />}></MainGridInterface>
+            <MainGridInterface
+              middlePageProp={<CreatePost />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -40,7 +46,9 @@ export const routes = [
         path: "/settings",
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<Settings />}></MainGridInterface>
+            <MainGridInterface
+              middlePageProp={<Settings />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -48,7 +56,9 @@ export const routes = [
         path: "/search",
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<SearchForUser />}></MainGridInterface>
+            <MainGridInterface
+              middlePageProp={<SearchForUser />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -56,7 +66,9 @@ export const routes = [
         path: "/profile/:id",
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<UserProfile />}></MainGridInterface>
+            <MainGridInterface
+              middlePageProp={<UserProfile />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },

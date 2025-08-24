@@ -29,12 +29,17 @@
 
 .userProfileImg {
   width: 250px;
+  height: 250px;
+  object-fit: cover;
   border-radius: 50%;
+  position: relative;
 }
 
 .userProfileSVGFlexContainer {
   display: flex;
   gap: 0.5em;
+  /* outline: 2px solid red; */
+  margin-bottom: 0.5em;
 }
 
 .userProfileSVG {
@@ -44,4 +49,36 @@
 .userProfileSecondaryInput {
   outline: 2px solid white;
   width: 100%;
+}
+
+.userProfileBtnsContainer {
+  /* outline: 2px solid gainsboro; */
+  margin-top: 1em;
+}
+
+.editUserProfileContainer {
+  display: flex;
+  align-items: center;
+  gap: 5em;
+}
+
+.userProfileEditImg {
+  width: 30px;
+}
+
+.userProfileEditInput,
+.userProfileEditImg {
+  position: absolute;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* outline: 2px solid red; */
+  margin-top: 9em;
+  margin-left: 12em;
+}
+
+.userProfileEditInput {
+  z-index: 1;
+  opacity: 0;
 }

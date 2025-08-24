@@ -44,6 +44,8 @@ export function UserProfile() {
     github,
   } = userDetails;
 
+  console.log(userDetails);
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,6 +65,8 @@ export function UserProfile() {
       if (response.status >= 400) {
         const errors = await response.json();
 
+        console.log(errors);
+
         errors.forEach((err) => {
           if (err.msg.startsWith("Username")) {
             setUsernameError(err.msg);
@@ -71,11 +75,13 @@ export function UserProfile() {
           }
         });
       } else {
-        reset();
-
         const result = await response.json();
 
         setUserDetails(result);
+
+        setEditProfile(false);
+
+        reset();
       }
     } catch (error) {
       throw error;
@@ -89,11 +95,38 @@ export function UserProfile() {
         onSubmit={(e) => handleSubmit(onSubmit(e))}
         className={styles.userProfileWrapper}
       >
-        <div className={styles.userProfileFlexContainer}>
+        <div
+          className={
+            !editProfile
+              ? styles.userProfileFlexContainer
+              : styles.editUserProfileContainer
+          }
+        >
           {editProfile ? (
             <>
+              <img
+                className={styles.userProfileImg}
+                src={
+                  profile_picture === ""
+                    ? "/user-default-pfp.jpg"
+                    : profile_picture
+                }
+                alt="users profile picture"
+              />
+              <img
+                className={styles.userProfileEditImg}
+                src="/edit.svg"
+                alt=""
+              />
+
               <label htmlFor="file"></label>
-              <input type="file" name="file" id="file" />
+              <input
+                className={styles.userProfileEditInput}
+                type="file"
+                name="file"
+                id="file"
+                required
+              />
             </>
           ) : (
             <img
@@ -233,8 +266,11 @@ export function UserProfile() {
             )}
           </div>
         </div>
-        <button onClick={() => setEditProfile(true)}>Edit</button>
-        <button type="submit">Save Changes</button>
+        <div className={styles.userProfileBtnsContainer}>
+          <button onClick={() => setEditProfile(true)}>Edit</button>
+          <button type="submit">Save Changes</button>
+        </div>
+        <p>Posts</p>
       </form>
     </>
   );

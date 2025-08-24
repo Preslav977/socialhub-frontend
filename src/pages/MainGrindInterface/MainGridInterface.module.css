@@ -19,26 +19,6 @@
   height: 100%;
 }
 
-.latestUsersContainer,
-.mostFollowedUsersContainer,
-.announcementsContainer {
-  outline: 2px solid var(--paragraph--main-color);
-  max-width: 275px;
-  padding: 0.5em;
-  margin-top: 1em;
-  margin-left: 1.25em;
-}
-
-.announcementsContainer {
-  outline: none;
-  padding: 0;
-}
-
-.announcementsContainer li {
-  font-size: 0.95rem;
-  margin-left: 0.75em;
-}
-
 .mainGridSectionContainer {
   background-color: black;
   outline: 2px solid white;
@@ -46,12 +26,6 @@
 }
 
 @media screen and (max-width: 940px) {
-  .latestUsersContainer,
-  .mostFollowedUsersContainer,
-  .announcementsContainer {
-    display: none;
-  }
-
   .mainGridContainer {
     display: grid;
     grid-template-columns: 250px 1fr 200px;
