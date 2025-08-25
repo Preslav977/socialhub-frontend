@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { PostsContext } from "./context/PostsContext";
 import { UserDetailsContext } from "./context/UserDetailsContext";
 import {
   UserIsLoggedInContext,
@@ -28,19 +29,23 @@ export function App() {
 
   const [userDetails, setUserDetails] = useState();
 
+  const [posts, setPosts] = useState();
+
   return (
     <>
-      <UserDetailsContext.Provider value={[userDetails, setUserDetails]}>
-        <UserIsLoggedInContext.Provider
-          value={[isUserLoggedIn, setIsUserLoggedIn]}
-        >
-          <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
-            <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
-              <Outlet />
-            </UserSignUpContext.Provider>
-          </UserLogInContext.Provider>
-        </UserIsLoggedInContext.Provider>
-      </UserDetailsContext.Provider>
+      <PostsContext.Provider value={[posts, setPosts]}>
+        <UserDetailsContext.Provider value={[userDetails, setUserDetails]}>
+          <UserIsLoggedInContext.Provider
+            value={[isUserLoggedIn, setIsUserLoggedIn]}
+          >
+            <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
+              <UserSignUpContext.Provider value={{ userSignUp, setUserSignUp }}>
+                <Outlet />
+              </UserSignUpContext.Provider>
+            </UserLogInContext.Provider>
+          </UserIsLoggedInContext.Provider>
+        </UserDetailsContext.Provider>
+      </PostsContext.Provider>
     </>
   );
 }
