@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
 import { UserLogInContext } from "../../context/UserLogInContext";
@@ -12,7 +12,13 @@ export function UsersPosts() {
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
+  const [clickedPost, setClickedPost] = useState();
+
   const { id } = useParams();
+
+  const navigate = useNavigate();
+
+  const ref = useRef(null);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -36,8 +42,6 @@ export function UsersPosts() {
       });
       const result = await response.json();
 
-      console.log(result);
-
       setPosts(
         posts.map((likedPost) => {
           if (likedPost.id === post.id) {
@@ -56,18 +60,38 @@ export function UsersPosts() {
     }
   }
 
+  function onClick(e) {
+    if (e.target.id === "articleLike") {
+      return;
+    } else if (e.target.id === "articleAuthor") {
+      navigate(`/profile/${clickedPost.author.id}`);
+    } else {
+      navigate(`/post/${clickedPost.id}`);
+    }
+  }
+
   return (
     <>
       {posts.map((post) => (
-        <article className={styles.articlePostContainer} key={post.id}>
+        <article
+          onClick={(e) => {
+            setClickedPost(post);
+
+            onClick(e);
+          }}
+          className={styles.articlePostContainer}
+          key={post.id}
+        >
           <article className={styles.articlePostAuthor}>
             <img
               className={styles.articleAuthorImg}
               src={post.author.profile_picture}
               alt=""
             />
-            <p>{post.author.username}</p>
-            <p>{post.createdAt}</p>
+            <span id="articleAuthor" onClick={(e) => onClick(e)}>
+              {post.author.username}
+            </span>
+            <span>{post.createdAt}</span>
           </article>
           <p>{post.content}</p>
 
@@ -82,14 +106,24 @@ export function UsersPosts() {
                 (user) => user.id === userLogIn.id,
               ) ? (
                 <img
-                  onClick={() => likeOrDislikePost(post)}
+                  id="articleLike"
+                  onClick={(e) => {
+                    onClick(e);
+
+                    likeOrDislikePost(post);
+                  }}
                   className={styles.articleLike}
                   src="/likes.svg"
                   alt=""
                 />
               ) : (
                 <img
-                  onClick={() => likeOrDislikePost(post)}
+                  id="articleLike"
+                  onClick={(e) => {
+                    onClick(e);
+
+                    likeOrDislikePost(post);
+                  }}
                   className={styles.articleLike}
                   src="/liked.png"
                   alt=""
