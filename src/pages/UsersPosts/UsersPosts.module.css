@@ -1,0 +1,38 @@
+.articlePostContainer {
+  color: white;
+  padding: 1.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  outline: 2px solid red;
+}
+
+.articleAuthorImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.articlePostAuthor,
+.articlePostLikeAndComment {
+  display: flex;
+  gap: 0.5em;
+}
+
+.articleLike,
+.articleComment {
+  width: 20px;
+  height: 20px;
+  object-fit: scale-down;
+}
+
+.articlePostLikesContainer,
+.articlePostCommentsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.articlePostImg {
+  width: 100%;
+}

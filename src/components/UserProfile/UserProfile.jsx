@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchUser } from "../../api/useFetchUser";
+import { UsersPosts } from "../../pages/UsersPosts/UsersPosts";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
 import styles from "./UserProfile.module.css";
 
@@ -271,6 +272,7 @@ export function UserProfile() {
         </div>
         <p>Posts</p>
       </form>
+      <UsersPosts />
     </>
   );
 }

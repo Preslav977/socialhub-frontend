@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PostsContext } from "../context/PostsContext";
 
 export const useFetchPosts = (url) => {
@@ -26,5 +26,5 @@ export const useFetchPosts = (url) => {
       .finally(() => setLoading(false));
   }, [setPosts]);
 
-  return (posts, setPosts, error, loading);
+  return { posts, setPosts, error, loading };
 };
