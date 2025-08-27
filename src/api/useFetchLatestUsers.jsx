@@ -27,5 +27,5 @@ export const useFetchLatestUsers = () => {
       .finally(() => setLoading(false));
   }, [setLatestUsers]);
 
-  return { latestUsers, error, loading };
+  return { latestUsers, setLatestUsers, error, loading };
 };

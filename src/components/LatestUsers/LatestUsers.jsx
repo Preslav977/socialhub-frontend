@@ -8,7 +8,7 @@ import { Loading } from "../Loading/Loading";
 import styles from "./LatestUsers.module.css";
 
 export function LatestUser() {
-  const { latestUsers, loading, error } = useFetchLatestUsers();
+  const { latestUsers, setLatestUsers, loading, error } = useFetchLatestUsers();
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
@@ -38,7 +38,33 @@ export function LatestUser() {
 
       const result = await response.json();
 
-      setUserLogIn(result);
+      const [follower, following] = result;
+
+      setLatestUsers(
+        latestUsers.map((latestUser) => {
+          if (latestUser.id === user.id) {
+            return {
+              ...latestUser,
+              followedBy: follower.followedBy,
+              followersNumber: follower.followersNumber,
+            };
+          } else {
+            return latestUser;
+          }
+        }),
+      );
+
+      console.log(latestUsers);
+
+      const updateLoggedInUser = {
+        ...userLogIn,
+        following: following.following,
+        followingNumber: following.followingNumber,
+      };
+
+      setUserLogIn(updateLoggedInUser);
+
+      console.log(userLogIn);
     } catch (error) {
       throw error;
     }
@@ -60,6 +86,7 @@ export function LatestUser() {
             alt="user profile picture"
           />
           <div className={styles.lastUsersUserNameAndDisplayNameContainer}>
+            <p>{user.id}</p>
             <Link
               className={styles.lastUserNameAnchor}
               to={`/profile/${user.id}`}

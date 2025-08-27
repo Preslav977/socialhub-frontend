@@ -29,5 +29,5 @@ export const useFetchMostFollowedUsers = () => {
       .finally(() => setLoading(false));
   }, [setMostFollowedUsers]);
 
-  return { mostFollowedUsers, error, loading };
+  return { mostFollowedUsers, setMostFollowedUsers, error, loading };
 };

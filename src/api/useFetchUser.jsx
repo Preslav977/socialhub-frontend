@@ -1,20 +1,18 @@
 import { useContext, useEffect, useState } from "react";
-
-import { useParams } from "react-router-dom";
 import { localhostURL } from "../../utility/localhostURL";
 import { UserDetailsContext } from "../context/UserDetailsContext";
 
-export const useFetchUser = () => {
+export const useFetchUser = (id) => {
   const [userDetails, setUserDetails] = useContext(UserDetailsContext);
+
+  console.log("useEffect hook", userDetails);
 
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
-  const { id } = useParams();
-
   useEffect(() => {
-    fetch(`${localhostURL}/users/${id}`, {
+    fetch(`${localhostURL}/users/${Number(id)}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
