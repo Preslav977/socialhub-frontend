@@ -123,7 +123,7 @@ export function CreatePost() {
         <div className={styles.formControls}>
           <img
             className={styles.formControlsImg}
-            src="./upload-image.svg"
+            src="/upload-image.svg"
             alt="uploading a image"
           />
           <label htmlFor="file"></label>
@@ -137,7 +137,7 @@ export function CreatePost() {
 
           <img
             className={styles.formControlsImg}
-            src="./add-tag.svg"
+            src="/add-tag.svg"
             alt="adding a tag"
           />
         </div>

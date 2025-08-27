@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchUser } from "../../api/useFetchUser";
 import { UsersPosts } from "../../pages/UsersPosts/UsersPosts";
@@ -219,6 +219,17 @@ export function UserProfile() {
                 <p>{posts}</p>
                 <p>Posts</p>
               </div>
+            </div>
+            <div className={styles.userFollowAndStartConversationFlexContainer}>
+              <button className={styles.followUserBtn}>Follow</button>
+
+              <Link className={styles.userConversationAnchor}>
+                <img
+                  className={styles.userStartConversationSVG}
+                  src="/comment.svg"
+                  alt=""
+                />
+              </Link>
             </div>
           </div>
         </div>

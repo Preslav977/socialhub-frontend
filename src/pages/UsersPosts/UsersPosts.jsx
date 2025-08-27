@@ -1,4 +1,5 @@
-import { useContext, useRef, useState } from "react";
+import { formatDistance } from "date-fns";
+import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
@@ -18,7 +19,11 @@ export function UsersPosts() {
 
   const navigate = useNavigate();
 
-  const ref = useRef(null);
+  const date = formatDistance(new Date(), new Date(), {
+    addSuffix: true,
+  });
+
+  console.log(date);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -91,7 +96,11 @@ export function UsersPosts() {
             <span id="articleAuthor" onClick={(e) => onClick(e)}>
               {post.author.username}
             </span>
-            <span>{post.createdAt}</span>
+            <span>
+              {formatDistance(post.createdAt, new Date(), {
+                addSuffix: true,
+              })}
+            </span>
           </article>
           <p>{post.content}</p>
 

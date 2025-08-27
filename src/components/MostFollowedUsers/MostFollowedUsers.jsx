@@ -53,7 +53,7 @@ export function MostFollowedUsers() {
             className={styles.mostFollowedUsersImg}
             src={
               user.profile_picture === ""
-                ? "./user-default-pfp.jpg"
+                ? "/user-default-pfp.jpg"
                 : user.profile_picture
             }
             alt="user profile picture"

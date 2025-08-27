@@ -121,7 +121,7 @@ export function LogInForm() {
         <div className={styles.gridLefSideContainer}>
           <img
             className={styles.gridLeftSideImg}
-            src="./socialhub.png"
+            src="/socialhub.png"
             alt="socialhub logo"
           />
           <p className={styles.welcomeBackPara}>Welcome back!</p>
@@ -187,7 +187,7 @@ export function LogInForm() {
             <div className={styles.loadingSpinnerContainer}>
               <img
                 className="loadingSpinner"
-                src="./loading.svg"
+                src="/loading.svg"
                 alt="loading spinner"
               />
             </div>
@@ -214,7 +214,7 @@ export function LogInForm() {
         <p className={styles.gridRightSidePara}>Your network, improved.</p>
         <img
           className={styles.gridRightSideImg}
-          src="./socialhub.png"
+          src="/socialhub.png"
           alt="socialhub logo"
         />
       </div>

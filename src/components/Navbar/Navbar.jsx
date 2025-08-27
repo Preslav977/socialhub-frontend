@@ -14,7 +14,7 @@ export function Navbar() {
         <Link className={styles.homeLinkContainer} to="/home">
           <img
             className={styles.homeLinkImage}
-            src="./socialhub.png"
+            src="/socialhub.png"
             alt="socialhub logo"
           />
           <p className={styles.homeLinkPara}>SocialHub</p>
@@ -26,7 +26,7 @@ export function Navbar() {
           {profile_picture === "" ? (
             <img
               className={styles.userDefaultProfileImg}
-              src="./user-default-pfp.jpg"
+              src="/user-default-pfp.jpg"
               alt="user default profile picture"
             />
           ) : (

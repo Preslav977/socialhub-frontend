@@ -38,7 +38,7 @@ export function SearchForUser() {
       <div className={styles.flexedSearchUsersContainer}>
         <img
           className={styles.searchForUserSVG}
-          src="./search.svg"
+          src="/search.svg"
           alt="search for user"
         />
         <label htmlFor="query"></label>
@@ -62,7 +62,7 @@ export function SearchForUser() {
                 className={styles.foundUserProfileImg}
                 src={
                   foundUser.profile_picture === ""
-                    ? "./user-default-pfp.jpg"
+                    ? "/user-default-pfp.jpg"
                     : foundUser.profile_picture
                 }
                 alt="user profile picture"

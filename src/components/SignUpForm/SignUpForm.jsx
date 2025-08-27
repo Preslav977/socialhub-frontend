@@ -84,7 +84,7 @@ export function SignUpForm() {
         <div className={styles.gridLeftSideContainer}>
           <img
             className={styles.gridLeftSideImg}
-            src="./socialhub.png"
+            src="/socialhub.png"
             alt="socialhub logo"
           />
           <p className={styles.joinUsPara}>Join us Today!</p>
@@ -154,9 +154,7 @@ export function SignUpForm() {
             <img
               onClick={() => setShowPassword((password) => !password)}
               className={styles.showPasswordSvg}
-              src={
-                !showPassword ? "./show-password.svg" : "./hide-password.svg"
-              }
+              src={!showPassword ? "/show-password.svg" : "/hide-password.svg"}
               alt="show or hide password eye"
             />
           </div>
@@ -222,7 +220,7 @@ export function SignUpForm() {
         <p className={styles.gridRightSidePara}>Your network, improved.</p>
         <img
           className={styles.gridRightSideImage}
-          src="./socialhub.png"
+          src="/socialhub.png"
           alt="socialhub logo"
         />
       </div>
