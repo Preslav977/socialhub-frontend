@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { routes } from "../router/routes";
 
 describe("should render LogInForm", () => {

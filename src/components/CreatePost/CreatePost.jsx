@@ -43,8 +43,6 @@ export function CreatePost() {
       reset();
 
       navigate("/");
-    } catch (error) {
-      throw error;
     } finally {
       setCheckIfImageIsUploaded(false);
     }
@@ -69,8 +67,6 @@ export function CreatePost() {
       reset();
 
       navigate("/");
-    } catch (error) {
-      throw error;
     } finally {
       setCheckIfImageIsUploaded(false);
     }

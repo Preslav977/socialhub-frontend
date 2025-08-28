@@ -3,19 +3,23 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchUser } from "../../api/useFetchUser";
+import { EditUserProfileContext } from "../../context/EditUserProfileContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
+import { UsersPosts } from "../../pages/UsersPosts/UsersPosts";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
 import { UserProfilePropsComponent } from "../UserProfilePropsComponent/UserProfilePropsComponent";
 
 export function UserProfile() {
   const { id } = useParams();
 
-  console.log(id);
-
   const [userLoggedIn, setUserLoggedIn] = useContext(UserLogInContext);
 
   const { userDetails, setUserDetails, error, loading } = useFetchUser(
     Number(id),
+  );
+
+  const [editUserProfile, setEditUserProfile] = useContext(
+    EditUserProfileContext,
   );
 
   const [usernameError, setUsernameError] = useState("");
@@ -28,8 +32,6 @@ export function UserProfile() {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-
-    // console.log(formData);
 
     try {
       const response = await fetch(`${localhostURL}/users/${Number(id)}`, {
@@ -55,14 +57,14 @@ export function UserProfile() {
       } else {
         const result = await response.json();
 
-        // setUserDetails(result);
+        setUserDetails(result);
 
-        // setEditProfile(false);
+        setEditUserProfile(false);
 
         reset();
       }
     } catch (error) {
-      // throw error;
+      console.log(error);
     }
   };
 
@@ -110,7 +112,7 @@ export function UserProfile() {
           userLogInID={userLoggedIn.id}
         />
       )}
-      {/* <UsersPosts /> */}
+      <UsersPosts />
     </>
   );
 }

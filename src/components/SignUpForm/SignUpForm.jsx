@@ -74,7 +74,7 @@ export function SignUpForm() {
         reset();
       }
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   };
 

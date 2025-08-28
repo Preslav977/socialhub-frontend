@@ -7,23 +7,17 @@ import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./UsersPosts.module.css";
 
 export function UsersPosts() {
-  const { posts, setPosts, loading, error } = useFetchPosts(
-    `${localhostURL}/posts/author`,
-  );
-
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
-
-  const [clickedPost, setClickedPost] = useState();
 
   const { id } = useParams();
 
+  const { posts, setPosts, loading, error } = useFetchPosts(
+    `${localhostURL}/posts/author/${Number(id)}`,
+  );
+
+  const [clickedPost, setClickedPost] = useState();
+
   const navigate = useNavigate();
-
-  const date = formatDistance(new Date(), new Date(), {
-    addSuffix: true,
-  });
-
-  console.log(date);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -61,7 +55,7 @@ export function UsersPosts() {
         }),
       );
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   }
 

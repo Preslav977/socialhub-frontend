@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchMostFollowedUsers } from "../../api/useFetchMostFollowedUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";
@@ -39,7 +40,7 @@ export function MostFollowedUsers() {
 
       setUserLogIn(result);
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   }
 

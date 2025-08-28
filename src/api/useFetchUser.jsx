@@ -5,8 +5,6 @@ import { UserDetailsContext } from "../context/UserDetailsContext";
 export const useFetchUser = (id) => {
   const [userDetails, setUserDetails] = useContext(UserDetailsContext);
 
-  console.log("useEffect hook", userDetails);
-
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
@@ -27,7 +25,7 @@ export const useFetchUser = (id) => {
       .then((response) => setUserDetails(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [setUserDetails]);
+  }, [setUserDetails, id]);
 
   return { userDetails, setUserDetails, error, loading };
 };

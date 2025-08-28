@@ -54,8 +54,6 @@ export function LatestUser() {
         }),
       );
 
-      console.log(latestUsers);
-
       const updateLoggedInUser = {
         ...userLogIn,
         following: following.following,
@@ -66,7 +64,7 @@ export function LatestUser() {
 
       console.log(userLogIn);
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   }
 

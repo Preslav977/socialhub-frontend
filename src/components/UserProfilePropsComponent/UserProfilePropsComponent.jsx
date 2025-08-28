@@ -215,7 +215,7 @@ export function UserProfilePropsComponent({
         </div>
       </div>
       <div className={styles.userProfileBtnsContainer}>
-        <button onClick={() => setEditProfile(true)}>Edit</button>
+        <button onClick={() => setEditUserProfile(true)}>Edit</button>
         <button type="submit">Save Changes</button>
       </div>
       <p>Posts</p>

@@ -70,7 +70,7 @@ export function LogInForm() {
         navigate("/");
       }
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   };
 
