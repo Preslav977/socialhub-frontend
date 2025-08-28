@@ -5,7 +5,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchUser } from "../../api/useFetchUser";
 import { EditUserProfileContext } from "../../context/EditUserProfileContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
-import { UsersPosts } from "../../pages/UsersPosts/UsersPosts";
+import { Posts } from "../../pages/Posts/Posts";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
 import { UserProfilePropsComponent } from "../UserProfilePropsComponent/UserProfilePropsComponent";
 
@@ -112,7 +112,7 @@ export function UserProfile() {
           userLogInID={userLoggedIn.id}
         />
       )}
-      <UsersPosts />
+      <Posts url={`${localhostURL}/posts/author/${Number(id)}`} />
     </>
   );
 }

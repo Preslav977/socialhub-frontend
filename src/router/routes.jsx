@@ -1,3 +1,4 @@
+import { localhostURL } from "../../utility/localhostURL";
 import { App } from "../App";
 import { CreatePost } from "../components/CreatePost/CreatePost";
 import { LogInForm } from "../components/LogInForm/LogInForm";
@@ -6,6 +7,7 @@ import { SearchForUser } from "../components/SearchForUser/SearchForUser";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
 import { UserProfile } from "../components/UserProfile/UserProfile";
 import { MainGridInterface } from "../pages/MainGrindInterface/MainGridInterface";
+import { Posts } from "../pages/Posts/Posts";
 import { Settings } from "../pages/Settings/Settings";
 
 export const routes = [
@@ -17,7 +19,9 @@ export const routes = [
         index: true,
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={""}></MainGridInterface>
+            <MainGridInterface
+              pageProp={<Posts url={`${localhostURL}/posts`} />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -57,6 +61,16 @@ export const routes = [
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={<UserProfile />}></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/likes",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface
+              pageProp={<Posts url={`${localhostURL}/posts/liked`} />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },

@@ -3,19 +3,22 @@ import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
+import { RecentOrFollowingPostsContext } from "../../context/RecentOrFollowingPostsContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
-import styles from "./UsersPosts.module.css";
+import styles from "./Posts.module.css";
 
-export function UsersPosts() {
+export function Posts({ url }) {
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
   const { id } = useParams();
 
-  const { posts, setPosts, loading, error } = useFetchPosts(
-    `${localhostURL}/posts/author/${Number(id)}`,
-  );
+  const { posts, setPosts, loading, error } = useFetchPosts(url);
 
   const [clickedPost, setClickedPost] = useState();
+
+  const [recentOrFollowingPosts, setRecentOrFollowingPosts] = useContext(
+    RecentOrFollowingPostsContext,
+  );
 
   const navigate = useNavigate();
 
@@ -71,6 +74,16 @@ export function UsersPosts() {
 
   return (
     <>
+      <header
+        style={{
+          color: "white",
+        }}
+      >
+        <span onClick={() => setRecentOrFollowingPosts("recent")}>Recent</span>
+        <span onClick={() => setRecentOrFollowingPosts("following")}>
+          Following
+        </span>
+      </header>
       {posts.map((post) => (
         <article
           onClick={(e) => {
