@@ -140,6 +140,7 @@ export function Posts({ postsHeader }) {
                 (user) => user.id === userLogIn.id,
               ) ? (
                 <img
+                  data-testid="articleLike"
                   id="articleLike"
                   onClick={(e) => {
                     onClick(e);
@@ -148,7 +149,7 @@ export function Posts({ postsHeader }) {
                   }}
                   className={styles.articleLike}
                   src="/likes.svg"
-                  alt=""
+                  alt="like the post"
                 />
               ) : (
                 <img
@@ -160,7 +161,7 @@ export function Posts({ postsHeader }) {
                   }}
                   className={styles.articleLike}
                   src="/liked.png"
-                  alt=""
+                  alt="dislike the post"
                 />
               )}
 
