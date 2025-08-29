@@ -18,7 +18,9 @@ export const routes = [
         index: true,
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<Posts />}></MainGridInterface>
+            <MainGridInterface
+              pageProp={<Posts postsHeader={true} />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -65,7 +67,9 @@ export const routes = [
         path: "/likes",
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<Posts />}></MainGridInterface>
+            <MainGridInterface
+              pageProp={<Posts postsHeader={false} />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -73,7 +77,9 @@ export const routes = [
         path: "/following",
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<Posts />}></MainGridInterface>
+            <MainGridInterface
+              pageProp={<Posts postsHeader={true} />}
+            ></MainGridInterface>
           </ProtectRoutes>
         ),
       },

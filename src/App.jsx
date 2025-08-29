@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { EditUserProfileContext } from "./context/EditUserProfileContext";
 import { PostsContext } from "./context/PostsContext";
-import { PostsFetchURLContext } from "./context/PostsFetchURLContext";
 import { UserDetailsContext } from "./context/UserDetailsContext";
 import {
   UserIsLoggedInContext,
@@ -35,31 +34,27 @@ export function App() {
 
   const [posts, setPosts] = useState();
 
-  const [postsURL, setPostsURL] = useState("home");
-
   return (
     <>
-      <PostsFetchURLContext.Provider value={[postsURL, setPostsURL]}>
-        <PostsContext.Provider value={[posts, setPosts]}>
-          <EditUserProfileContext.Provider
-            value={[editUserProfile, setEditUserProfile]}
-          >
-            <UserDetailsContext.Provider value={[userDetails, setUserDetails]}>
-              <UserIsLoggedInContext.Provider
-                value={[isUserLoggedIn, setIsUserLoggedIn]}
-              >
-                <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
-                  <UserSignUpContext.Provider
-                    value={{ userSignUp, setUserSignUp }}
-                  >
-                    <Outlet />
-                  </UserSignUpContext.Provider>
-                </UserLogInContext.Provider>
-              </UserIsLoggedInContext.Provider>
-            </UserDetailsContext.Provider>
-          </EditUserProfileContext.Provider>
-        </PostsContext.Provider>
-      </PostsFetchURLContext.Provider>
+      <PostsContext.Provider value={[posts, setPosts]}>
+        <EditUserProfileContext.Provider
+          value={[editUserProfile, setEditUserProfile]}
+        >
+          <UserDetailsContext.Provider value={[userDetails, setUserDetails]}>
+            <UserIsLoggedInContext.Provider
+              value={[isUserLoggedIn, setIsUserLoggedIn]}
+            >
+              <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
+                <UserSignUpContext.Provider
+                  value={{ userSignUp, setUserSignUp }}
+                >
+                  <Outlet />
+                </UserSignUpContext.Provider>
+              </UserLogInContext.Provider>
+            </UserIsLoggedInContext.Provider>
+          </UserDetailsContext.Provider>
+        </EditUserProfileContext.Provider>
+      </PostsContext.Provider>
     </>
   );
 }

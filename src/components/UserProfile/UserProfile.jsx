@@ -112,7 +112,7 @@ export function UserProfile() {
           userLogInID={userLoggedIn.id}
         />
       )}
-      <Posts url={`${localhostURL}/posts/author/${Number(id)}`} />
+      <Posts postsHeader={false} />
     </>
   );
 }
