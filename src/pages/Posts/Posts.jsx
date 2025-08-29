@@ -1,24 +1,24 @@
-import { formatDistance } from "date-fns";
 import { useContext, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
-import { RecentOrFollowingPostsContext } from "../../context/RecentOrFollowingPostsContext";
+import { PostsPropsComponent } from "../../components/PostsPropsComponent/PostsPropsComponent";
 import { UserLogInContext } from "../../context/UserLogInContext";
-import styles from "./Posts.module.css";
 
-export function Posts({ url }) {
+export function Posts() {
+  const { id } = useParams();
+
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
-  const { id } = useParams();
+  const location = useLocation();
+
+  const { pathname } = location;
+
+  const url = changeURLDependingOnPathname();
 
   const { posts, setPosts, loading, error } = useFetchPosts(url);
 
   const [clickedPost, setClickedPost] = useState();
-
-  const [recentOrFollowingPosts, setRecentOrFollowingPosts] = useContext(
-    RecentOrFollowingPostsContext,
-  );
 
   const navigate = useNavigate();
 
@@ -28,6 +28,19 @@ export function Posts({ url }) {
 
   if (error) {
     return <p>Error...</p>;
+  }
+
+  function changeURLDependingOnPathname() {
+    switch (pathname) {
+      case "/":
+        return `${localhostURL}/posts`;
+      case "/likes":
+        return `${localhostURL}/posts/liked`;
+      case `/profile/${id}`:
+        return `${localhostURL}/posts/author/${id}`;
+      case "/following":
+        return `${localhostURL}/posts/following`;
+    }
   }
 
   async function likeOrDislikePost(post) {
@@ -79,85 +92,11 @@ export function Posts({ url }) {
           color: "white",
         }}
       >
-        <span onClick={() => setRecentOrFollowingPosts("recent")}>Recent</span>
-        <span onClick={() => setRecentOrFollowingPosts("following")}>
-          Following
-        </span>
+        <Link to={"/"}>Recent</Link>
+        <Link to={"/following"}>Following</Link>
       </header>
       {posts.map((post) => (
-        <article
-          onClick={(e) => {
-            setClickedPost(post);
-
-            onClick(e);
-          }}
-          className={styles.articlePostContainer}
-          key={post.id}
-        >
-          <article className={styles.articlePostAuthor}>
-            <img
-              className={styles.articleAuthorImg}
-              src={post.author.profile_picture}
-              alt=""
-            />
-            <span id="articleAuthor" onClick={(e) => onClick(e)}>
-              {post.author.username}
-            </span>
-            <span>
-              {formatDistance(post.createdAt, new Date(), {
-                addSuffix: true,
-              })}
-            </span>
-          </article>
-          <p>{post.content}</p>
-
-          {post.imageURL ? (
-            <img className={styles.articlePostImg} src={post.imageURL} alt="" />
-          ) : (
-            ""
-          )}
-          <article className={styles.articlePostLikeAndComment}>
-            <div className={styles.articlePostLikesContainer}>
-              {!post.postLikedByUsers.some(
-                (user) => user.id === userLogIn.id,
-              ) ? (
-                <img
-                  id="articleLike"
-                  onClick={(e) => {
-                    onClick(e);
-
-                    likeOrDislikePost(post);
-                  }}
-                  className={styles.articleLike}
-                  src="/likes.svg"
-                  alt=""
-                />
-              ) : (
-                <img
-                  id="articleLike"
-                  onClick={(e) => {
-                    onClick(e);
-
-                    likeOrDislikePost(post);
-                  }}
-                  className={styles.articleLike}
-                  src="/liked.png"
-                  alt=""
-                />
-              )}
-
-              <p>{post.likes}</p>
-            </div>
-            <div className={styles.articlePostCommentsContainer}>
-              <img
-                className={styles.articleComment}
-                src="/comment.svg"
-                alt=""
-              />
-              <p>{post.comments}</p>
-            </div>
-          </article>
-        </article>
+        <PostsPropsComponent key={post.id} post={post} />
       ))}
     </>
   );

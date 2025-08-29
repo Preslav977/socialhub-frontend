@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { EditUserProfileContext } from "./context/EditUserProfileContext";
 import { PostsContext } from "./context/PostsContext";
-import { RecentOrFollowingPostsContext } from "./context/RecentOrFollowingPostsContext";
+import { PostsFetchURLContext } from "./context/PostsFetchURLContext";
 import { UserDetailsContext } from "./context/UserDetailsContext";
 import {
   UserIsLoggedInContext,
@@ -35,14 +35,11 @@ export function App() {
 
   const [posts, setPosts] = useState();
 
-  const [recentOrFollowingPosts, setRecentOrFollowingPosts] =
-    useState("recent");
+  const [postsURL, setPostsURL] = useState("home");
 
   return (
     <>
-      <RecentOrFollowingPostsContext.Provider
-        value={[recentOrFollowingPosts, setRecentOrFollowingPosts]}
-      >
+      <PostsFetchURLContext.Provider value={[postsURL, setPostsURL]}>
         <PostsContext.Provider value={[posts, setPosts]}>
           <EditUserProfileContext.Provider
             value={[editUserProfile, setEditUserProfile]}
@@ -62,7 +59,7 @@ export function App() {
             </UserDetailsContext.Provider>
           </EditUserProfileContext.Provider>
         </PostsContext.Provider>
-      </RecentOrFollowingPostsContext.Provider>
+      </PostsFetchURLContext.Provider>
     </>
   );
 }
