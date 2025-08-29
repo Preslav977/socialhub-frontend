@@ -24,14 +24,6 @@ export function Posts({ postsHeader }) {
 
   const navigate = useNavigate();
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error...</p>;
-  }
-
   async function likeOrDislikePost(post) {
     try {
       const response = await fetch(`${localhostURL}/posts/like/${id}`, {
@@ -85,6 +77,14 @@ export function Posts({ postsHeader }) {
       case "/following":
         return `${localhostURL}/posts/following`;
     }
+  }
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error...</p>;
   }
 
   return (
