@@ -1438,7 +1438,7 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryAllByText("0")[1].textContent).toEqual("0");
   });
 
-  it.only("should login navigate to home page and like a post", async () => {
+  it("should login navigate to home page and like a post", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/"],
       initialIndex: 0,
@@ -1585,6 +1585,109 @@ describe("should render MainGridInterface", () => {
     await user.click(screen.queryByTestId("articleLike"));
 
     expect(screen.queryByText("1").textContent).toEqual("1");
+  });
+
+  it.only("should login and render message that there is no posts in home", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const spiedFetch = vi.spyOn(global, "fetch");
+
+    spiedFetch
+      .mockResolvedValueOnce(Response.json("token"))
+      .mockResolvedValueOnce(
+        Response.json({
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "./user-default-pfp.jpg",
+          followedBy: [],
+          following: [],
+          createdPostsByUsers: [],
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+        }),
+      )
+
+      .mockResolvedValueOnce(
+        Response.json({ message: "No posts has been created!" }),
+      )
+
+      .mockResolvedValueOnce(
+        Response.json([
+          {
+            id: 2,
+            username: "preslaw",
+            display_name: "preslaw",
+          },
+          {
+            id: 3,
+            username: "preslaw1",
+            display_name: "preslaw1",
+          },
+          {
+            id: 4,
+            username: "preslaw2",
+            display_name: "preslaw2",
+          },
+        ]),
+      )
+
+      .mockResolvedValueOnce(
+        Response.json([
+          {
+            id: 5,
+            username: "test",
+            display_name: "test",
+          },
+          {
+            id: 6,
+            username: "test1",
+            display_name: "test1",
+          },
+          {
+            id: 7,
+            username: "test2",
+            display_name: "test2",
+          },
+        ]),
+      );
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    expect(
+      screen.queryByText("No posts has been created!").textContent,
+    ).toMatch(/no posts has been created!/i);
 
     screen.debug();
   });

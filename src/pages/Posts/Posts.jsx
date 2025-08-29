@@ -102,82 +102,92 @@ export function Posts({ postsHeader }) {
         </header>
       )}
       {pathname === "/likes" ? <LeftArrow textProp={"Liked posts"} /> : ""}
-      {posts.map((post) => (
-        <article
-          onClick={(e) => {
-            setClickedPost(post);
+      {posts.message ? (
+        <p>{posts.message}</p>
+      ) : (
+        <>
+          {posts.map((post) => (
+            <article
+              onClick={(e) => {
+                setClickedPost(post);
 
-            onClick(e);
-          }}
-          className={styles.articlePostContainer}
-          key={post.id}
-        >
-          <article className={styles.articlePostAuthor}>
-            <img
-              className={styles.articleAuthorImg}
-              src={post.author.profile_picture}
-              alt=""
-            />
-            <span id="articleAuthor" onClick={(e) => onClick(e)}>
-              {post.author.username}
-            </span>
-            <span>
-              {formatDistance(post.createdAt, new Date(), {
-                addSuffix: true,
-              })}
-            </span>
-          </article>
-          <p>{post.content}</p>
-
-          {post.imageURL ? (
-            <img className={styles.articlePostImg} src={post.imageURL} alt="" />
-          ) : (
-            ""
-          )}
-          <article className={styles.articlePostLikeAndComment}>
-            <div className={styles.articlePostLikesContainer}>
-              {!post.postLikedByUsers.some(
-                (user) => user.id === userLogIn.id,
-              ) ? (
+                onClick(e);
+              }}
+              className={styles.articlePostContainer}
+              key={post.id}
+            >
+              <article className={styles.articlePostAuthor}>
                 <img
-                  data-testid="articleLike"
-                  id="articleLike"
-                  onClick={(e) => {
-                    onClick(e);
+                  className={styles.articleAuthorImg}
+                  src={post.author.profile_picture}
+                  alt=""
+                />
+                <span id="articleAuthor" onClick={(e) => onClick(e)}>
+                  {post.author.username}
+                </span>
+                <span>
+                  {formatDistance(post.createdAt, new Date(), {
+                    addSuffix: true,
+                  })}
+                </span>
+              </article>
+              <p>{post.content}</p>
 
-                    likeOrDislikePost(post);
-                  }}
-                  className={styles.articleLike}
-                  src="/likes.svg"
-                  alt="like the post"
+              {post.imageURL ? (
+                <img
+                  className={styles.articlePostImg}
+                  src={post.imageURL}
+                  alt=""
                 />
               ) : (
-                <img
-                  id="articleLike"
-                  onClick={(e) => {
-                    onClick(e);
-
-                    likeOrDislikePost(post);
-                  }}
-                  className={styles.articleLike}
-                  src="/liked.png"
-                  alt="dislike the post"
-                />
+                ""
               )}
+              <article className={styles.articlePostLikeAndComment}>
+                <div className={styles.articlePostLikesContainer}>
+                  {!post.postLikedByUsers.some(
+                    (user) => user.id === userLogIn.id,
+                  ) ? (
+                    <img
+                      data-testid="articleLike"
+                      id="articleLike"
+                      onClick={(e) => {
+                        onClick(e);
 
-              <p>{post.likes}</p>
-            </div>
-            <div className={styles.articlePostCommentsContainer}>
-              <img
-                className={styles.articleComment}
-                src="/comment.svg"
-                alt=""
-              />
-              <p>{post.comments}</p>
-            </div>
-          </article>
-        </article>
-      ))}
+                        likeOrDislikePost(post);
+                      }}
+                      className={styles.articleLike}
+                      src="/likes.svg"
+                      alt="like the post"
+                    />
+                  ) : (
+                    <img
+                      id="articleLike"
+                      onClick={(e) => {
+                        onClick(e);
+
+                        likeOrDislikePost(post);
+                      }}
+                      className={styles.articleLike}
+                      src="/liked.png"
+                      alt="dislike the post"
+                    />
+                  )}
+
+                  <p>{post.likes}</p>
+                </div>
+                <div className={styles.articlePostCommentsContainer}>
+                  <img
+                    className={styles.articleComment}
+                    src="/comment.svg"
+                    alt=""
+                  />
+                  <p>{post.comments}</p>
+                </div>
+              </article>
+            </article>
+          ))}
+        </>
+      )}
     </>
   );
 }
