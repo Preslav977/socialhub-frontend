@@ -83,6 +83,16 @@ export const routes = [
           </ProtectRoutes>
         ),
       },
+      {
+        path: "/posts/:id",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface
+              pageProp={<Posts postsHeader={false} />}
+            ></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
     ],
   },
 ];

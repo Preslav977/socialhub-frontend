@@ -62,7 +62,7 @@ export function Posts({ postsHeader }) {
     } else if (e.target.id === "articleAuthor") {
       navigate(`/profile/${clickedPost.author.id}`);
     } else {
-      navigate(`/post/${clickedPost.id}`);
+      navigate(`/posts/${clickedPost.id}`);
     }
   }
 
@@ -76,6 +76,8 @@ export function Posts({ postsHeader }) {
         return `${localhostURL}/posts/author/${id}`;
       case "/following":
         return `${localhostURL}/posts/following`;
+      case `/posts/${id}`:
+        return `${localhostURL}/posts/${id}`;
     }
   }
 
