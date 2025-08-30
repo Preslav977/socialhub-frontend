@@ -1,5 +1,5 @@
 import { formatDistance } from "date-fns";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
@@ -19,8 +19,6 @@ export function Posts({ postsHeader }) {
   const url = changeURLDependingOnPathName();
 
   const { posts, setPosts, loading, error } = useFetchPosts(url);
-
-  const [clickedPost, setClickedPost] = useState();
 
   const navigate = useNavigate();
 
@@ -56,14 +54,12 @@ export function Posts({ postsHeader }) {
     }
   }
 
-  function onClick(e) {
-    if (e.target.id === "articleLike") {
-      return;
-    } else if (e.target.id === "articleAuthor") {
-      navigate(`/profile/${clickedPost.author.id}`);
-    } else {
-      navigate(`/posts/${clickedPost.id}`);
-    }
+  function navigateToPostAuthor(post) {
+    navigate(`/profile/${post.author.id}`);
+  }
+
+  function navigateToPostDetails(post) {
+    navigate(`/posts/${post.id}`);
   }
 
   function changeURLDependingOnPathName() {
@@ -110,11 +106,8 @@ export function Posts({ postsHeader }) {
         <>
           {posts.map((post) => (
             <article
-              onClick={(e) => {
-                setClickedPost(post);
-
-                onClick(e);
-              }}
+              id="article"
+              onClick={() => navigateToPostDetails(post)}
               className={styles.articlePostContainer}
               key={post.id}
             >
@@ -124,7 +117,13 @@ export function Posts({ postsHeader }) {
                   src={post.author.profile_picture}
                   alt=""
                 />
-                <span id="articleAuthor" onClick={(e) => onClick(e)}>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    navigateToPostAuthor(post);
+                  }}
+                >
                   {post.author.username}
                 </span>
                 <span>
@@ -153,9 +152,9 @@ export function Posts({ postsHeader }) {
                       data-testid="articleLike"
                       id="articleLike"
                       onClick={(e) => {
-                        onClick(e);
-
                         likeOrDislikePost(post);
+
+                        e.stopPropagation();
                       }}
                       className={styles.articleLike}
                       src="/likes.svg"
@@ -165,9 +164,9 @@ export function Posts({ postsHeader }) {
                     <img
                       id="articleLike"
                       onClick={(e) => {
-                        onClick(e);
-
                         likeOrDislikePost(post);
+
+                        e.stopPropagation();
                       }}
                       className={styles.articleLike}
                       src="/liked.png"

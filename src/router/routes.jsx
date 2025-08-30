@@ -6,6 +6,7 @@ import { SearchForUser } from "../components/SearchForUser/SearchForUser";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
 import { UserProfile } from "../components/UserProfile/UserProfile";
 import { MainGridInterface } from "../pages/MainGrindInterface/MainGridInterface";
+import { PostDetails } from "../pages/PostDetails/PostDetails";
 import { Posts } from "../pages/Posts/Posts";
 import { Settings } from "../pages/Settings/Settings";
 
@@ -87,9 +88,7 @@ export const routes = [
         path: "/posts/:id",
         element: (
           <ProtectRoutes>
-            <MainGridInterface
-              pageProp={<Posts postsHeader={false} />}
-            ></MainGridInterface>
+            <MainGridInterface pageProp={<PostDetails />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
