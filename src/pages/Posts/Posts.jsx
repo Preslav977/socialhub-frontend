@@ -24,7 +24,7 @@ export function Posts({ postsHeader }) {
 
   async function likeOrDislikePost(post) {
     try {
-      const response = await fetch(`${localhostURL}/posts/like/${id}`, {
+      const response = await fetch(`${localhostURL}/posts/${id}/like`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

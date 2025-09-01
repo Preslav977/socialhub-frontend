@@ -7,7 +7,7 @@ import { PostDetailsPropsComponent } from "../../components/PostDetailsPropsComp
 export function PostDetails() {
   const { post, setPost, loading, error } = useFetchPost();
 
-  console.log(post);
+  // console.log(post);
 
   const { id } = useParams();
 
@@ -15,7 +15,7 @@ export function PostDetails() {
 
   async function likeOrDislikePost(post) {
     try {
-      const response = await fetch(`${localhostURL}/posts/${Number(id)}/like`, {
+      const response = await fetch(`${localhostURL}/posts/${post.id}/like`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -27,8 +27,10 @@ export function PostDetails() {
       });
       const result = await response.json();
 
+      console.log(result);
+
       const likedOrDislikedPostObject = {
-        ...post.likedByUsers,
+        ...post,
         postLikedByUsers: result.postLikedByUsers,
         likes: result.likes,
       };
@@ -63,19 +65,8 @@ export function PostDetails() {
 
       const likedOrDislikedCommentObject = {
         ...post,
-        // postCommentedByUsers:
-        //   ...post.postCommentedByUsers,
-        //   postCommentedByUsers: post.postCommentedByUsers.map((likedComment) => {
-        //     console.log(likedComment);
-        //     if (comment.id === likedComment.id) {
-        //       return;
-        //     } else {
-        //       return {
-        //         ...likedComment,
-        //         likes: result.likes,
-        //       };
-        //     }
-        //   }),
+        // commentLikedByUsers: result
+        postCommentedByUsers: result.postCommentedByUsers,
       };
 
       setPost(likedOrDislikedCommentObject);
@@ -101,8 +92,6 @@ export function PostDetails() {
       });
 
       const result = await response.json();
-
-      console.log(result);
 
       const commentPostObject = {
         ...post,
@@ -131,7 +120,7 @@ export function PostDetails() {
       {post ? (
         <PostDetailsPropsComponent
           post={post}
-          // onClickLikePost={likeOrDislikePost}
+          onClickLikePost={likeOrDislikePost}
           onClickLikeComment={likeOrDislikeComment}
           onSubmitComment={leavingAComment}
         />
