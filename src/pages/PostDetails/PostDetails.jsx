@@ -8,8 +8,6 @@ import { PostDetailsPropsComponent } from "../../components/PostDetailsPropsComp
 export function PostDetails() {
   const { post, setPost, loading, error } = useFetchPost();
 
-  console.log(post);
-
   const { id } = useParams();
 
   const { reset } = useForm();
@@ -43,8 +41,6 @@ export function PostDetails() {
   }
 
   async function likeOrDislikeComment(comment) {
-    // console.log(comment);
-
     try {
       const response = await fetch(
         `${localhostURL}/posts/${id}/like/${comment.id}`,
@@ -126,6 +122,33 @@ export function PostDetails() {
       );
       const result = await response.json();
 
+      const commentPostObject = {
+        ...post,
+        postCommentedByUsers: result.postCommentedByUsers,
+        comments: result.comment,
+      };
+
+      setPost(commentPostObject);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function deletingAPost(post) {
+    try {
+      const response = await fetch(`${localhostURL}/posts/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          id: post.id,
+        }),
+      });
+
+      const result = await response.json();
+
       console.log(result);
     } catch (error) {
       console.log(error);
@@ -151,6 +174,7 @@ export function PostDetails() {
           onSubmitCommentReply={leavingACommentReply}
           repliedCommentId={repliedCommentId}
           setRepliedCommentId={setRepliedCommentId}
+          onClickDeletePost={deletingAPost}
         />
       ) : (
         ""

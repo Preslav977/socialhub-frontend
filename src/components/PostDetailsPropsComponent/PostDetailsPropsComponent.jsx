@@ -12,6 +12,7 @@ export function PostDetailsPropsComponent({
   onSubmitCommentReply,
   repliedCommentId,
   setRepliedCommentId,
+  onClickDeletePost,
 }) {
   const { register, handleSubmit } = useForm();
 
@@ -49,7 +50,7 @@ export function PostDetailsPropsComponent({
           </div>
 
           {post.author.id === userLogIn.id ? (
-            <div>
+            <div onClick={onClickDeletePost}>
               <img
                 className={styles.articleDelete}
                 src="/trashcan.svg"
