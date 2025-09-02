@@ -9,6 +9,9 @@ export function PostDetailsPropsComponent({
   onClickLikePost,
   onClickLikeComment,
   onSubmitComment,
+  onSubmitCommentReply,
+  repliedCommentId,
+  setRepliedCommentId,
 }) {
   const { register, handleSubmit } = useForm();
 
@@ -18,6 +21,13 @@ export function PostDetailsPropsComponent({
 
   const onToggledReplyOnComment = () =>
     setToggleReplyOnComment((toggleReplyOnComment) => !toggleReplyOnComment);
+
+  const [showOrHideReplyComments, setShowOrHideReplyComments] = useState(false);
+
+  const onToggleShowOrHideReplyComments = () =>
+    setShowOrHideReplyComments(
+      (showOrHideReplyComments) => !showOrHideReplyComments,
+    );
 
   return (
     <>
@@ -103,7 +113,7 @@ export function PostDetailsPropsComponent({
       <>
         <p>View comments {post.comments}</p>
         {post.postCommentedByUsers.map((comment) => (
-          <div className={styles.articleCommentContainer}>
+          <div key={comment.id} className={styles.articleCommentContainer}>
             <div className={styles.articleCommentUser}>
               <img
                 className={styles.articleUserImg}
@@ -129,7 +139,6 @@ export function PostDetailsPropsComponent({
                 ) ? (
                   <img
                     onClick={() => onClickLikeComment(comment)}
-                    data-testid="articleLike"
                     className={styles.articleLike}
                     src="/likes.svg"
                     alt="like the comment"
@@ -145,20 +154,68 @@ export function PostDetailsPropsComponent({
                 <p>{comment.likes}</p>
               </div>
 
-              <div
-                onClick={() => onToggledReplyOnComment()}
-                className={styles.articlePostCommentsContainer}
-              >
-                <img
-                  className={styles.articleComment}
-                  src="/comment-reply.svg"
-                  alt=""
-                />
-                <span>reply</span>
+              <div className={styles.articlePostCommentsContainer}>
+                {comment.childCommentReply.length !== 0 ? (
+                  <div onClick={() => onToggleShowOrHideReplyComments()}>
+                    <img
+                      className={styles.articleComment}
+                      src="/messages.svg"
+                      alt=""
+                    />
+                    <p>show replies </p>
+                  </div>
+                ) : (
+                  ""
+                )}
+
+                <div
+                  onClick={() => {
+                    onToggledReplyOnComment();
+
+                    setRepliedCommentId(comment.id);
+                  }}
+                >
+                  <img
+                    className={styles.articleComment}
+                    src="/comment-reply.svg"
+                    alt=""
+                  />
+                  <span>reply</span>
+                </div>
               </div>
             </div>
-            {toggleReplyOnComment ? (
-              <form className={styles.createReplyArticleComment}>
+            {showOrHideReplyComments ? (
+              <>
+                {comment.childCommentReply.map((childComment) => (
+                  <div key={childComment.id}>
+                    <div className={styles.articleCommentUser}>
+                      <img
+                        className={styles.articleUserImg}
+                        src={childComment.commentLeftByUser.profile_picture}
+                        alt=""
+                      />
+
+                      <p>{childComment.commentLeftByUser.username}</p>
+
+                      <p>
+                        {formatDistance(childComment.createdAt, new Date(), {
+                          addSuffix: true,
+                        })}
+                      </p>
+                    </div>
+
+                    <p>{childComment.text}</p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              ""
+            )}
+            {toggleReplyOnComment && repliedCommentId === comment.id ? (
+              <form
+                onSubmit={handleSubmit(onSubmitCommentReply)}
+                className={styles.createReplyArticleComment}
+              >
                 <label htmlFor="text"></label>
                 <textarea
                   name="text"
