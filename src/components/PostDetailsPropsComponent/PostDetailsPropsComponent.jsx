@@ -14,7 +14,7 @@ export function PostDetailsPropsComponent({
   setRepliedCommentId,
   onClickDeletePost,
 }) {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
@@ -107,7 +107,15 @@ export function PostDetailsPropsComponent({
           placeholder="Type a comment..."
           {...register("text")}
         ></textarea>
-        <button className={styles.createCommentBtn} type="submit">
+        <button
+          onClick={() => {
+            setTimeout(() => {
+              reset();
+            }, 1000);
+          }}
+          className={styles.createCommentBtn}
+          type="submit"
+        >
           Post
         </button>
       </form>
@@ -157,7 +165,13 @@ export function PostDetailsPropsComponent({
 
               <div className={styles.articlePostCommentsContainer}>
                 {comment.childCommentReply.length !== 0 ? (
-                  <div onClick={() => onToggleShowOrHideReplyComments()}>
+                  <div
+                    onClick={() => {
+                      onToggleShowOrHideReplyComments();
+
+                      setRepliedCommentId(comment.id);
+                    }}
+                  >
                     <img
                       className={styles.articleComment}
                       src="/messages.svg"
@@ -185,7 +199,7 @@ export function PostDetailsPropsComponent({
                 </div>
               </div>
             </div>
-            {showOrHideReplyComments ? (
+            {showOrHideReplyComments && comment.id === repliedCommentId ? (
               <>
                 {comment.childCommentReply.map((childComment) => (
                   <div key={childComment.id}>
@@ -205,7 +219,7 @@ export function PostDetailsPropsComponent({
                       </p>
                     </div>
 
-                    <p>{childComment.text}</p>
+                    <p>{childComment.textReply}</p>
                   </div>
                 ))}
               </>
@@ -217,15 +231,25 @@ export function PostDetailsPropsComponent({
                 onSubmit={handleSubmit(onSubmitCommentReply)}
                 className={styles.createReplyArticleComment}
               >
-                <label htmlFor="text"></label>
+                <label htmlFor="textReply"></label>
                 <textarea
-                  name="text"
-                  id="text"
+                  name="textReply"
+                  id="textReply"
                   rows={3}
                   placeholder="Add a reply..."
-                  {...register("text")}
+                  {...register("textReply")}
                 ></textarea>
-                <button className={styles.createReplyCommentBtn} type="submit">
+                <button
+                  onClick={() => {
+                    setTimeout(() => {
+                      reset({ textReply: "" });
+
+                      setToggleReplyOnComment(false);
+                    }, 1000);
+                  }}
+                  className={styles.createReplyCommentBtn}
+                  type="submit"
+                >
                   Reply
                 </button>
               </form>

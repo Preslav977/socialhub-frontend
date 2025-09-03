@@ -84,7 +84,6 @@ export function LatestUser() {
             alt="user profile picture"
           />
           <div className={styles.lastUsersUserNameAndDisplayNameContainer}>
-            <p>{user.id}</p>
             <Link
               className={styles.lastUserNameAnchor}
               to={`/profile/${user.id}`}

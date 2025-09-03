@@ -4,7 +4,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import styles from "./SearchForUser.module.css";
 
 export function SearchForUser() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   const [searchForUser, setSearchForUser] = useState("");
 
@@ -23,6 +23,8 @@ export function SearchForUser() {
       );
 
       const result = await response.json();
+
+      console.log(result);
 
       setUser(result);
     } catch (error) {
@@ -53,29 +55,31 @@ export function SearchForUser() {
         />
       </div>
       <div className={styles.showFoundOrNotUsersContainer}>
-        {!user ? (
-          <p>No results</p>
-        ) : (
-          user.map((foundUser) => (
-            <div key={foundUser.id} className={styles.foundUsersContainer}>
-              <img
-                className={styles.foundUserProfileImg}
-                src={
-                  foundUser.profile_picture === ""
-                    ? "/user-default-pfp.jpg"
-                    : foundUser.profile_picture
-                }
-                alt="user profile picture"
-              />
-              <div className={styles.foundUserNameContainer}>
-                <Link to={`/profile/${foundUser.id}`}>
-                  <p>{foundUser.username}</p>
-                </Link>
-                <p>{foundUser.display_name}</p>
+        <>
+          {user ? (
+            user.map((foundUser) => (
+              <div key={foundUser.id} className={styles.foundUsersContainer}>
+                <img
+                  className={styles.foundUserProfileImg}
+                  src={
+                    foundUser.profile_picture === ""
+                      ? "/user-default-pfp.jpg"
+                      : foundUser.profile_picture
+                  }
+                  alt="user profile picture"
+                />
+                <div className={styles.foundUserNameContainer}>
+                  <Link to={`/profile/${foundUser.id}`}>
+                    <p>{foundUser.username}</p>
+                  </Link>
+                  <p>{foundUser.display_name}</p>
+                </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          ) : (
+            <p>No results!</p>
+          )}
+        </>
       </div>
     </form>
   );

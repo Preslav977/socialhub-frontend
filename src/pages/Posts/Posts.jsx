@@ -78,7 +78,7 @@ export function Posts({ postsHeader }) {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p>Loading posts...</p>;
   }
 
   if (error) {
@@ -100,13 +100,11 @@ export function Posts({ postsHeader }) {
         </header>
       )}
       {pathname === "/likes" ? <LeftArrow textProp={"Liked posts"} /> : ""}
-      {posts.message ? (
-        <p>{posts.message}</p>
-      ) : (
+      {!posts.message ? (
         <>
           {posts.map((post) => (
             <article
-              id="article"
+              data-testid="article"
               onClick={() => navigateToPostDetails(post)}
               className={styles.articlePostContainer}
               key={post.id}
@@ -138,7 +136,7 @@ export function Posts({ postsHeader }) {
                 <img
                   className={styles.articlePostImg}
                   src={post.imageURL}
-                  alt=""
+                  alt="post image"
                 />
               ) : (
                 ""
@@ -179,8 +177,9 @@ export function Posts({ postsHeader }) {
                 <div className={styles.articlePostCommentsContainer}>
                   <img
                     className={styles.articleComment}
+                    data-testid="articleComment"
                     src="/comment.svg"
-                    alt=""
+                    alt="comment on post"
                   />
                   <p>{post.comments}</p>
                 </div>
@@ -188,6 +187,8 @@ export function Posts({ postsHeader }) {
             </article>
           ))}
         </>
+      ) : (
+        <p>{posts.message}</p>
       )}
     </>
   );

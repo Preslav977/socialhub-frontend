@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPost } from "../../api/useFetchPost";
@@ -9,8 +8,6 @@ export function PostDetails() {
   const { post, setPost, loading, error } = useFetchPost();
 
   const { id } = useParams();
-
-  const { reset } = useForm();
 
   const [repliedCommentId, setRepliedCommentId] = useState(0);
 
@@ -72,6 +69,8 @@ export function PostDetails() {
   async function leavingAComment(data) {
     const { text } = data;
 
+    console.log(text);
+
     try {
       const response = await fetch(`${localhostURL}/posts/${post.id}/comment`, {
         method: "POST",
@@ -90,19 +89,17 @@ export function PostDetails() {
       const commentPostObject = {
         ...post,
         postCommentedByUsers: result.postCommentedByUsers,
-        comments: result.comment,
+        comments: result.comments,
       };
 
       setPost(commentPostObject);
-
-      reset();
     } catch (error) {
       console.log(error);
     }
   }
 
   async function leavingACommentReply(data) {
-    const { text } = data;
+    const { textReply } = data;
 
     try {
       const response = await fetch(
@@ -115,17 +112,19 @@ export function PostDetails() {
           },
           body: JSON.stringify({
             id: post.id,
-            text,
+            textReply,
             commentId: repliedCommentId,
           }),
         },
       );
       const result = await response.json();
 
+      console.log(result);
+
       const commentPostObject = {
         ...post,
         postCommentedByUsers: result.postCommentedByUsers,
-        comments: result.comment,
+        comments: result.comments,
       };
 
       setPost(commentPostObject);
@@ -156,7 +155,7 @@ export function PostDetails() {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p>Loading post details...</p>;
   }
 
   if (error) {

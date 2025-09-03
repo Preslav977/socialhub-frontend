@@ -11,7 +11,7 @@ export function Navbar() {
   return (
     <nav className={styles.navbarContainer}>
       <ul className={styles.leftSideFlexUlContainer}>
-        <Link className={styles.homeLinkContainer} to="/home">
+        <Link className={styles.homeLinkContainer} to="/">
           <img
             className={styles.homeLinkImage}
             src="/socialhub.png"

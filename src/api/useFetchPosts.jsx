@@ -9,7 +9,7 @@ export const useFetchPosts = (url) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${url}`, {
+    fetch(url, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -24,7 +24,7 @@ export const useFetchPosts = (url) => {
       .then((response) => setPosts(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [setPosts, url]);
+  }, [url, posts, setPosts]);
 
   return { posts, setPosts, error, loading };
 };
