@@ -5,6 +5,7 @@ import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SearchForUser } from "../components/SearchForUser/SearchForUser";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
 import { UserProfile } from "../components/UserProfile/UserProfile";
+import { Chats } from "../pages/Chats/Chats";
 import { MainGridInterface } from "../pages/MainGrindInterface/MainGridInterface";
 import { PostDetails } from "../pages/PostDetails/PostDetails";
 import { Posts } from "../pages/Posts/Posts";
@@ -89,6 +90,14 @@ export const routes = [
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={<PostDetails />}></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/messages",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface pageProp={<Chats />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },

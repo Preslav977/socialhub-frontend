@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { localhostURL } from "../../utility/localhostURL";
 
-export const useFetchPost = () => {
-  const [post, setPost] = useState();
+export const useFetchChats = () => {
+  const [chats, setChats] = useState();
 
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
-  const { id } = useParams();
-
   useEffect(() => {
-    fetch(`${localhostURL}/posts/${Number(id)}`, {
+    fetch(`${localhostURL}/chats`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -20,14 +17,14 @@ export const useFetchPost = () => {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new Error("Failed to fetch single post");
+          throw new Error("Failed to fetch chats");
         }
         return response.json();
       })
-      .then((response) => setPost(response))
+      .then((response) => setChats(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [setError]);
 
-  return { post, setPost, loading, error };
+  return { chats, setChats, loading, error };
 };

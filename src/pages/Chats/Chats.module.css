@@ -1,0 +1,17 @@
+.flexedLiContainer {
+  display: flex;
+  padding: 0.75em;
+  align-items: center;
+  gap: 1em;
+  color: white;
+}
+
+.userReceiverImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.flexedLiContainer:hover {
+  background-color: lightgrey;
+}
