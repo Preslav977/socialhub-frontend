@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { localhostURL } from "../../utility/localhostURL";
 
-export const useFetchChats = () => {
-  const [chats, setChats] = useState();
+export const useFetchSingleChat = (id) => {
+  const [chatDetails, setChatDetails] = useState();
 
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${localhostURL}/chats`, {
+    fetch(`${localhostURL}/chats/${id}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -21,10 +21,10 @@ export const useFetchChats = () => {
         }
         return response.json();
       })
-      .then((response) => setChats(response))
+      .then((response) => setChatDetails(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [id]);
 
-  return { chats, setChats, loading, error };
+  return { chatDetails, setChatDetails, loading, error };
 };

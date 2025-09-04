@@ -1,4 +1,5 @@
 import { App } from "../App";
+import { ChatsDetails } from "../components/ChatsDetails/ChatsDetails";
 import { CreatePost } from "../components/CreatePost/CreatePost";
 import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
@@ -98,6 +99,14 @@ export const routes = [
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={<Chats />}></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/message/:id",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface pageProp={<ChatsDetails />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },

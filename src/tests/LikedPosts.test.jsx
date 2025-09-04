@@ -411,56 +411,7 @@ describe("should render Liked posts component", () => {
         ]),
       )
 
-      .mockResolvedValue(
-        Response.json([
-          {
-            id: 1,
-            content: "post on home",
-            imageURL: null,
-            tag: "post",
-            likes: 1,
-            comments: 0,
-            createdAt: new Date(),
-            authorId: 1,
-            postLikedByUsers: [
-              {
-                id: 1,
-                username: "author",
-                display_name: "user",
-                bio: "",
-                website: "",
-                github: "",
-                password: "12345678B",
-                confirm_password: "12345678B",
-                profile_picture: "",
-                role: "USER",
-                followersNumber: 0,
-                followingNumber: 0,
-                posts: 0,
-                createdAt: new Date(),
-              },
-            ],
-            author: {
-              id: 1,
-              username: "author",
-              display_name: "user",
-              bio: "",
-              website: "",
-              github: "",
-              password: "12345678B",
-              confirm_password: "12345678B",
-              profile_picture: "",
-              role: "USER",
-              followersNumber: 0,
-              followingNumber: 0,
-              posts: 1,
-              createdAt: new Date(),
-            },
-          },
-        ]),
-      )
-
-      .mockResolvedValue(
+      .mockResolvedValueOnce(
         Response.json({
           id: 1,
           content: "post on home",
@@ -531,9 +482,7 @@ describe("should render Liked posts component", () => {
       screen.queryByText("Loading posts..."),
     );
 
-    // screen.debug();
-
-    await user.click(screen.queryByTestId("article"));
+    await user.click(screen.queryByAltText("comment on post"));
 
     expect(screen.queryByText("Loading posts details..."));
 
