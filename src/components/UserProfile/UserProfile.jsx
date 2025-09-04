@@ -14,6 +14,8 @@ export function UserProfile() {
 
   const [userLoggedIn, setUserLoggedIn] = useContext(UserLogInContext);
 
+  // console.log(userLoggedIn);
+
   const { userDetails, setUserDetails, error, loading } = useFetchUser(
     Number(id),
   );
@@ -68,6 +70,66 @@ export function UserProfile() {
     }
   };
 
+  async function followOrUnFollowUser() {
+    try {
+      const response = await fetch(
+        `${localhostURL}/users/following/${userDetails.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            id: userDetails.id,
+          }),
+        },
+      );
+      const result = await response.json();
+
+      const [follower, following] = result;
+
+      const followOrUnfollowUserDetailsObject = {
+        ...userDetails,
+        followedBy: follower.followedBy,
+        followersNumber: follower.followersNumber,
+      };
+
+      setUserDetails(followOrUnfollowUserDetailsObject);
+
+      const followOrUnfollowUserLoggedInObject = {
+        ...userLoggedIn,
+        following: following.following,
+        followingNumber: following.followingNumber,
+      };
+
+      setUserLoggedIn(followOrUnfollowUserLoggedInObject);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function startChatWithUser() {
+    try {
+      const response = await fetch(`${localhostURL}/chats`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          senderId: userLoggedIn.id,
+          receiverId: userDetails.id,
+        }),
+      });
+      const result = await response.json();
+
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -88,12 +150,15 @@ export function UserProfile() {
           display_name={userDetails.display_name}
           displayNameError={displayNameError}
           followersNumber={userDetails.followersNumber}
+          followedBy={userDetails.followedBy}
           followingNumber={userDetails.followingNumber}
           posts={userDetails.posts}
           bio={userDetails.bio}
           website={userDetails.website}
           github={userDetails.github}
           userLogInID={userDetails.id}
+          followOrUnFollowUser={followOrUnFollowUser}
+          startConversationWithUser={startChatWithUser}
         />
       ) : (
         <UserProfilePropsComponent

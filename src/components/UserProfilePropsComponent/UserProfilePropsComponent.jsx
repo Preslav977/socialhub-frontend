@@ -13,12 +13,15 @@ export function UserProfilePropsComponent({
   display_name,
   displayNameError,
   followersNumber,
+  followedBy,
   followingNumber,
   posts,
   bio,
   website,
   github,
   userLogInID,
+  followOrUnFollowUser,
+  startConversationWithUser,
 }) {
   const {
     register,
@@ -155,9 +158,29 @@ export function UserProfilePropsComponent({
           </div>
           {Number(userLogInID) !== userLoggedIn.id ? (
             <div className={styles.userFollowAndStartConversationFlexContainer}>
-              <button className={styles.followUserBtn}>Follow</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
 
-              <Link className={styles.userConversationAnchor}>
+                  followOrUnFollowUser();
+                }}
+                className={styles.followUserBtn}
+              >
+                {!followedBy.some(
+                  (followedUser) => followedUser.id === userLoggedIn.id,
+                )
+                  ? "Follow"
+                  : "Unfollow"}
+              </button>
+
+              <Link
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  startConversationWithUser();
+                }}
+                className={styles.userConversationAnchor}
+              >
                 <img
                   className={styles.userStartConversationSVG}
                   src="/comment.svg"
