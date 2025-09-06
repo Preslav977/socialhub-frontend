@@ -1,6 +1,6 @@
 .gridFormWrapper {
   display: grid;
-  grid-template-columns: var(--grid--template--cols--forms);
+  grid-template-columns: var(--grid-template-cols);
   min-height: 100vh;
 }
 
@@ -23,7 +23,7 @@
 
 .formFillLoginInfoPara {
   font-size: 0.95rem;
-  color: var(--paragraph--main-color);
+  color: var(--main-color);
   margin-bottom: 0.25em;
 }
 
@@ -35,12 +35,12 @@
 }
 
 .logInForm > input {
-  background-color: var(--input--main-background-color);
+  background-color: var(--main-background-color);
 }
 
 .logInForm > input,
 .logInBtn {
-  color: var(--input--main-color);
+  color: var(--main-color);
   border-radius: 0.7em;
   padding: 0.35em;
 }
@@ -52,27 +52,27 @@
 
 .logInBtn {
   margin-top: 0.25em;
-  background-color: var(--input--main-background-color);
+  background-color: var(--main-background-color);
   transition: 0.25s background-color ease-in-out;
-  color: var(--paragraph--secondary-color);
+  color: var(--secondary-color);
 }
 
 .guestLoginBtn {
   margin-top: 0.25em;
-  background: var(--guest-login-btn-linear-gradient);
+  background: var(--guest-linear-gradient-guest-button);
   transition: 0.25s background ease-in-out;
-  color: var(--paragraph--secondary-color);
+  color: var(--secondary-color);
 }
 
-.dontHaveAnAccountPara {
-  color: var(--input--main-color);
+.notHaveAnAccountPara {
+  color: var(--main-color-input);
   margin-top: 0.25em;
   text-align: left;
 }
 
 a,
 a:visited {
-  color: var(--input--main-background-color);
+  color: var(--main-background-color);
   text-decoration: none;
   margin-left: 0.25em;
 }
@@ -81,14 +81,9 @@ a:hover {
   text-decoration: underline;
 }
 
-.logInForm > span {
-  color: red;
-  text-align: left;
-}
-
 .gridRightSideContainer {
-  background-color: var(--main-bg-color);
-  color: var(--paragraph--secondary-color);
+  background-color: var(--main-background-color);
+  color: var(--secondary-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,7 +92,7 @@ a:hover {
 
 .gridRightSideHeader {
   font-size: 3rem;
-  background-image: var(--grid--linear--gradient);
+  background-image: var(--grid-linear-gradient);
   background-clip: text;
   color: transparent;
 }
@@ -107,14 +102,14 @@ a:hover {
 }
 
 .logInBtn:hover {
-  background-color: var(--paragraph--secondary-color);
-  color: var(--input--main-background-color);
+  background-color: var(--secondary-color);
+  color: var(--main-background-color);
   cursor: pointer;
 }
 
 .guestLoginBtn:hover {
-  background: var(--paragraph--secondary-color);
-  color: var(--input--main-background-color);
+  background: var(--secondary-color);
+  color: var(--main-background-color);
   cursor: pointer;
 }
 

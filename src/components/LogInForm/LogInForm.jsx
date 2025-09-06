@@ -37,8 +37,8 @@ export function LogInForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
-          password: password,
+          username,
+          password,
         }),
       });
 
@@ -178,7 +178,7 @@ export function LogInForm() {
             Guest User
           </button>
 
-          <p className={styles.dontHaveAnAccountPara}>
+          <p className={styles.notHaveAnAccountPara}>
             Don't have an account?
             <Link to="/signup">Sign Up</Link>
           </p>

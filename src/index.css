@@ -1,17 +1,16 @@
 :root {
-  --grid--template--cols--forms: 500px 1fr;
-  --paragraph--main-color: gray;
-  --input--main-background-color: #2b2a33;
-  --main-bg-color: black;
-  --input--main-color: #9e9ea9;
-  --grid--linear--gradient: linear-gradient(90deg, #eb8948, #fff);
-  --guest-login-btn-linear-gradient: linear-gradient(
+  --grid-template-cols: 500px 1fr;
+  --main-color-input: #9e9ea9;
+  --main-background-color-input: #2b2a33;
+  --main-background-color: black;
+  --grid-linear-gradient: linear-gradient(90deg, #eb8948, #fff);
+  --guest-linear-gradient-guest-button: linear-gradient(
     90deg,
     rgba(255, 165, 0) 10%,
     rgb(197, 76, 197) 70%,
     rgba(0, 0, 255) 90%
   );
-  --paragraph--secondary-color: white;
+  --secondary-color: white;
 }
 
 *,

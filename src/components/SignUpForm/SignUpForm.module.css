@@ -1,6 +1,6 @@
 .gridFormWrapper {
   display: grid;
-  grid-template-columns: var(--grid--template--cols--forms);
+  grid-template-columns: var(--grid-template-cols);
   min-height: 100vh;
 }
 
@@ -23,7 +23,7 @@
 
 .formFillInfoPara {
   font-size: 0.95rem;
-  color: var(--paragraph--main-color);
+  color: var(--main-color-input);
   margin-bottom: 0.25em;
 }
 
@@ -36,43 +36,38 @@
 
 .signUpForm > input,
 .formPasswordInputContainer > input {
-  background-color: var(--input--main-background-color);
+  background-color: var(--main-background-color);
 }
 
 .signUpForm > input,
 .formPasswordInputContainer > input,
 .signUpBtn {
-  color: var(--input--main-color);
+  color: var(--main-color-input);
   border-radius: 0.7em;
   padding: 0.35em;
 }
 
 .signUpBtn {
   margin-top: 0.25em;
-  background-color: var(--input--main-background-color);
+  background-color: var(--main-background-color);
   transition: 0.25s background-color ease-in-out;
-  color: var(--paragraph--secondary-color);
+  color: var(--secondary-color);
 }
 
 .alreadyHaveAccountPara {
-  color: var(--input--main-color);
+  color: var(--main-color-input);
   margin-top: 0.25em;
   text-align: left;
 }
 
 a,
 a:visited {
-  color: var(--input--main-background-color);
+  color: var(--main-background-color);
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
-}
-
-.signUpForm > span {
-  color: red;
-  text-align: left;
 }
 
 .formPasswordInputContainer {
@@ -91,8 +86,8 @@ a:hover {
 }
 
 .gridRightSideContainer {
-  background-color: var(--main-bg-color);
-  color: var(--paragraph--secondary-color);
+  background-color: var(--main-background-color);
+  color: var(--secondary-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -101,7 +96,7 @@ a:hover {
 
 .gridRightSideHeader {
   font-size: 3rem;
-  background-image: var(--grid--linear--gradient);
+  background-image: var(--grid-linear-gradient);
   background-clip: text;
   color: transparent;
 }
@@ -111,8 +106,8 @@ a:hover {
 }
 
 .signUpBtn:hover {
-  background-color: var(--paragraph--secondary-color);
-  color: var(--input--main-background-color);
+  background-color: var(--secondary-color);
+  color: var(--main-color-input);
   cursor: pointer;
 }
 
