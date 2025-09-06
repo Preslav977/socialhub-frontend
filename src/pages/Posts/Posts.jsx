@@ -20,8 +20,6 @@ export function Posts({ postsHeader }) {
 
   const { posts, setPosts, loading, error } = useFetchPosts(url);
 
-  console.log(posts);
-
   const navigate = useNavigate();
 
   async function likeOrDislikePost(post) {

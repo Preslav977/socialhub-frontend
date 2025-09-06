@@ -109,7 +109,7 @@ export function LogInForm() {
 
       navigate("/");
     } catch (error) {
-      throw error;
+      console.log(error);
     } finally {
       setLoginOrGuestUser(false);
     }

@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding: 1.5em;
 }
 
 .chatDetailsUserMessage {
@@ -17,8 +18,6 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin-right: 1.5em;
-  margin-top: 1.5em;
   /* outline: 2px solid blue; */
 }
 
@@ -31,8 +30,7 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin-left: 1.5em;
-  margin-top: 1.5em;
+
   /* outline: 2px solid red; */
 }
 
@@ -47,6 +45,9 @@
   margin-top: auto;
   position: sticky;
   bottom: 0%;
+  display: flex;
+  align-items: center;
+  padding: 1.5em 0.5em;
 }
 
 .chatDetailsSendImage {
@@ -64,4 +65,28 @@
   border-radius: 1em;
   background-color: #3a3b3c;
   color: white;
+}
+
+.chatDetailsSendImgInput,
+.chatDetailsSendBtn {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  opacity: 0;
+  z-index: 1;
+}
+
+.chatDetailsSendImageSVG,
+.chatDetailsSendMessageSVG {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  /* background-color: black; */
+  position: relative;
+  top: 5%;
+  outline: 2px solid white;
+}
+
+.chatDetailsInput {
+  width: 100%;
 }
