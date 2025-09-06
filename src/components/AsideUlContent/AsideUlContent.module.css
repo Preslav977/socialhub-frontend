@@ -13,7 +13,7 @@
 }
 
 .asideUlContainer a {
-  color: var(--paragraph--secondary-color);
+  color: var(--secondary-color);
   display: flex;
   align-items: center;
   gap: 1em;
@@ -21,16 +21,22 @@
 }
 
 .asideUlContainer a:visited {
-  color: var(--paragraph--secondary-color);
+  color: var(--secondary-color);
 }
 
 .asideUlContainer li:hover {
-  background-color: var(--paragraph--main-color);
+  background-color: var(--main-color--input);
   transform: translateX(-5px);
 }
 
-@media screen and (max-width: 940px) {
+@media screen and (max-width: 947px) {
   .asideUlContainer span {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .asideUlContainer {
     display: none;
   }
 }

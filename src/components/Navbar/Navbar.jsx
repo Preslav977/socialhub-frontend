@@ -17,25 +17,17 @@ export function Navbar() {
             src="/socialhub.png"
             alt="socialhub logo"
           />
-          <p className={styles.homeLinkPara}>SocialHub</p>
+          <h2 className={styles.homeLinkPara}>SocialHub</h2>
         </Link>
       </ul>
 
       <ul className={styles.rightSideFlexUlContainer}>
         <Link className={styles.userProfileLinkContainer} to={`/profile/${id}`}>
-          {profile_picture === "" ? (
-            <img
-              className={styles.userDefaultProfileImg}
-              src="/user-default-pfp.jpg"
-              alt="user default profile picture"
-            />
-          ) : (
-            <img
-              className={styles.userProfilePictureImg}
-              src={profile_picture}
-              alt="user profile picture"
-            />
-          )}
+          <img
+            className={styles.userProfilePictureImg}
+            src={profile_picture ? profile_picture : "/default-profile-pfp.png"}
+            alt="user profile picture"
+          />
         </Link>
       </ul>
     </nav>

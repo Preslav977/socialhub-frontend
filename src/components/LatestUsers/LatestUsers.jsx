@@ -12,13 +12,9 @@ export function LatestUser() {
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
-  if (loading) {
-    return <Loading message={"latest users"} />;
-  }
+  if (loading) return <Loading message={"latest users"} />;
 
-  if (error) {
-    return <Error error={"latest users"} />;
-  }
+  if (error) return <Error error={"latest users"} />;
 
   async function followLatestUsers(user) {
     try {
@@ -61,8 +57,6 @@ export function LatestUser() {
       };
 
       setUserLogIn(updateLoggedInUser);
-
-      console.log(userLogIn);
     } catch (error) {
       console.log(error);
     }
@@ -71,41 +65,49 @@ export function LatestUser() {
   return (
     <>
       <p>Latest users</p>
-      <hr />
-      {latestUsers.map((user) => (
-        <div className={styles.latestUsersContainer} key={user.id}>
-          <img
-            className={styles.latestUsersImg}
-            src={
-              user.profile_picture === ""
-                ? "/user-default-pfp.jpg"
-                : user.profile_picture
-            }
-            alt="user profile picture"
-          />
-          <div className={styles.lastUsersUserNameAndDisplayNameContainer}>
-            <Link
-              className={styles.lastUserNameAnchor}
-              to={`/profile/${user.id}`}
-            >
-              <p>{user.username}</p>
-            </Link>
-            <p>{user.display_name}</p>
-          </div>
-          <div className={styles.followOrUnfollowButtonContainer}>
-            <button
-              onClick={() => followLatestUsers(user)}
-              className={styles.followOrUnfollowButton}
-            >
-              {!userLogIn.following.some(
-                (followedUser) => followedUser.id === user.id,
-              )
-                ? "Follow"
-                : "Unfollow"}
-            </button>
-          </div>
-        </div>
-      ))}
+      <hr className={styles.laterUsersHr} />
+      <>
+        {latestUsers ? (
+          <ul>
+            {latestUsers.map((user) => (
+              <li className={styles.latestUsersContainer} key={user.id}>
+                <img
+                  className={styles.latestUsersImg}
+                  src={
+                    user.profile_picture === ""
+                      ? "/user-default-pfp.jpg"
+                      : user.profile_picture
+                  }
+                  alt="user profile picture"
+                />
+                <div className={styles.latestUserCredentials}>
+                  <Link
+                    className={styles.latestUserNameAnchor}
+                    to={`/profile/${user.id}`}
+                  >
+                    <p>{user.username}</p>
+                  </Link>
+                  <p>{user.display_name}</p>
+                </div>
+                <div className={styles.followOrUnfollowButtonContainer}>
+                  <button
+                    onClick={() => followLatestUsers(user)}
+                    className={styles.followOrUnfollowButton}
+                  >
+                    {!userLogIn.following.some(
+                      (followedUser) => followedUser.id === user.id,
+                    )
+                      ? "Follow"
+                      : "Unfollow"}
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          ""
+        )}
+      </>
     </>
   );
 }

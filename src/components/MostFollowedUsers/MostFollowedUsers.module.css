@@ -5,7 +5,7 @@
   margin-bottom: 0.5em;
 }
 
-hr {
+.mostFollowedUsersHr {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
@@ -16,7 +16,7 @@ hr {
   border-radius: 50%;
 }
 
-.mostFollowedUsersUserNameAndDisplayNameContainer {
+.mostFollowedUsersCredentials {
   display: flex;
   flex-direction: column;
   line-height: 1.35;
@@ -26,9 +26,17 @@ hr {
 .mostFollowedUserNameAnchor {
   color: white;
   margin: 0;
+  text-decoration: none;
+}
+
+.mostFollowedUserNameAnchor:hover {
+  text-decoration: underline;
 }
 
 .followOrUnfollowButton {
-  padding: 0.25em 1em;
-  border-radius: 1em;
+  width: 7em;
+  border-radius: 1.5em;
+  margin-left: auto;
+  font-size: 1rem;
+  padding: 0.25em 0;
 }

@@ -60,13 +60,13 @@
   text-align: left;
 }
 
-a,
-a:visited {
+.alreadyHaveAccountAnchor,
+.alreadyHaveAccountAnchor:visited {
   color: var(--main-background-color);
   text-decoration: none;
 }
 
-a:hover {
+.alreadyHaveAccountAnchor:hover {
   text-decoration: underline;
 }
 

@@ -70,14 +70,14 @@
   text-align: left;
 }
 
-a,
-a:visited {
+.notHaveAnAccountAnchor,
+.notHaveAnAccountAnchor:visited {
   color: var(--main-background-color);
   text-decoration: none;
   margin-left: 0.25em;
 }
 
-a:hover {
+.notHaveAnAccountAnchor:hover {
   text-decoration: underline;
 }
 

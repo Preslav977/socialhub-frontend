@@ -180,7 +180,9 @@ export function LogInForm() {
 
           <p className={styles.notHaveAnAccountPara}>
             Don't have an account?
-            <Link to="/signup">Sign Up</Link>
+            <Link className={styles.notHaveAnAccountAnchor} to="/signup">
+              Sign Up
+            </Link>
           </p>
 
           {loading ? (
