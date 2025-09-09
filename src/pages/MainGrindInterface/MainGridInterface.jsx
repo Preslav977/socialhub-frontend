@@ -28,7 +28,7 @@ export function MainGridInterface({ pageProp }) {
 
           <div className={styles.announcementsContainer}>
             <p>Announcements</p>
-            <hr />
+            <hr className={styles.announcementsHr} />
             <li>Added latest users feature</li>
             <li>Added most followed users feature</li>
           </div>

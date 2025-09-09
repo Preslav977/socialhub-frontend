@@ -18,8 +18,6 @@ export function ChatsDetails() {
 
   const [sendMessageOrImage, setSendMessageOrImage] = useState(false);
 
-  console.log(sendMessageOrImage);
-
   const {
     register,
     formState: { errors },
@@ -86,8 +84,6 @@ export function ChatsDetails() {
       );
       const result = await response.json();
 
-      console.log(result);
-
       const chatDetailsMessagesObject = {
         ...chatDetails,
         messages: result.messages,
@@ -107,7 +103,10 @@ export function ChatsDetails() {
     <>
       {chatDetails ? (
         <>
-          <LeftArrow textProp={chatDetails.receiverChat.username} />
+          <LeftArrow
+            textProp={chatDetails.receiverChat.username}
+            navigation={"/messages"}
+          />
 
           <div className={styles.chatDetailsContainer}>
             {chatDetails.messages.map((message) => (
@@ -115,33 +114,37 @@ export function ChatsDetails() {
                 {message.senderMessageId === userLoggedIn.id ? (
                   <div className={styles.chatDetailsUserMessage}>
                     {message.text ? (
-                      <p className={styles.chatDetailsSendMessage}>
-                        {message.text}
-                      </p>
+                      <div className={styles.chatDetailsMessage}>
+                        <p>{message.text}</p>
+                        <div>
+                          <p>{format(message.createdAt, "HH:mm aaaaa'm'")}</p>
+                        </div>
+                      </div>
                     ) : (
-                      <div>
-                        <img
-                          className={styles.chatDetailsSendImage}
-                          src={message.imageURL}
-                        />
+                      <div className={styles.chatDetailsImage}>
+                        <img src={message.imageURL} alt="chat details image" />
+                        <div>
+                          <p>{format(message.createdAt, "HH:mm aaaaa'm'")}</p>
+                        </div>
                       </div>
                     )}
-                    <p>{format(message.createdAt, "HH:mm aaaaa'm'")}</p>
                   </div>
                 ) : (
                   <div className={styles.chatDetailsUserReceiverMessage}>
                     {message.text ? (
-                      <div>
-                        <p className={styles.chatDetailsSendMessage}>
-                          {message.text}
-                        </p>
-                        <p>{format(message.createdAt, "HH:mm aaaaa'm'")}</p>
+                      <div className={styles.chatDetailsMessage}>
+                        <p>{message.text}</p>
+                        <div>
+                          <p>{format(message.createdAt, "HH:mm aaaaa'm'")}</p>
+                        </div>
                       </div>
                     ) : (
-                      <img
-                        className={styles.chatDetailsSendImage}
-                        src={message.imageURL}
-                      />
+                      <div className={styles.chatDetailsImage}>
+                        <img src={message.imageURL} alt="chat details image" />
+                        <div>
+                          <p>{format(message.createdAt, "HH:mm aaaaa'm'")}</p>
+                        </div>
+                      </div>
                     )}
                   </div>
                 )}
@@ -156,7 +159,7 @@ export function ChatsDetails() {
                   ? (e) => handleSubmit(onSubmitMessageImage(e))
                   : handleSubmit(onSubmitMessageText)
               }
-              className={styles.chatDetailsSendMessageOrImageContainer}
+              className={styles.chatDetailsForm}
             >
               <label htmlFor="text"></label>
               <input
@@ -164,6 +167,7 @@ export function ChatsDetails() {
                 type="text"
                 name="text"
                 id="text"
+                placeholder="Enter a message..."
                 {...register("text", {
                   maxLength: "666",
                 })}
@@ -186,7 +190,7 @@ export function ChatsDetails() {
                 <img
                   className={styles.chatDetailsSendImageSVG}
                   src="/send-image.svg"
-                  alt=""
+                  alt="send image in chat"
                 />
               </div>
               <div>
@@ -197,7 +201,7 @@ export function ChatsDetails() {
                 <img
                   className={styles.chatDetailsSendMessageSVG}
                   src="/send-message.svg"
-                  alt=""
+                  alt="send message in chat"
                 />
               </div>
             </form>

@@ -14,8 +14,6 @@ export function UserProfile() {
 
   const [userLoggedIn, setUserLoggedIn] = useContext(UserLogInContext);
 
-  // console.log(userLoggedIn);
-
   const { userDetails, setUserDetails, error, loading } = useFetchUser(
     Number(id),
   );
@@ -46,8 +44,6 @@ export function UserProfile() {
 
       if (response.status >= 400) {
         const errors = await response.json();
-
-        console.log(errors);
 
         errors.forEach((err) => {
           if (err.msg.startsWith("Username")) {
@@ -130,13 +126,9 @@ export function UserProfile() {
     }
   }
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  if (loading) return <p>Loading...</p>;
 
-  if (error) {
-    return <p>Error...</p>;
-  }
+  if (error) return <p>Error...</p>;
 
   return (
     <>

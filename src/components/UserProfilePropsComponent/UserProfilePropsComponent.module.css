@@ -1,18 +1,22 @@
 .userProfileWrapper {
-  padding: 1.5em;
-  color: white;
+  padding: var(--main-padding);
+  color: var(--secondary-color);
 }
 
 .userProfileFlexContainer {
   display: flex;
   align-items: center;
-  gap: 15em;
+  justify-content: space-between;
+  width: 80%;
+  gap: 2em;
 }
 
 .editUserProfileContainer {
   display: flex;
   align-items: center;
-  gap: 5em;
+  justify-content: space-between;
+  width: 80%;
+  gap: 1em;
 }
 
 .userProfileImg {
@@ -21,13 +25,9 @@
   object-fit: cover;
   border-radius: 50%;
   position: relative;
-}
-
-.userCredentials {
-  text-align: center;
   display: flex;
-  flex-direction: column;
-  margin: 0.5em;
+  align-items: center;
+  justify-content: center;
 }
 
 .userProfileEditImg {
@@ -38,11 +38,7 @@
 .userProfileEditImg {
   position: absolute;
   width: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 9em;
-  margin-left: 12em;
+  transform: translate(210px, 40px);
 }
 
 .userProfileEditInput {
@@ -50,9 +46,20 @@
   opacity: 0;
 }
 
+.userCredentials {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+.userProfilePrimaryInput,
 .userProfileSecondaryInput {
-  outline: 2px solid white;
+  background-color: var(--main-color);
+  outline: 2px solid var(--main-color-input);
+  color: var(--secondary-color);
   width: 100%;
+  max-width: 100%;
 }
 
 .userProfileStatistics {
@@ -69,18 +76,31 @@
 }
 
 .followUserBtn {
-  width: 100%;
-  padding: 0.5em 6em;
+  max-width: 100%;
+  padding: 5% 30%;
+  border-radius: 1rem;
+  background-color: #c4c2ce;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out color 0.15s ease-in-out outline
+    0.15s ease-in-out;
 }
 
-.userConversationAnchor {
-  outline: 1px solid white;
-  padding: 0.5em;
-  border-radius: 0.65em;
+.followUserBtn:hover {
+  background-color: var(--main-background-color);
+  color: var(--main-color-input);
+  outline: 1px solid var(--secondary-color);
 }
 
 .userStartConversationSVG {
-  width: 40px;
+  width: 45px;
+  outline: 1px solid var(--secondary-color);
+  border-radius: 0.5em;
+  transition: background-color 0.15s ease-in-out color 0.15s ease-in-out;
+}
+
+.userStartConversationSVG:hover {
+  background-color: #c4c2ce;
+  cursor: pointer;
 }
 
 .userProfileWebsites {
@@ -99,4 +119,87 @@
 
 .userProfileBtnsContainer {
   margin-top: 1em;
+  display: flex;
+  gap: 0.5em;
+}
+
+.userProfileBtn {
+  color: #121212;
+  width: 7em;
+  padding: 0.25em 0;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out color 0.15s ease-in-out outline
+    0.15s ease-in-out;
+}
+
+.userProfileBtn:hover {
+  background-color: var(--main-background-color);
+  color: var(--secondary-color);
+  outline: 2px solid var(--secondary-color);
+}
+
+.userProfilePostsPara {
+  text-align: center;
+  margin: 0.5em 0 0.5em 0;
+}
+
+.userProfileHr {
+  color: var(--main-color-input);
+}
+
+@media screen and (max-width: 1280px) {
+  .userProfileImg {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .userProfileFlexContainer {
+    display: flex;
+    align-items: center;
+    width: 90%;
+  }
+
+  .userProfileEditInput,
+  .userProfileEditImg {
+    position: absolute;
+    width: 30px;
+    transform: translate(110px, 30px);
+  }
+}
+
+@media screen and (max-width: 890px) {
+  .userProfileImg {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .userProfileStatistics {
+    gap: 0.5em;
+    font-size: 0.85rem;
+  }
+
+  .userProfileFlexContainer {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    gap: 1em;
+  }
+
+  .userProfileEditInput,
+  .userProfileEditImg {
+    position: absolute;
+    width: 30px;
+    transform: translate(65px, 20px);
+  }
+
+  .followUserBtn {
+    padding: 5% 20%;
+  }
 }

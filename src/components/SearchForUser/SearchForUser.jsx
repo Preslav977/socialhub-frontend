@@ -8,7 +8,7 @@ export function SearchForUser() {
 
   const [searchForUser, setSearchForUser] = useState("");
 
-  async function SearchAndRenderUser(e) {
+  async function searchAndRenderUser(e) {
     e.preventDefault();
 
     try {
@@ -24,8 +24,6 @@ export function SearchForUser() {
 
       const result = await response.json();
 
-      console.log(result);
-
       setUser(result);
     } catch (error) {
       console.log(error);
@@ -34,7 +32,7 @@ export function SearchForUser() {
 
   return (
     <form
-      onSubmit={SearchAndRenderUser}
+      onSubmit={searchAndRenderUser}
       className={styles.flexedSearchForUsersWrapper}
     >
       <div className={styles.flexedSearchUsersContainer}>
@@ -69,15 +67,20 @@ export function SearchForUser() {
                   alt="user profile picture"
                 />
                 <div className={styles.foundUserNameContainer}>
-                  <Link to={`/profile/${foundUser.id}`}>
-                    <p>{foundUser.username}</p>
+                  <Link
+                    className={styles.foundUserNameAnchor}
+                    to={`/profile/${foundUser.id}`}
+                  >
+                    <p className={styles.foundUserName}>{foundUser.username}</p>
                   </Link>
-                  <p>{foundUser.display_name}</p>
+                  <p className={styles.foundUserDisplayName}>
+                    {foundUser.display_name}
+                  </p>
                 </div>
               </div>
             ))
           ) : (
-            <p>No results!</p>
+            <p className={styles.noResultsPara}>No results!</p>
           )}
         </>
       </div>

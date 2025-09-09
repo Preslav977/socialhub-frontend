@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { EditUserProfileContext } from "../../context/EditUserProfileContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./UserProfilePropsComponent.module.css";
@@ -52,9 +51,13 @@ export function UserProfilePropsComponent({
                   ? "/user-default-pfp.jpg"
                   : profile_picture
               }
-              alt="users profile picture"
+              alt="user profile picture"
             />
-            <img className={styles.userProfileEditImg} src="/edit.svg" alt="" />
+            <img
+              className={styles.userProfileEditImg}
+              src="/edit.svg"
+              alt="edit profile picture"
+            />
 
             <label htmlFor="file"></label>
             <input
@@ -72,7 +75,7 @@ export function UserProfilePropsComponent({
             src={
               profile_picture === "" ? "/user-default-pfp.jpg" : profile_picture
             }
-            alt="users profile picture"
+            alt="user profile picture"
           />
         )}
         <div>
@@ -139,7 +142,6 @@ export function UserProfilePropsComponent({
                 </span>
               ))}
           </div>
-
           <div className={styles.userProfileStatistics}>
             <div>
               <p>{followersNumber}</p>
@@ -173,20 +175,20 @@ export function UserProfilePropsComponent({
                   : "Unfollow"}
               </button>
 
-              <Link
+              {/* <div
                 onClick={(e) => {
                   e.preventDefault();
 
                   startConversationWithUser();
                 }}
                 className={styles.userConversationAnchor}
-              >
-                <img
-                  className={styles.userStartConversationSVG}
-                  src="/comment.svg"
-                  alt=""
-                />
-              </Link>
+              > */}
+              <img
+                className={styles.userStartConversationSVG}
+                src="/comment.svg"
+                alt="start conversation"
+              />
+              {/* </div> */}
             </div>
           ) : (
             ""
@@ -208,7 +210,11 @@ export function UserProfilePropsComponent({
         )}
 
         <div className={styles.userProfileSVGFlexContainer}>
-          <img className={styles.userProfileSVG} src="/website.svg" alt="" />
+          <img
+            className={styles.userProfileSVG}
+            src="/website.svg"
+            alt="website"
+          />
           {editUserProfile ? (
             <input
               className={styles.userProfileSecondaryInput}
@@ -223,7 +229,11 @@ export function UserProfilePropsComponent({
         </div>
 
         <div className={styles.userProfileSVGFlexContainer}>
-          <img className={styles.userProfileSVG} src="/github.svg" alt="" />
+          <img
+            className={styles.userProfileSVG}
+            src="/github.svg"
+            alt="github"
+          />
           {editUserProfile ? (
             <input
               className={styles.userProfileSecondaryInput}
@@ -238,10 +248,24 @@ export function UserProfilePropsComponent({
         </div>
       </div>
       <div className={styles.userProfileBtnsContainer}>
-        <button onClick={() => setEditUserProfile(true)}>Edit</button>
-        <button type="submit">Save Changes</button>
+        {Number(userLogInID) !== userLoggedIn.id ? (
+          ""
+        ) : (
+          <>
+            <button
+              className={styles.userProfileBtn}
+              onClick={() => setEditUserProfile(true)}
+            >
+              Edit
+            </button>
+            <button className={styles.userProfileBtn} type="submit">
+              Save Changes
+            </button>
+          </>
+        )}
       </div>
-      <p>Posts</p>
+      <p className={styles.userProfilePostsPara}>Posts</p>
+      <hr className={styles.userProfileHr} />
     </form>
   );
 }

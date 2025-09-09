@@ -11,6 +11,8 @@
     rgba(0, 0, 255) 90%
   );
   --secondary-color: white;
+  --main-padding: 1.5em;
+  --main-background-hover-color: #464545;
 }
 
 *,
@@ -73,6 +75,10 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
+}
+
+span[role="alert"] {
+  color: red;
 }
 
 @keyframes loadingSpinner {

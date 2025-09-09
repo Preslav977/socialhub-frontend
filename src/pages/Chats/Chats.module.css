@@ -3,7 +3,7 @@
   padding: 0.75em;
   align-items: center;
   gap: 1em;
-  color: white;
+  color: var(--secondary-color);
 }
 
 .userReceiverImg {
@@ -13,5 +13,6 @@
 }
 
 .flexedLiContainer:hover {
-  background-color: lightgrey;
+  background-color: var(--main-background-hover-color);
+  cursor: pointer;
 }

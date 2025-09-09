@@ -64,8 +64,8 @@ export function LatestUser() {
 
   return (
     <>
-      <p>Latest users</p>
-      <hr className={styles.laterUsersHr} />
+      <p className={styles.latestUsersPara}>Latest users</p>
+      <hr className={styles.latestUsersHr} />
       <>
         {latestUsers ? (
           <ul>

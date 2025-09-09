@@ -1,9 +1,6 @@
 .formCreatePostContainer {
-  outline: 2px solid var(--paragraph--secondary-color);
-  max-width: 960px;
-  height: 100%;
-  background-color: var(--main-bg-color);
-  color: var(--paragraph--secondary-color);
+  background-color: var(--main-background-color);
+  color: var(--secondary-color);
 }
 
 .formTextarea {
@@ -12,8 +9,12 @@
   border: none;
   resize: none;
   padding: 2em;
-  background-color: var(--main-bg-color);
-  color: var(--paragraph--secondary-color);
+  background-color: var(--main-background-color);
+  color: var(--secondary-color);
+}
+
+.formTextarea::placeholder {
+  font-size: 1.2rem;
 }
 
 .formFlexedControlsContainer {
@@ -49,6 +50,14 @@
   position: absolute;
 }
 
+.formControlsImg:last-child {
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+.spanInputTagError {
+  padding: 2em;
+}
+
 .formFlexedLengthContainer {
   display: flex;
   align-items: center;
@@ -64,18 +73,31 @@
 }
 
 .submitPostBtn {
-  padding: 0.25em 1em;
+  padding: 0.25em 1.25em;
   border-radius: 0.75em;
   border: 0;
+  color: #121212;
+  transition: background-color 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out;
+}
+
+.submitPostBtn:hover {
+  cursor: pointer;
+  background-color: lightsalmon;
+  color: var(--secondary-color);
 }
 
 .formInputTag {
   border: 0;
   border-radius: 0.5em;
   padding: 0.25em 0;
-  background-color: var(--main-bg-color);
-  color: var(--paragraph--secondary-color);
-  outline: 2px solid var(--paragraph--secondary-color);
+  background-color: var(--main-background-color);
+  color: var(--secondary-color);
+  outline: 2px solid var(--main-color-input);
+}
+
+.formInputTag::placeholder {
+  padding: 0.5em;
 }
 
 span[role="alert"] {

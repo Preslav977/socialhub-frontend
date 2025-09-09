@@ -32,8 +32,8 @@ export function CreatePost() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify({
-          content: content,
-          tag: tag,
+          content,
+          tag,
           authorId: userLogIn.id,
         }),
       });
@@ -105,7 +105,9 @@ export function CreatePost() {
       ></textarea>
 
       {errors.content?.type === "required" && (
-        <span role="alert">Content is required</span>
+        <span className={styles.spanInputTagError} role="alert">
+          Content is required
+        </span>
       )}
 
       {errors.content?.type === "minLength" ||
@@ -120,7 +122,7 @@ export function CreatePost() {
           <img
             className={styles.formControlsImg}
             src="/upload-image.svg"
-            alt="uploading a image"
+            alt="upload image for post"
           />
           <label htmlFor="file"></label>
           <input
@@ -134,7 +136,7 @@ export function CreatePost() {
           <img
             className={styles.formControlsImg}
             src="/add-tag.svg"
-            alt="adding a tag"
+            alt="add tag for post"
           />
         </div>
 

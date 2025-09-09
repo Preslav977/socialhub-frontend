@@ -60,7 +60,11 @@
   text-align: left;
 }
 
-.alreadyHaveAccountAnchor,
+.alreadyHaveAccountAnchor {
+  color: var(--main-background-color);
+  text-decoration: none;
+}
+
 .alreadyHaveAccountAnchor:visited {
   color: var(--main-background-color);
   text-decoration: none;

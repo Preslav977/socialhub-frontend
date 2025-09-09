@@ -90,13 +90,23 @@ export function Posts({ postsHeader }) {
       {!postsHeader ? (
         ""
       ) : (
-        <header
-          style={{
-            color: "white",
-          }}
-        >
-          <Link to={"/"}>Recent</Link>
-          <Link to={"/following"}>Following</Link>
+        <header className={styles.articlePostHeader}>
+          <Link className={styles.articlePostHeaderAnchor} to={"/"}>
+            <span
+              className={pathname === "/" ? styles.articlePosHeaderSpan : ""}
+            >
+              Recent
+            </span>
+          </Link>
+          <Link className={styles.articlePostHeaderAnchor} to={"/following"}>
+            <span
+              className={
+                pathname === "/following" ? styles.articlePosHeaderSpan : ""
+              }
+            >
+              Following
+            </span>
+          </Link>
         </header>
       )}
       {pathname === "/likes" ? <LeftArrow textProp={"Liked posts"} /> : ""}
@@ -104,7 +114,6 @@ export function Posts({ postsHeader }) {
         <>
           {posts.map((post) => (
             <article
-              data-testid="article"
               onClick={() => navigateToPostDetails(post)}
               className={styles.articlePostContainer}
               key={post.id}
@@ -113,7 +122,7 @@ export function Posts({ postsHeader }) {
                 <img
                   className={styles.articleAuthorImg}
                   src={post.author.profile_picture}
-                  alt=""
+                  alt="article post author profile picture"
                 />
                 <span
                   onClick={(e) => {
@@ -136,7 +145,7 @@ export function Posts({ postsHeader }) {
                 <img
                   className={styles.articlePostImg}
                   src={post.imageURL}
-                  alt="post image"
+                  alt="article post image"
                 />
               ) : (
                 ""

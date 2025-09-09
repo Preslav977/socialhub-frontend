@@ -1,13 +1,17 @@
+.mostFollowedUsersPara {
+  padding: 0.25em;
+}
+
 .mostFollowedUsersContainer {
   display: flex;
   gap: 1em;
   align-items: center;
   margin-bottom: 0.5em;
+  padding: 0.15em 0.5em;
 }
 
 .mostFollowedUsersHr {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  margin: 0.5em 0 0.5em 0;
 }
 
 .mostFollowedUsersImg {
@@ -39,4 +43,12 @@
   margin-left: auto;
   font-size: 1rem;
   padding: 0.25em 0;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+  .mostFollowedUsersContainer {
+    display: flex;
+    gap: 0;
+  }
 }

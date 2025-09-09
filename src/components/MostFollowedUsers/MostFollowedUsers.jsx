@@ -65,7 +65,7 @@ export function MostFollowedUsers() {
 
   return (
     <>
-      <p>Most followed</p>
+      <p className={styles.mostFollowedUsersPara}>Most followed</p>
       <hr className={styles.mostFollowedUsersHr} />
       <>
         {mostFollowedUsers ? (

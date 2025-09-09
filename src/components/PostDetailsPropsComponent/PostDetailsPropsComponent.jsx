@@ -2,6 +2,7 @@ import { formatDistance } from "date-fns";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { UserLogInContext } from "../../context/UserLogInContext";
+import { LeftArrow } from "../LeftArrow/LeftArrow";
 import styles from "./PostDetailsPropsComponent.module.css";
 
 export function PostDetailsPropsComponent({
@@ -32,13 +33,14 @@ export function PostDetailsPropsComponent({
 
   return (
     <>
+      <LeftArrow textProp={"Post"} navigation={"/"} />
       <article className={styles.articlePostContainer}>
         <article className={styles.articlePostAuthor}>
           <div className={styles.articlePostAuthorAndDate}>
             <img
               className={styles.articleAuthorImg}
               src={post.author.profile_picture}
-              alt=""
+              alt="user profile picture"
             />
 
             <span>{post.author.username}</span>
@@ -54,7 +56,7 @@ export function PostDetailsPropsComponent({
               <img
                 className={styles.articleDelete}
                 src="/trashcan.svg"
-                alt=""
+                alt="delete a post"
               />
             </div>
           ) : (
@@ -64,7 +66,11 @@ export function PostDetailsPropsComponent({
         <p>{post.content}</p>
 
         {post.imageURL ? (
-          <img className={styles.articlePostImg} src={post.imageURL} alt="" />
+          <img
+            className={styles.articlePostImg}
+            src={post.imageURL}
+            alt="article post image"
+          />
         ) : (
           ""
         )}
@@ -90,7 +96,11 @@ export function PostDetailsPropsComponent({
             <p>{post.likes}</p>
           </div>
           <div className={styles.articlePostCommentsContainer}>
-            <img className={styles.articleComment} src="/comment.svg" alt="" />
+            <img
+              className={styles.articleComment}
+              src="/comment.svg"
+              alt="comments on article post"
+            />
             <p>{post.comments}</p>
           </div>
         </article>
@@ -101,6 +111,7 @@ export function PostDetailsPropsComponent({
       >
         <label htmlFor="text"></label>
         <textarea
+          className={styles.createArticleCommentTextarea}
           name="text"
           id="text"
           rows={3}
@@ -127,7 +138,7 @@ export function PostDetailsPropsComponent({
               <img
                 className={styles.articleUserImg}
                 src={comment.commentLeftByUser.profile_picture}
-                alt=""
+                alt="user profile picture"
               />
 
               <p>{comment.commentLeftByUser.username}</p>
@@ -166,6 +177,7 @@ export function PostDetailsPropsComponent({
               <div className={styles.articlePostCommentsContainer}>
                 {comment.childCommentReply.length !== 0 ? (
                   <div
+                    className={styles.articlePostCommentReplies}
                     onClick={() => {
                       onToggleShowOrHideReplyComments();
 
@@ -175,7 +187,7 @@ export function PostDetailsPropsComponent({
                     <img
                       className={styles.articleComment}
                       src="/messages.svg"
-                      alt=""
+                      alt="show replies"
                     />
                     <p>show replies </p>
                   </div>
@@ -184,6 +196,7 @@ export function PostDetailsPropsComponent({
                 )}
 
                 <div
+                  className={styles.articlePostCommentReply}
                   onClick={() => {
                     onToggledReplyOnComment();
 
@@ -193,7 +206,7 @@ export function PostDetailsPropsComponent({
                   <img
                     className={styles.articleComment}
                     src="/comment-reply.svg"
-                    alt=""
+                    alt="reply on the comment"
                   />
                   <span>reply</span>
                 </div>
@@ -202,12 +215,15 @@ export function PostDetailsPropsComponent({
             {showOrHideReplyComments && comment.id === repliedCommentId ? (
               <>
                 {comment.childCommentReply.map((childComment) => (
-                  <div key={childComment.id}>
+                  <div
+                    className={styles.articleCommentReplyCommentsContainer}
+                    key={childComment.id}
+                  >
                     <div className={styles.articleCommentUser}>
                       <img
                         className={styles.articleUserImg}
                         src={childComment.commentLeftByUser.profile_picture}
-                        alt=""
+                        alt="user profile picture"
                       />
 
                       <p>{childComment.commentLeftByUser.username}</p>
@@ -226,6 +242,7 @@ export function PostDetailsPropsComponent({
             ) : (
               ""
             )}
+
             {toggleReplyOnComment && repliedCommentId === comment.id ? (
               <form
                 onSubmit={handleSubmit(onSubmitCommentReply)}
@@ -233,6 +250,7 @@ export function PostDetailsPropsComponent({
               >
                 <label htmlFor="textReply"></label>
                 <textarea
+                  className={styles.createArticleReplyCommentTextarea}
                   name="textReply"
                   id="textReply"
                   rows={3}

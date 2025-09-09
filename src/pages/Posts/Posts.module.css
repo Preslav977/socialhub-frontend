@@ -1,14 +1,32 @@
+.articlePostHeader {
+  outline: 2px solid var(--secondary-color);
+  padding: var(--main-padding);
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.articlePostHeaderAnchor {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-size: 1.15rem;
+}
+
+.articlePosHeaderSpan {
+  border-bottom: 3px solid #e66c47;
+}
+
 .articlePostContainer {
-  color: white;
-  padding: 1.5em;
+  color: var(--secondary-color);
+  padding: var(--main-padding);
   display: flex;
   flex-direction: column;
   gap: 1em;
-  outline: 2px solid white;
 }
 
 .articlePostContainer:hover {
-  background-color: lightgray;
+  background-color: var(--main-background-hover-color);
+  cursor: pointer;
 }
 
 .articleAuthorImg {

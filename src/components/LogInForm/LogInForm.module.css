@@ -70,11 +70,14 @@
   text-align: left;
 }
 
-.notHaveAnAccountAnchor,
-.notHaveAnAccountAnchor:visited {
+.notHaveAnAccountAnchor {
   color: var(--main-background-color);
   text-decoration: none;
   margin-left: 0.25em;
+}
+
+.notHaveAnAccountAnchor:visited {
+  color: var(--main-background-color);
 }
 
 .notHaveAnAccountAnchor:hover {
