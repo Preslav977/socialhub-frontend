@@ -7,6 +7,7 @@ import { EditUserProfileContext } from "../../context/EditUserProfileContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Posts } from "../../pages/Posts/Posts";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
+import { Loading } from "../Loading/Loading";
 import { UserProfilePropsComponent } from "../UserProfilePropsComponent/UserProfilePropsComponent";
 
 export function UserProfile() {
@@ -118,15 +119,13 @@ export function UserProfile() {
           receiverId: userDetails.id,
         }),
       });
-      const result = await response.json();
-
-      console.log(result);
+      await response.json();
     } catch (error) {
       console.log(error);
     }
   }
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading></Loading>;
 
   if (error) return <p>Error...</p>;
 

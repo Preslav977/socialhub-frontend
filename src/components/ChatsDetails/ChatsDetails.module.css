@@ -1,5 +1,5 @@
 .chatDetailsContainer {
-  height: 100vh;
+  height: 75vh;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,6 @@
 }
 
 .chatDetailsImage {
-  border-radius: 0.5rem;
   max-width: 16rem;
   height: auto;
   margin-top: 1.5em;

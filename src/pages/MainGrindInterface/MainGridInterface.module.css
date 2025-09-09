@@ -4,6 +4,8 @@
   scroll-behavior: smooth;
   outline: 2px solid var(--main-color-input);
   min-height: 91.5vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .mainGridAsideNavigation {

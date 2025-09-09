@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPost } from "../../api/useFetchPost";
+import { Loading } from "../../components/Loading/Loading";
 import { PostDetailsPropsComponent } from "../../components/PostDetailsPropsComponent/PostDetailsPropsComponent";
 
 export function PostDetails() {
@@ -10,6 +11,8 @@ export function PostDetails() {
   const { id } = useParams();
 
   const [repliedCommentId, setRepliedCommentId] = useState(0);
+
+  const navigate = useNavigate();
 
   async function likeOrDislikePost(post) {
     try {
@@ -68,8 +71,6 @@ export function PostDetails() {
 
   async function leavingAComment(data) {
     const { text } = data;
-
-    console.log(text);
 
     try {
       const response = await fetch(`${localhostURL}/posts/${post.id}/comment`, {
@@ -146,16 +147,16 @@ export function PostDetails() {
         }),
       });
 
-      const result = await response.json();
+      await response.json();
 
-      console.log(result);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
   }
 
   if (loading) {
-    return <p>Loading post details...</p>;
+    return <Loading></Loading>;
   }
 
   if (error) {

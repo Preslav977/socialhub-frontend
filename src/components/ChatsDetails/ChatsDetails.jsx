@@ -6,6 +6,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchSingleChat } from "../../api/useFetchSingleChat";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
+import { Loading } from "../Loading/Loading";
 import styles from "./ChatsDetails.module.css";
 
 export function ChatsDetails() {
@@ -25,7 +26,7 @@ export function ChatsDetails() {
     reset,
   } = useForm();
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading></Loading>;
 
   if (error) return <p>Error...</p>;
 

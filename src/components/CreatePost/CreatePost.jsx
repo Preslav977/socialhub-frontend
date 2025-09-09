@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { HasNewPostBeenCreatedContext } from "../../context/HasNewPostBeenCreatedContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./CreatePost.module.css";
 
@@ -11,6 +12,10 @@ export function CreatePost() {
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
   const [checkIfImgIsUploaded, setCheckIfImageIsUploaded] = useState(false);
+
+  const [hasNewPostBeenCreated, setHasNewPostBeenCreated] = useContext(
+    HasNewPostBeenCreatedContext,
+  );
 
   const navigate = useNavigate();
 
@@ -43,8 +48,14 @@ export function CreatePost() {
       reset();
 
       navigate("/");
+
+      setHasNewPostBeenCreated(true);
     } finally {
       setCheckIfImageIsUploaded(false);
+
+      setTimeout(() => {
+        setHasNewPostBeenCreated(false);
+      }, 5000);
     }
   };
 
@@ -67,8 +78,14 @@ export function CreatePost() {
       reset();
 
       navigate("/");
+
+      setHasNewPostBeenCreated(true);
     } finally {
       setCheckIfImageIsUploaded(false);
+
+      setTimeout(() => {
+        setHasNewPostBeenCreated(false);
+      }, 5000);
     }
   };
 

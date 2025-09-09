@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { EditUserProfileContext } from "./context/EditUserProfileContext";
+import { HasNewPostBeenCreatedContext } from "./context/HasNewPostBeenCreatedContext";
 import { PostsContext } from "./context/PostsContext";
 import { UserDetailsContext } from "./context/UserDetailsContext";
 import {
@@ -34,27 +35,33 @@ export function App() {
 
   const [posts, setPosts] = useState();
 
+  const [hasNewPostBeenCreated, setHasNewPostBeenCreated] = useState(false);
+
   return (
     <>
-      <PostsContext.Provider value={[posts, setPosts]}>
-        <EditUserProfileContext.Provider
-          value={[editUserProfile, setEditUserProfile]}
-        >
-          <UserDetailsContext.Provider value={[userDetails, setUserDetails]}>
-            <UserIsLoggedInContext.Provider
-              value={[isUserLoggedIn, setIsUserLoggedIn]}
-            >
-              <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
-                <UserSignUpContext.Provider
-                  value={{ userSignUp, setUserSignUp }}
-                >
-                  <Outlet />
-                </UserSignUpContext.Provider>
-              </UserLogInContext.Provider>
-            </UserIsLoggedInContext.Provider>
-          </UserDetailsContext.Provider>
-        </EditUserProfileContext.Provider>
-      </PostsContext.Provider>
+      <HasNewPostBeenCreatedContext.Provider
+        value={[hasNewPostBeenCreated, setHasNewPostBeenCreated]}
+      >
+        <PostsContext.Provider value={[posts, setPosts]}>
+          <EditUserProfileContext.Provider
+            value={[editUserProfile, setEditUserProfile]}
+          >
+            <UserDetailsContext.Provider value={[userDetails, setUserDetails]}>
+              <UserIsLoggedInContext.Provider
+                value={[isUserLoggedIn, setIsUserLoggedIn]}
+              >
+                <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
+                  <UserSignUpContext.Provider
+                    value={{ userSignUp, setUserSignUp }}
+                  >
+                    <Outlet />
+                  </UserSignUpContext.Provider>
+                </UserLogInContext.Provider>
+              </UserIsLoggedInContext.Provider>
+            </UserDetailsContext.Provider>
+          </EditUserProfileContext.Provider>
+        </PostsContext.Provider>
+      </HasNewPostBeenCreatedContext.Provider>
     </>
   );
 }
