@@ -174,21 +174,16 @@ export function UserProfilePropsComponent({
                   ? "Follow"
                   : "Unfollow"}
               </button>
-
-              {/* <div
+              <img
                 onClick={(e) => {
                   e.preventDefault();
 
                   startConversationWithUser();
                 }}
-                className={styles.userConversationAnchor}
-              > */}
-              <img
                 className={styles.userStartConversationSVG}
                 src="/comment.svg"
                 alt="start conversation"
               />
-              {/* </div> */}
             </div>
           ) : (
             ""

@@ -11,7 +11,7 @@
 .mainGridAsideNavigation {
   display: flex;
   justify-content: flex-end;
-  padding: 2em 3em 0 0;
+  padding: 1.5em 6em 0 0;
   background-color: var(--main-background-color);
 }
 
@@ -48,6 +48,7 @@
   background-color: var(--main-background-color);
   outline: 2px solid var(--main-color-input);
   width: 100%;
+  position: relative;
 }
 
 @media screen and (max-width >= 1200px) {

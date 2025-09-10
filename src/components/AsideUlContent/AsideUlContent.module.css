@@ -1,5 +1,4 @@
 .asideUlContainer {
-  max-height: fit-content;
   position: sticky;
   top: 70px;
 }

@@ -1,0 +1,45 @@
+.skeletonFlexContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5em;
+}
+
+.skeletonImg,
+.skeletonContent,
+.skeletonFullWidthContent {
+  background-color: var(--main-background-hover-color);
+  height: 20px;
+}
+
+.skeletonImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.skeletonContent {
+  width: 50px;
+  height: 20px;
+}
+
+.skeletonContent {
+  width: 125px;
+  height: 20px;
+}
+
+.skeletonImg,
+.skeletonContent,
+.skeletonFullWidthContent {
+  animation: shimmer 1s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-color: var(--main-background-hover-color);
+  }
+
+  100% {
+    background-color: gray;
+  }
+}

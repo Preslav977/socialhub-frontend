@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
+import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeletion";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./Posts.module.css";
 
@@ -21,6 +22,12 @@ export function Posts({ postsHeader }) {
   const { posts, setPosts, loading, error } = useFetchPosts(url);
 
   const navigate = useNavigate();
+
+  if (loading) {
+    return <LoadingSkeleton prop={posts}></LoadingSkeleton>;
+  }
+
+  if (error) return <p>Error...</p>;
 
   async function likeOrDislikePost(post) {
     try {
@@ -75,14 +82,6 @@ export function Posts({ postsHeader }) {
       case `/posts/${id}`:
         return `${localhostURL}/posts/${id}`;
     }
-  }
-
-  if (loading) {
-    return <p>Loading posts...</p>;
-  }
-
-  if (error) {
-    return <p>Error...</p>;
   }
 
   return (

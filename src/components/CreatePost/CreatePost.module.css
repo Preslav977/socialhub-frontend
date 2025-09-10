@@ -96,10 +96,6 @@
   outline: 2px solid var(--main-color-input);
 }
 
-.formInputTag::placeholder {
-  padding: 0.5em;
-}
-
 span[role="alert"] {
   color: red;
 }

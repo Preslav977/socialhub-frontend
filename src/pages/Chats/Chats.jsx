@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useFetchChats } from "../../api/userFetchChats";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
+import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeletion";
 import styles from "./Chats.module.css";
 
 export function Chats() {
@@ -8,7 +9,7 @@ export function Chats() {
 
   const navigate = useNavigate();
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSkeleton prop={chats}></LoadingSkeleton>;
 
   if (error) return <p>Error...</p>;
 
