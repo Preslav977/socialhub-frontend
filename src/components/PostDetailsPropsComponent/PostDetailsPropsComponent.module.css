@@ -95,4 +95,13 @@
   background-color: var(--main-background-color);
   outline: 1px solid var(--secondary-color);
   color: var(--secondary-color);
+  transition: background-color 0.35s ease-in-out color 0.35s ease-in-out;
+}
+
+.createCommentBtn:hover,
+.createReplyCommentBtn:hover {
+  background-color: var(--secondary-color);
+  color: #121212;
+  outline: none;
+  cursor: pointer;
 }

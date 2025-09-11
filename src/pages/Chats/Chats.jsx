@@ -15,7 +15,7 @@ export function Chats() {
 
   return (
     <>
-      <LeftArrow textProp={"Messages"} navigation={"/messages"} />
+      <LeftArrow textProp={"Messages"} />
 
       {chats ? (
         <ul>

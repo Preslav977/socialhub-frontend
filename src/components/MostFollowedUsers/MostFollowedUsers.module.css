@@ -1,17 +1,21 @@
 .mostFollowedUsersPara {
   padding: 0.5em;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .mostFollowedUsersContainer {
   display: flex;
   gap: 1em;
   align-items: center;
-  margin-bottom: 0.5em;
+  margin: 0.5em 0 0.5em 0;
   padding: 0.15em 0.5em;
 }
 
 .mostFollowedUsersHr {
-  margin: 0.5em 0 0.5em 0;
+  background-color: var(--main-color-input);
+  width: 95%;
+  margin: 0 auto;
 }
 
 .mostFollowedUsersImg {
@@ -20,7 +24,7 @@
   border-radius: 50%;
 }
 
-.mostFollowedUsersCredentials {
+.mostFollowedUsersUserCredentials {
   display: flex;
   flex-direction: column;
   line-height: 1.35;
@@ -37,13 +41,34 @@
   text-decoration: underline;
 }
 
-.followOrUnfollowButton {
+.mostFollowedUserDisplayName {
+  color: var(--main-color-input);
+}
+
+.followButton,
+.unFollowButton {
   width: 7em;
   border-radius: 1.5em;
   margin-left: auto;
   font-size: 1rem;
   padding: 0.25em 0;
   cursor: pointer;
+}
+
+.followButton:hover {
+  background-color: rgb(250, 191, 168);
+}
+
+.unFollowButton {
+  background-color: var(--main-background-color);
+  outline: 1px solid var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+.unFollowButton:hover {
+  background-color: var(--secondary-color);
+  color: #121212;
+  outline: none;
 }
 
 @media screen and (max-width: 1200px) {

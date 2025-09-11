@@ -23,12 +23,8 @@
   border-radius: 0.5em;
   padding: 0.25em 0;
   background-color: var(--main-background-color);
-  outline: 1px solid var(--main-color-input);
+  outline: 0.5px solid var(--main-color-input);
   color: var(--secondary-color);
-}
-
-.searchForUserInput::placeholder {
-  padding: 0.5em;
 }
 
 .showFoundOrNotUsersContainer {

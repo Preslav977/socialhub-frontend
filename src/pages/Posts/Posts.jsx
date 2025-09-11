@@ -124,6 +124,7 @@ export function Posts({ postsHeader }) {
                   alt="article post author profile picture"
                 />
                 <span
+                  className={styles.articleAuthor}
                   onClick={(e) => {
                     e.stopPropagation();
 
@@ -132,7 +133,7 @@ export function Posts({ postsHeader }) {
                 >
                   {post.author.username}
                 </span>
-                <span>
+                <span className={styles.articleDate}>
                   {formatDistance(post.createdAt, new Date(), {
                     addSuffix: true,
                   })}

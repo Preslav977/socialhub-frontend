@@ -34,16 +34,16 @@
   width: 20px;
 }
 
-.formControlsImg:hover,
-.formControlsUploadingImg:hover {
-  cursor: pointer;
-}
-
 .formControlsUploadingImg {
   position: relative;
   width: 20px;
   z-index: 1;
   opacity: 0;
+}
+
+.formControlsImg:hover,
+.formControlsUploadingImg:hover {
+  cursor: pointer;
 }
 
 .formControlsImg:first-child {

@@ -88,12 +88,20 @@ export function MostFollowedUsers() {
                   >
                     <p>{user.username}</p>
                   </Link>
-                  <p>{user.display_name}</p>
+                  <p className={styles.mostFollowedUserDisplayName}>
+                    {user.display_name}
+                  </p>
                 </div>
                 <div className={styles.followOrUnfollowButtonContainer}>
                   <button
                     onClick={() => followMostFollowedUsers(user)}
-                    className={styles.followOrUnfollowButton}
+                    className={
+                      !userLogIn.following.some(
+                        (followedUser) => followedUser.id === user.id,
+                      )
+                        ? styles.followButton
+                        : styles.unFollowButton
+                    }
                   >
                     {!userLogIn.following.some(
                       (followedUser) => followedUser.id === user.id,
