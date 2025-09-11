@@ -6,8 +6,8 @@ export function LoadingSkeleton({ prop }) {
     <>
       {prop ? (
         <>
-          {prop.map(() => (
-            <div key={prop.id} className={styles.skeletonContainer}>
+          {prop.map((obj) => (
+            <div key={obj.id} className={styles.skeletonContainer}>
               <div className={styles.skeletonFlexContainer}>
                 <div className={styles.skeletonImg}></div>
                 <div className={styles.skeletonContent}></div>

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AsideUlContent } from "../../components/AsideUlContent/AsideUlContent";
+import { Footer } from "../../components/Footer/Footer";
 import { LatestUser } from "../../components/LatestUsers/LatestUsers";
 import { Modal } from "../../components/Modal/Modal";
 import { MostFollowedUsers } from "../../components/MostFollowedUsers/MostFollowedUsers";
@@ -42,6 +43,7 @@ export function MainGridInterface({ pageProp }) {
         </section>
       </main>
       {hasNewPostBeenCreated ? <Modal></Modal> : ""}
+      <Footer />
     </>
   );
 }

@@ -1,0 +1,31 @@
+.footerContainer {
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--main-background-color);
+  display: none;
+  padding: 0.5em;
+  height: fit-content;
+}
+
+.footerContainer li {
+  list-style: none;
+  display: flex;
+  padding: 0.15em 0.25em;
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+  border-radius: 1em;
+  transition: transform 0.25s ease-in-out;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.footerSvg {
+  width: 30px;
+}
+
+@media screen and (max-width: 480px) {
+  .footerContainer {
+    display: flex;
+  }
+}

@@ -5,8 +5,8 @@ export function LoadingSkeletonUsers({ users }) {
     <>
       {users ? (
         <>
-          {users.map(() => (
-            <div key={users.id} className={styles.skeletonContainer}>
+          {users.map((user) => (
+            <div key={user.id} className={styles.skeletonContainer}>
               <div className={styles.skeletonFlexContainer}>
                 <div className={styles.skeletonImg}></div>
                 <div className={styles.skeletonFlexContentContainer}>
