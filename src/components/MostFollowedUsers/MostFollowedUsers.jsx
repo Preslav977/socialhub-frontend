@@ -4,7 +4,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchMostFollowedUsers } from "../../api/useFetchMostFollowedUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";
-import { Loading } from "../Loading/Loading";
+import { LoadingSkeletonUsers } from "../LoadingSkeletonUsers/LoadingSkeletonUsers";
 import styles from "./MostFollowedUsers.module.css";
 
 export function MostFollowedUsers() {
@@ -13,7 +13,7 @@ export function MostFollowedUsers() {
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
-  if (loading) return <Loading message={"most followed users"} />;
+  if (loading) return <LoadingSkeletonUsers users={mostFollowedUsers} />;
 
   if (error) return <Error error={"most followed users"} />;
 

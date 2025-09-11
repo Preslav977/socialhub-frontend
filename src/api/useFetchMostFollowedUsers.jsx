@@ -26,7 +26,11 @@ export const useFetchMostFollowedUsers = () => {
       })
       .then((response) => setMostFollowedUsers(response))
       .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+      .finally(() =>
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000),
+      );
   }, [setMostFollowedUsers]);
 
   return { mostFollowedUsers, setMostFollowedUsers, error, loading };

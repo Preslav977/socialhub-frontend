@@ -1,12 +1,8 @@
 .skeletonContainer {
   position: relative;
-  transform: translate(0%, 4.5em);
-  width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 1.5em;
-  top: -3%;
-  gap: 1.2em;
+  padding: 0.5em;
 }
 
 .skeletonFlexContainer {
@@ -15,32 +11,43 @@
   gap: 0.5em;
 }
 
+.skeletonFlexContentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.5em;
+  padding: 0.15em 0.5em;
+  gap: 1em;
+}
+
 .skeletonImg,
 .skeletonContent,
-.skeletonFullWidthContent {
+.skeletonBtn {
   background-color: var(--main-background-hover-color);
   height: 20px;
 }
 
 .skeletonImg {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 
 .skeletonContent {
-  width: 50px;
+  width: 75px;
   height: 20px;
 }
 
-.skeletonContent {
-  width: 125px;
-  height: 20px;
+.skeletonBtn {
+  width: 6em;
+  border-radius: 1.5em;
+  margin-left: auto;
+  padding: 1em 0;
 }
 
 .skeletonImg,
 .skeletonContent,
-.skeletonFullWidthContent {
+.skeletonBtn {
   animation: shimmer 1s ease-in-out infinite;
 }
 

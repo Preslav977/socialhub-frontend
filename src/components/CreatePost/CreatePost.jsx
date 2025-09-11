@@ -173,7 +173,7 @@ export function CreatePost() {
           name="tag"
           id="tag"
           aria-label="tag"
-          placeholder="Please type to create a tag."
+          placeholder="Please Type to create a tag."
           {...register("tag", {
             required: true,
             minLength: 1,

@@ -83,7 +83,7 @@
 
 .submitPostBtn:hover {
   cursor: pointer;
-  background-color: lightsalmon;
+  background-color: rgb(247, 122, 73);
   color: var(--secondary-color);
 }
 

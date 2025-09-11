@@ -4,7 +4,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchLatestUsers } from "../../api/useFetchLatestUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";
-import { Loading } from "../Loading/Loading";
+import { LoadingSkeletonUsers } from "../LoadingSkeletonUsers/LoadingSkeletonUsers";
 import styles from "./LatestUsers.module.css";
 
 export function LatestUser() {
@@ -12,7 +12,7 @@ export function LatestUser() {
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
-  if (loading) return <Loading message={"latest users"} />;
+  if (loading) return <LoadingSkeletonUsers users={latestUsers} />;
 
   if (error) return <Error error={"latest users"} />;
 

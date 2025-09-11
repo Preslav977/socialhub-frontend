@@ -24,7 +24,11 @@ export const useFetchLatestUsers = () => {
       })
       .then((response) => setLatestUsers(response))
       .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+      .finally(() =>
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000),
+      );
   }, [setLatestUsers]);
 
   return { latestUsers, setLatestUsers, error, loading };

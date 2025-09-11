@@ -6,8 +6,6 @@ import styles from "./Navbar.module.css";
 export function Navbar() {
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
-  // console.log(userLogIn);
-
   const { id, profile_picture } = userLogIn;
 
   return (
