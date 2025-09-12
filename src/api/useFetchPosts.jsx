@@ -26,7 +26,7 @@ export const useFetchPosts = (url) => {
       .finally(() =>
         setTimeout(() => {
           setLoading(false);
-        }, 2000),
+        }, 1000),
       );
   }, [url, posts, setPosts]);
 

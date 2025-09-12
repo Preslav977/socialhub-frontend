@@ -36,7 +36,7 @@
 .articlePostLikeAndComment,
 .articleCommentUser {
   display: flex;
-  gap: 0.5em;
+  gap: 1em;
 }
 
 .articleLike,
@@ -58,7 +58,7 @@
 .articlePostCommentReplies {
   display: flex;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.25em;
 }
 
 .createReplyArticleComment {

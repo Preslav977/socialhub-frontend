@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useFetchChats } from "../../api/userFetchChats";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
-import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeletion";
+import { LoadingSkeletonChats } from "../../components/LoadingSkeletonChats/LoadingSkeletonChats";
 import styles from "./Chats.module.css";
 
 export function Chats() {
@@ -10,7 +10,8 @@ export function Chats() {
 
   const navigate = useNavigate();
 
-  if (loading) return <LoadingSkeleton prop={chats}></LoadingSkeleton>;
+  if (loading)
+    return <LoadingSkeletonChats chats={chats}></LoadingSkeletonChats>;
 
   if (error)
     return (
