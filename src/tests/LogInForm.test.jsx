@@ -1,8 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+import { localhostURL } from "../../utility/localhostURL";
 import { routes } from "../router/routes";
+import { server } from "./mocks/server";
 
 describe("should render LogInForm", () => {
   it("should render the form with it's content", () => {
@@ -70,13 +73,14 @@ describe("should render LogInForm", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const response = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({ username: "preslaw", password: "12345678B" }),
-      );
+    await expect(response.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -91,8 +95,6 @@ describe("should render LogInForm", () => {
     expect(screen.queryByText("Username is required")).not.toBeInTheDocument();
 
     expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
-
-    spiedFetch.mockRestore();
   });
 
   it("should render loading spinner when successfully login", async () => {
@@ -104,13 +106,14 @@ describe("should render LogInForm", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const response = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({ username: "preslaw", password: "12345678B" }),
-      );
+    await expect(response.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -123,8 +126,6 @@ describe("should render LogInForm", () => {
     await user.click(screen.queryByRole("button", { name: "Login" }));
 
     expect(await screen.findByAltText("loading spinner"));
-
-    spiedFetch.mockRestore();
   });
 
   it("should render an error if wrong credentials are provided", async () => {
@@ -135,16 +136,12 @@ describe("should render LogInForm", () => {
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
-
-    const spiedFetch = vi.spyOn(global, "fetch");
-
-    const userLogInErr = {
-      errorMsg: "Password or Username is incorrect",
-    };
-
-    spiedFetch.mockResolvedValue(
-      Response.json(userLogInErr, {
-        status: 401,
+    server.use(
+      http.post(`${localhostURL}/login`, () => {
+        return HttpResponse.json(
+          { msg: "Password or Username is incorrect" },
+          { status: 401 },
+        );
       }),
     );
 
@@ -161,8 +158,6 @@ describe("should render LogInForm", () => {
     expect(
       screen.queryByText("Password or Username is incorrect").textContent,
     ).toMatch(/password or username is incorrect/i);
-
-    spiedFetch.mockRestore();
   });
 
   it("should render loading spinner on guest user login", async () => {
@@ -174,17 +169,14 @@ describe("should render LogInForm", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const response = await fetch(`${localhostURL}/guest_login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          username: "preslaw",
-          password: "12345678B",
-          role: "guest",
-        }),
-      );
+    await expect(response.json()).resolves.toEqual({
+      username: "guest",
+      password: "12345678B",
+    });
 
     await user.type(screen.queryByLabelText("username"), "test");
 
@@ -197,8 +189,6 @@ describe("should render LogInForm", () => {
     await user.click(screen.queryByRole("button", { name: "Guest User" }));
 
     expect(await screen.findByAltText("loading spinner"));
-
-    spiedFetch.mockRestore();
   });
 
   it("should navigate to signup form and render the form", async () => {

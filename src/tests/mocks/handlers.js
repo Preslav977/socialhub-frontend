@@ -20,4 +20,24 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.post(`${localhostURL}/login`, () => {
+    return HttpResponse.json(
+      {
+        username: "preslaw",
+        password: "12345678B",
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.post(`${localhostURL}/guest_login`, () => {
+    return HttpResponse.json(
+      {
+        username: "guest",
+        password: "12345678B",
+      },
+      { status: 200 },
+    );
+  }),
 ];
