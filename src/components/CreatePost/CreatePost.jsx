@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { HasNewPostBeenCreatedContext } from "../../context/HasNewPostBeenCreatedContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
+import { ErrorElement } from "../ErrorElement/ErrorElement";
 import styles from "./CreatePost.module.css";
 
 export function CreatePost() {
@@ -16,6 +17,8 @@ export function CreatePost() {
   const [hasNewPostBeenCreated, setHasNewPostBeenCreated] = useContext(
     HasNewPostBeenCreatedContext,
   );
+
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   const navigate = useNavigate();
 
@@ -50,6 +53,8 @@ export function CreatePost() {
       navigate("/");
 
       setHasNewPostBeenCreated(true);
+    } catch (error) {
+      setIsTokenHasExpired(error);
     } finally {
       setCheckIfImageIsUploaded(false);
 
@@ -80,6 +85,8 @@ export function CreatePost() {
       navigate("/");
 
       setHasNewPostBeenCreated(true);
+    } catch (error) {
+      setIsTokenHasExpired(error);
     } finally {
       setCheckIfImageIsUploaded(false);
 
@@ -92,6 +99,16 @@ export function CreatePost() {
   const onChange = (e) => {
     setPostLetterLength(e.target.value.length);
   };
+
+  if (isTokenHasExpired)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
 
   return (
     <form

@@ -1,4 +1,3 @@
-// import { LoadingSkeletonProps } from "../LoadingSkeletonProps/LoadingSkeletonProps";
 import styles from "./LoadingSkeleton.module.css";
 
 export function LoadingSkeleton({ prop }) {

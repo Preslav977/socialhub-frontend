@@ -17,7 +17,7 @@ export const useFetchChats = () => {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new Error("Failed to fetch chats");
+          throw new Error("Failed to fetch chats!");
         }
         return response.json();
       })

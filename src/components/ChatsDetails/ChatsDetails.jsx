@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchSingleChat } from "../../api/useFetchSingleChat";
 import { UserLogInContext } from "../../context/UserLogInContext";
+import { ErrorElement } from "../ErrorElement/ErrorElement";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
 import { Loading } from "../Loading/Loading";
 import styles from "./ChatsDetails.module.css";
@@ -19,16 +20,14 @@ export function ChatsDetails() {
 
   const [sendMessageOrImage, setSendMessageOrImage] = useState(false);
 
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
+
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
-
-  if (loading) return <Loading></Loading>;
-
-  if (error) return <p>Error...</p>;
 
   const onSubmitMessageText = async (data) => {
     const { text } = data;
@@ -59,7 +58,7 @@ export function ChatsDetails() {
 
       reset();
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     } finally {
       setSendMessageOrImage(false);
     }
@@ -94,11 +93,23 @@ export function ChatsDetails() {
 
       reset();
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     } finally {
       setSendMessageOrImage(false);
     }
   };
+
+  if (loading) return <Loading></Loading>;
+
+  if (error || isTokenHasExpired)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
 
   return (
     <>

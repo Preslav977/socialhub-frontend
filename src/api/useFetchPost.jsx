@@ -20,7 +20,7 @@ export const useFetchPost = () => {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new Error("Failed to fetch single post");
+          throw new Error("Failed to fetch single post!");
         }
         return response.json();
       })

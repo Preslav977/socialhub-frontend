@@ -18,7 +18,7 @@ export const useFetchUser = (id) => {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new Error("Failed to fetch user details. Try to login again!");
+          throw new Error("Failed to fetch user details!");
         }
         return response.json();
       })

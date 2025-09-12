@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchLatestUsers } from "../../api/useFetchLatestUsers";
@@ -12,9 +12,7 @@ export function LatestUser() {
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
-  if (loading) return <LoadingSkeletonUsers users={latestUsers} />;
-
-  if (error) return <Error error={"latest users"} />;
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   async function followLatestUsers(user) {
     try {
@@ -58,9 +56,14 @@ export function LatestUser() {
 
       setUserLogIn(updateLoggedInUser);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
+
+  if (loading) return <LoadingSkeletonUsers users={latestUsers} />;
+
+  if (error || isTokenHasExpired)
+    return <Error error={"Failed to fetch latest users!"} />;
 
   return (
     <>

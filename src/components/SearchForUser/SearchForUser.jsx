@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { ErrorElement } from "../ErrorElement/ErrorElement";
 import styles from "./SearchForUser.module.css";
 
 export function SearchForUser() {
   const [user, setUser] = useState(null);
 
   const [searchForUser, setSearchForUser] = useState("");
+
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   async function searchAndRenderUser(e) {
     e.preventDefault();
@@ -26,9 +29,19 @@ export function SearchForUser() {
 
       setUser(result);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
+
+  if (isTokenHasExpired)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
 
   return (
     <form

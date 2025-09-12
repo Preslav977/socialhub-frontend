@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPost } from "../../api/useFetchPost";
+import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { Loading } from "../../components/Loading/Loading";
 import { PostDetailsPropsComponent } from "../../components/PostDetailsPropsComponent/PostDetailsPropsComponent";
 
@@ -11,6 +12,8 @@ export function PostDetails() {
   const { id } = useParams();
 
   const [repliedCommentId, setRepliedCommentId] = useState(0);
+
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   const navigate = useNavigate();
 
@@ -36,7 +39,7 @@ export function PostDetails() {
 
       setPost(likedOrDislikedPostObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -65,7 +68,7 @@ export function PostDetails() {
 
       setPost(likedOrDislikedCommentObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -95,7 +98,7 @@ export function PostDetails() {
 
       setPost(commentPostObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -130,7 +133,7 @@ export function PostDetails() {
 
       setPost(commentPostObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -151,17 +154,19 @@ export function PostDetails() {
 
       navigate("/");
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
-  if (loading) {
-    return <Loading></Loading>;
-  }
+  if (loading) return <Loading></Loading>;
 
-  if (error) {
-    return <p>Error...</p>;
-  }
+  if (error || isTokenHasExpired)
+    <ErrorElement
+      textProp={"400 Bad Request"}
+      textDescriptionProp={
+        "Token seems to be lost in the darkness. Login can fix that!"
+      }
+    ></ErrorElement>;
 
   return (
     <>

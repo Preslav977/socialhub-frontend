@@ -1,6 +1,6 @@
 import styles from "./ErrorElement.module.css";
 
-export function ErrorElement() {
+export function ErrorElement({ textProp, textDescriptionProp }) {
   return (
     <>
       <div className={styles.errorElementContainer}>
@@ -9,8 +9,8 @@ export function ErrorElement() {
           src="/magnifying-glass.svg"
           alt="404 error magnifying glass"
         />
-        <p className={styles.errorPara}>404 Page not found</p>
-        <p>Lost in the wilderness? This page couldn't find its way also.</p>
+        <p className={styles.errorPara}>{textProp}</p>
+        <p>{textDescriptionProp}</p>
       </div>
     </>
   );

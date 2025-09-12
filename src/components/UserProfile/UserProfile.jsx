@@ -6,6 +6,7 @@ import { useFetchUser } from "../../api/useFetchUser";
 import { EditUserProfileContext } from "../../context/EditUserProfileContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Posts } from "../../pages/Posts/Posts";
+import { ErrorElement } from "../ErrorElement/ErrorElement";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
 import { Loading } from "../Loading/Loading";
 import { UserProfilePropsComponent } from "../UserProfilePropsComponent/UserProfilePropsComponent";
@@ -26,6 +27,8 @@ export function UserProfile() {
   const [usernameError, setUsernameError] = useState("");
 
   const [displayNameError, setDisplayNameError] = useState("");
+
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   const { handleSubmit, reset } = useForm();
 
@@ -63,7 +66,7 @@ export function UserProfile() {
         reset();
       }
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   };
 
@@ -102,7 +105,7 @@ export function UserProfile() {
 
       setUserLoggedIn(followOrUnfollowUserLoggedInObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -121,13 +124,21 @@ export function UserProfile() {
       });
       await response.json();
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
   if (loading) return <Loading></Loading>;
 
-  if (error) return <p>Error...</p>;
+  if (error || isTokenHasExpired)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
 
   return (
     <>

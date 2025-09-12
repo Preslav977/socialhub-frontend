@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useFetchChats } from "../../api/userFetchChats";
+import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
 import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeletion";
 import styles from "./Chats.module.css";
@@ -11,7 +12,15 @@ export function Chats() {
 
   if (loading) return <LoadingSkeleton prop={chats}></LoadingSkeleton>;
 
-  if (error) return <p>Error...</p>;
+  if (error)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
 
   return (
     <>

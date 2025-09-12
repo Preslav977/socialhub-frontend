@@ -1,8 +1,9 @@
 import { formatDistance } from "date-fns";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
+import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
 import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeletion";
 import { UserLogInContext } from "../../context/UserLogInContext";
@@ -21,13 +22,9 @@ export function Posts({ postsHeader }) {
 
   const { posts, setPosts, loading, error } = useFetchPosts(url);
 
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
+
   const navigate = useNavigate();
-
-  if (loading) {
-    return <LoadingSkeleton prop={posts}></LoadingSkeleton>;
-  }
-
-  if (error) return <p>Error...</p>;
 
   async function likeOrDislikePost(post) {
     try {
@@ -41,6 +38,7 @@ export function Posts({ postsHeader }) {
           id: post.id,
         }),
       });
+
       const result = await response.json();
 
       setPosts(
@@ -57,7 +55,7 @@ export function Posts({ postsHeader }) {
         }),
       );
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -83,6 +81,18 @@ export function Posts({ postsHeader }) {
         return `${localhostURL}/posts/${id}`;
     }
   }
+
+  if (loading) return <LoadingSkeleton prop={posts}></LoadingSkeleton>;
+
+  if (error || isTokenHasExpired)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
 
   return (
     <>

@@ -17,7 +17,14 @@ export const routes = [
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorElement />,
+    errorElement: (
+      <ErrorElement
+        textProp={"404 Page not found"}
+        textDescriptionProp={
+          "Lost in the wilderness? This page couldn't find its way also"
+        }
+      />
+    ),
     children: [
       {
         index: true,
