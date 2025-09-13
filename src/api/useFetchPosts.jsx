@@ -23,11 +23,7 @@ export const useFetchPosts = (url) => {
       })
       .then((response) => setPosts(response))
       .catch((error) => setError(error))
-      .finally(() =>
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000),
-      );
+      .finally(() => setLoading(false));
   }, [url, posts, setPosts]);
 
   return { posts, setPosts, error, loading };

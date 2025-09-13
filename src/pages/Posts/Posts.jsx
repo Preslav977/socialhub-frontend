@@ -1,5 +1,6 @@
 import { formatDistance } from "date-fns";
 import { useContext, useState } from "react";
+import "react-loading-skeleton/dist/skeleton.css";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
@@ -82,7 +83,7 @@ export function Posts({ postsHeader }) {
     }
   }
 
-  if (loading) return <LoadingSkeleton prop={posts}></LoadingSkeleton>;
+  if (loading) return <LoadingSkeleton prop={posts} />;
 
   if (error || isTokenHasExpired)
     return (

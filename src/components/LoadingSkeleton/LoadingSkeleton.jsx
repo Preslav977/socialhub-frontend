@@ -1,20 +1,92 @@
-import styles from "./LoadingSkeleton.module.css";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export function LoadingSkeleton({ prop }) {
   return (
     <>
       {prop ? (
         <>
-          {prop.map((obj) => (
-            <div key={obj.id} className={styles.skeletonContainer}>
-              <div className={styles.skeletonFlexContainer}>
-                <div className={styles.skeletonImg}></div>
-                <div className={styles.skeletonContent}></div>
-                <div className={styles.skeletonContent}></div>
+          {prop.map((p) => (
+            <SkeletonTheme
+              key={p.id}
+              duration={5}
+              baseColor="#464545"
+              highlightColor="gray"
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "1.5em",
+                  gap: "0.5em",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5em",
+                  }}
+                >
+                  <p>
+                    <Skeleton
+                      width={"40px"}
+                      height={"40px"}
+                      borderRadius={"50%"}
+                      enableAnimation:true
+                      count={1}
+                    ></Skeleton>
+                  </p>
+                  <p>
+                    <Skeleton
+                      width={"150px"}
+                      height={"20px"}
+                      enableAnimation:true
+                      count={1}
+                    ></Skeleton>
+                  </p>
+                  <p>
+                    <Skeleton
+                      width={"150px"}
+                      height={"20px"}
+                      enableAnimation:true
+                      count={1}
+                    ></Skeleton>
+                  </p>
+                </div>
+                <p>
+                  <Skeleton
+                    width={"100%"}
+                    height={"20px"}
+                    enableAnimation:true
+                    count={1}
+                  ></Skeleton>
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "1em",
+                  }}
+                >
+                  <p>
+                    <Skeleton
+                      width={"70px"}
+                      height={"20px"}
+                      enableAnimation:true
+                      count={1}
+                    ></Skeleton>
+                  </p>
+                  <p>
+                    <Skeleton
+                      width={"70px"}
+                      height={"20px"}
+                      enableAnimation:true
+                      count={1}
+                    ></Skeleton>
+                  </p>
+                </div>
               </div>
-              <div className={styles.skeletonFullWidthContent}></div>
-              <div className={styles.skeletonFullWidthContent}></div>
-            </div>
+            </SkeletonTheme>
           ))}
         </>
       ) : (

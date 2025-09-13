@@ -1,15 +1,17 @@
 import {
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
+import { localhostURL } from "../../utility/localhostURL";
 import { routes } from "../router/routes";
 
 describe("should render MainGridInterface", () => {
-  it("should login and render the aside, and right side section", async () => {
+  it.only("should login and render the aside, and right side section", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/"],
       initialIndex: 0,
@@ -19,66 +21,45 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    const postsResponse = await fetch(`${localhostURL}/posts`);
+
+    await expect(postsResponse.json()).resolves.toEqual([
+      {
+        id: 1,
+        content: "post on home",
+        imageURL: null,
+        tag: "post",
+        likes: 1,
+        comments: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+        authorId: 1,
+        postLikedByUsers: [],
+        author: {
           id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
+          username: "author",
+          display_name: "user",
           bio: "",
           website: "",
           github: "",
           password: "12345678B",
           confirm_password: "12345678B",
           profile_picture: "",
-          following: [],
+          role: "USER",
           followersNumber: 0,
           followingNumber: 0,
-          posts: 0,
-        }),
-      )
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+          createdAt: "2025-09-13T06:03:47.988Z",
+        },
+      },
+    ]);
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -90,6 +71,8 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.queryByRole("button", { name: "Login" }));
 
+    // screen.debug();
+
     const loading = screen.getByAltText("loading spinner");
 
     expect(loading).toBeInTheDocument();
@@ -97,8 +80,6 @@ describe("should render MainGridInterface", () => {
     await waitForElementToBeRemoved(() =>
       screen.getByAltText("loading spinner"),
     );
-
-    // screen.debug();
 
     expect(screen.queryByText("Home").textContent).toMatch(/home/i);
 
@@ -126,7 +107,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByText("Added most followed users feature").textContent,
     ).toMatch(/added most followed users feature/i);
 
-    spiedFetch.mockRestore();
+    await waitFor(() => screen.queryByText("Loading posts..."));
+
+    screen.debug();
   });
 
   it("should login, follow a user and render unfollow button", async () => {
