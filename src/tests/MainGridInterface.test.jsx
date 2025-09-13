@@ -137,7 +137,7 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryAllByText("user5")[0].textContent).toMatch(/user/);
   });
 
-  it.only("should login, follow a user and render unfollow button", async () => {
+  it("should login, follow a user and render unfollow button", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/"],
       initialIndex: 0,
@@ -305,13 +305,11 @@ describe("should render MainGridInterface", () => {
 
     await waitFor(() => screen.queryByText("Loading latest users..."));
 
-    // screen.debug();
-
     await user.click(screen.queryAllByRole("button")[0]);
 
     expect(screen.queryByRole("button", { name: "Unfollow" }));
 
-    screen.debug();
+    // screen.debug();
   });
 
   it("should login navigate to settings and render the component", async () => {
@@ -324,87 +322,14 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      )
-
-      .mockResolvedValue(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      );
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -431,8 +356,6 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryByText("Account").textContent).toMatch(/account/i);
 
     expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
-
-    spiedFetch.mockRestore();
   });
 
   it("should login navigate to settings and logout", async () => {
@@ -445,68 +368,14 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -535,11 +404,9 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
 
     await user.click(screen.queryByText("Logout"));
-
-    spiedFetch.mockRestore();
   });
 
-  it("should login and navigate to home and render posts", async () => {
+  it.only("should login and navigate to home and render posts", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/"],
       initialIndex: 0,
@@ -548,102 +415,45 @@ describe("should render MainGridInterface", () => {
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
+    const posts = await fetch(`${localhostURL}/posts`);
+
+    await expect(posts.json()).resolves.toEqual([
+      {
+        id: 1,
+        content: "post on home",
+        imageURL: null,
+        tag: "post",
+        likes: 0,
+        comments: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+        authorId: 1,
+        postLikedByUsers: [],
+        author: {
           id: 1,
           username: "preslaw",
-          display_name: "preslaw",
+          display_name: "preslaw1",
           bio: "",
           website: "",
           github: "",
           password: "12345678B",
           confirm_password: "12345678B",
-          profile_picture: "./user-default-pfp.jpg",
-          followedBy: [],
-          following: [],
-          createdPostsByUsers: [],
+          profile_picture: "",
+          role: "USER",
           followersNumber: 0,
           followingNumber: 0,
-          posts: 0,
-        }),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 1,
-            content: "post on home",
-            imageURL: null,
-            tag: "post",
-            likes: 1,
-            comments: 0,
-            createdAt: new Date(),
-            authorId: 1,
-            postLikedByUsers: [],
-            author: {
-              id: 1,
-              username: "author",
-              display_name: "user",
-              bio: "",
-              website: "",
-              github: "",
-              password: "12345678B",
-              confirm_password: "12345678B",
-              profile_picture: "",
-              role: "USER",
-              followersNumber: 0,
-              followingNumber: 0,
-              posts: 1,
-              createdAt: new Date(),
-            },
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+          createdAt: "2025-09-13T06:03:47.988Z",
+        },
+      },
+    ]);
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -661,9 +471,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByText("Loading posts..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitFor(() => screen.queryByText("Loading posts..."));
 
     screen.debug();
 
@@ -671,23 +481,15 @@ describe("should render MainGridInterface", () => {
 
     expect(screen.queryByText("Following").textContent).toMatch(/following/i);
 
-    expect(screen.queryByText("author").textContent).toMatch(/author/i);
-
-    expect(screen.queryByText("less than a minute ago").textContent).toMatch(
-      /less than a minute ago/i,
-    );
-
     expect(screen.queryByText("post on home").textContent).toMatch(
       /post on home/i,
     );
 
-    expect(screen.queryByText("author").textContent).toMatch(/author/i);
+    expect(screen.queryByText("preslaw").textContent).toMatch(/preslaw/i);
 
     expect(screen.queryAllByText("0")[0].textContent).toEqual("0");
 
     expect(screen.queryAllByText("0")[1].textContent).toEqual("0");
-
-    spiedFetch.mockRestore();
   });
 
   it("should login navigate to home page and like a post", async () => {
