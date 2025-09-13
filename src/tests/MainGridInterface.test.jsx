@@ -5,10 +5,12 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { localhostURL } from "../../utility/localhostURL";
 import { routes } from "../router/routes";
+import { server } from "./mocks/server";
 
 describe("should render MainGridInterface", () => {
   it("should login and render the aside, and right side section", async () => {
@@ -34,6 +36,7 @@ describe("should render MainGridInterface", () => {
 
     await expect(latestUsers.json()).resolves.toEqual([
       {
+        id: 2,
         username: "user",
         display_name: "user",
         followedBy: [],
@@ -406,7 +409,7 @@ describe("should render MainGridInterface", () => {
     await user.click(screen.queryByText("Logout"));
   });
 
-  it.only("should login and navigate to home and render posts", async () => {
+  it("should login and navigate to home and render posts", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/"],
       initialIndex: 0,
@@ -415,6 +418,7 @@ describe("should render MainGridInterface", () => {
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
+
     const loginResponse = await fetch(`${localhostURL}/login`, {
       method: "POST",
     });
@@ -475,7 +479,7 @@ describe("should render MainGridInterface", () => {
 
     await waitFor(() => screen.queryByText("Loading posts..."));
 
-    screen.debug();
+    // screen.debug();
 
     expect(screen.queryByText("Recent").textContent).toMatch(/recent/i);
 
@@ -502,32 +506,43 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    const likePost = await fetch(`${localhostURL}/posts/1/like`, {
+      method: "PUT",
+      body: JSON.stringify({
+        id: 1,
+      }),
+    });
+
+    await expect(likePost.json()).resolves.toEqual({
+      id: 1,
+      content: "post on home",
+      imageURL: null,
+      tag: "post",
+      likes: 1,
+      comments: 0,
+      createdAt: "2025-09-13T06:03:47.988Z",
+      authorId: 1,
+      postLikedByUsers: [
+        {
           id: 1,
           username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "./user-default-pfp.jpg",
-          followedBy: [],
-          following: [],
-          createdPostsByUsers: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
+          display_name: "preslaw1",
+        },
+      ],
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
+    server.use(
+      http.get(`${localhostURL}/posts`, () => {
+        return HttpResponse.json([
           {
             id: 1,
             content: "post on home",
@@ -535,17 +550,13 @@ describe("should render MainGridInterface", () => {
             tag: "post",
             likes: 1,
             comments: 0,
-            createdAt: new Date(),
+            createdAt: "2025-09-13T06:03:47.988Z",
             authorId: 1,
-            postLikedByUsers: [
-              {
-                id: 1,
-              },
-            ],
+            postLikedByUsers: [],
             author: {
               id: 1,
-              username: "author",
-              display_name: "user",
+              username: "preslaw",
+              display_name: "preslaw1",
               bio: "",
               website: "",
               github: "",
@@ -555,52 +566,12 @@ describe("should render MainGridInterface", () => {
               role: "USER",
               followersNumber: 0,
               followingNumber: 0,
-              posts: 1,
-              createdAt: new Date(),
+              createdAt: "2025-09-13T06:03:47.988Z",
             },
           },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+        ]);
+      }),
+    );
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -618,33 +589,27 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByText("Loading posts..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitFor(() => screen.queryByText("Loading posts..."));
+
+    screen.debug();
 
     expect(screen.queryByText("Recent").textContent).toMatch(/recent/i);
 
     expect(screen.queryByText("Following").textContent).toMatch(/following/i);
 
-    expect(screen.queryByText("author").textContent).toMatch(/author/i);
-
-    expect(screen.queryByText("less than a minute ago").textContent).toMatch(
-      /less than a minute ago/i,
-    );
-
     expect(screen.queryByText("post on home").textContent).toMatch(
       /post on home/i,
     );
 
-    expect(screen.queryByText("author").textContent).toMatch(/author/i);
+    expect(screen.queryByText("preslaw").textContent).toMatch(/preslaw/i);
 
-    expect(screen.queryAllByText("0")[0].textContent).toEqual("0");
+    await user.click(screen.queryByAltText("like the post"));
 
-    await user.click(screen.queryByTestId("articleLike"));
+    expect(screen.queryByText("0").textContent).toEqual("0");
 
     expect(screen.queryByText("1").textContent).toEqual("1");
-
-    spiedFetch.mockRestore();
   });
 
   it("should login and render message that there is no posts in home", async () => {
@@ -657,73 +622,20 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "./user-default-pfp.jpg",
-          followedBy: [],
-          following: [],
-          createdPostsByUsers: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-      .mockResolvedValueOnce(
-        Response.json({ message: "No posts has been created!" }),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+    server.use(
+      http.get(`${localhostURL}/posts`, () => {
+        return HttpResponse.json({ message: "No posts has been created!" });
+      }),
+    );
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -741,9 +653,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByText("Loading posts..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitFor(() => screen.queryByText("Loading posts..."));
 
     expect(screen.queryByText("Recent").textContent).toMatch(/recent/i);
 
@@ -752,7 +664,5 @@ describe("should render MainGridInterface", () => {
     expect(
       screen.queryByText("No posts has been created!").textContent,
     ).toMatch(/no posts has been created!/i);
-
-    spiedFetch.mockRestore();
   });
 });

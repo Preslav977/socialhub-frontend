@@ -202,4 +202,28 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.put(`${localhostURL}/posts/1/like`, () => {
+    return HttpResponse.json(
+      {
+        id: 1,
+        content: "post on home",
+        imageURL: null,
+        tag: "post",
+        likes: 1,
+        comments: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+        authorId: 1,
+        postLikedByUsers: [
+          {
+            id: 1,
+            username: "preslaw",
+            display_name: "preslaw1",
+          },
+        ],
+      },
+
+      { status: 200 },
+    );
+  }),
 ];
