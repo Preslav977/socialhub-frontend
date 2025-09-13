@@ -30,34 +30,49 @@ describe("should render MainGridInterface", () => {
       password: "12345678B",
     });
 
-    const postsResponse = await fetch(`${localhostURL}/posts`);
+    const latestUsers = await fetch(`${localhostURL}/users/latest`);
 
-    await expect(postsResponse.json()).resolves.toEqual([
+    await expect(latestUsers.json()).resolves.toEqual([
       {
-        id: 1,
-        content: "post on home",
-        imageURL: null,
-        tag: "post",
-        likes: 1,
-        comments: 0,
-        createdAt: "2025-09-13T06:03:47.988Z",
-        authorId: 1,
-        postLikedByUsers: [],
-        author: {
-          id: 1,
-          username: "author",
-          display_name: "user",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          role: "USER",
-          followersNumber: 0,
-          followingNumber: 0,
-          createdAt: "2025-09-13T06:03:47.988Z",
-        },
+        username: "user",
+        display_name: "user",
+        followedBy: [],
+        following: [],
+      },
+      {
+        username: "user1",
+        display_name: "user1",
+        followedBy: [],
+        following: [],
+      },
+      {
+        username: "user2",
+        display_name: "user2",
+        followedBy: [],
+        following: [],
+      },
+    ]);
+
+    const mostFollowed = await fetch(`${localhostURL}/users/followed`);
+
+    await expect(mostFollowed.json()).resolves.toEqual([
+      {
+        username: "user3",
+        display_name: "user3",
+        followedBy: [],
+        following: [],
+      },
+      {
+        username: "user4",
+        display_name: "user4",
+        followedBy: [],
+        following: [],
+      },
+      {
+        username: "user5",
+        display_name: "user5",
+        followedBy: [],
+        following: [],
       },
     ]);
 
@@ -107,9 +122,19 @@ describe("should render MainGridInterface", () => {
       screen.queryByText("Added most followed users feature").textContent,
     ).toMatch(/added most followed users feature/i);
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByText("Loading latest users..."));
 
-    screen.debug();
+    expect(screen.queryAllByText("user")[0].textContent).toMatch(/user/);
+
+    expect(screen.queryAllByText("user1")[0].textContent).toMatch(/user/);
+
+    expect(screen.queryAllByText("user2")[0].textContent).toMatch(/user/);
+
+    expect(screen.queryAllByText("user3")[0].textContent).toMatch(/user/);
+
+    expect(screen.queryAllByText("user4")[0].textContent).toMatch(/user/);
+
+    expect(screen.queryAllByText("user5")[0].textContent).toMatch(/user/);
   });
 
   it("should login, follow a user and render unfollow button", async () => {

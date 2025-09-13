@@ -23,11 +23,7 @@ export const useFetchChats = () => {
       })
       .then((response) => setChats(response))
       .catch((error) => setError(error))
-      .finally(() =>
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000),
-      );
+      .finally(() => setLoading(false));
   }, []);
 
   return { chats, setChats, loading, error };

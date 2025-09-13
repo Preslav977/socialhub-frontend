@@ -4,7 +4,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchLatestUsers } from "../../api/useFetchLatestUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";
-import { LoadingSkeletonUsers } from "../LoadingSkeletonUsers/LoadingSkeletonUsers";
+// import { LoadingSkeletonUsers } from "../LoadingSkeletonUsers/LoadingSkeletonUsers";
 import styles from "./LatestUsers.module.css";
 
 export function LatestUser() {
@@ -60,7 +60,9 @@ export function LatestUser() {
     }
   }
 
-  if (loading) return <LoadingSkeletonUsers users={latestUsers} />;
+  // if (loading) return <LoadingSkeletonUsers users={latestUsers} />;
+
+  if (loading) return <p>Loading latest users...</p>;
 
   if (error || isTokenHasExpired)
     return <Error error={"Failed to fetch latest users!"} />;

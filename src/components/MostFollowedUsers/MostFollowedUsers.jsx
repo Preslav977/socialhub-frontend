@@ -4,7 +4,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchMostFollowedUsers } from "../../api/useFetchMostFollowedUsers";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Error } from "../Error/Error";
-import { LoadingSkeletonUsers } from "../LoadingSkeletonUsers/LoadingSkeletonUsers";
+// import { LoadingSkeletonUsers } from "../LoadingSkeletonUsers/LoadingSkeletonUsers";
 import styles from "./MostFollowedUsers.module.css";
 
 export function MostFollowedUsers() {
@@ -61,7 +61,9 @@ export function MostFollowedUsers() {
     }
   }
 
-  if (loading) return <LoadingSkeletonUsers users={mostFollowedUsers} />;
+  // if (loading) return <LoadingSkeletonUsers users={mostFollowedUsers} />;
+
+  if (loading) return <p>Loading most followed users...</p>;
 
   if (error || isTokenHasExpired)
     return <Error error={"Failed to fetch most followers users!"} />;
