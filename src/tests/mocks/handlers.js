@@ -45,6 +45,7 @@ export const handlers = [
     return HttpResponse.json(
       [
         {
+          id: 2,
           username: "user",
           display_name: "user",
           followedBy: [],
@@ -110,6 +111,60 @@ export const handlers = [
         followedBy: [],
         following: [],
       },
+      { status: 200 },
+    );
+  }),
+
+  http.put(`${localhostURL}/users/following/2`, () => {
+    return HttpResponse.json(
+      [
+        {
+          id: 2,
+          username: "user",
+          display_name: "user",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+          followedBy: [
+            {
+              id: 1,
+              username: "preslaw",
+              display_name: "preslaw",
+              following: [],
+            },
+          ],
+          following: [],
+        },
+        {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+          followedBy: [],
+          following: [
+            {
+              id: 2,
+              username: "user",
+              display_name: "user",
+              following: [],
+            },
+          ],
+        },
+      ],
       { status: 200 },
     );
   }),

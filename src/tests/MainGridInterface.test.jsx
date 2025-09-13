@@ -11,7 +11,7 @@ import { localhostURL } from "../../utility/localhostURL";
 import { routes } from "../router/routes";
 
 describe("should render MainGridInterface", () => {
-  it.only("should login and render the aside, and right side section", async () => {
+  it("should login and render the aside, and right side section", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/"],
       initialIndex: 0,
@@ -137,7 +137,7 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryAllByText("user5")[0].textContent).toMatch(/user/);
   });
 
-  it("should login, follow a user and render unfollow button", async () => {
+  it.only("should login, follow a user and render unfollow button", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/"],
       initialIndex: 0,
@@ -147,99 +147,117 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
+    const latestUsers = await fetch(`${localhostURL}/users/latest`);
+
+    await expect(latestUsers.json()).resolves.toEqual([
+      {
+        id: 2,
+        username: "user",
+        display_name: "user",
+        followedBy: [],
+        following: [],
+      },
+      {
+        username: "user1",
+        display_name: "user1",
+        followedBy: [],
+        following: [],
+      },
+      {
+        username: "user2",
+        display_name: "user2",
+        followedBy: [],
+        following: [],
+      },
+    ]);
+
+    const mostFollowed = await fetch(`${localhostURL}/users/followed`);
+
+    await expect(mostFollowed.json()).resolves.toEqual([
+      {
+        username: "user3",
+        display_name: "user3",
+        followedBy: [],
+        following: [],
+      },
+      {
+        username: "user4",
+        display_name: "user4",
+        followedBy: [],
+        following: [],
+      },
+      {
+        username: "user5",
+        display_name: "user5",
+        followedBy: [],
+        following: [],
+      },
+    ]);
+
+    const followingUser = await fetch(`${localhostURL}/users/following/2`, {
+      method: "PUT",
+      body: JSON.stringify({
+        id: 2,
+      }),
+    });
+
+    await expect(followingUser.json()).resolves.toEqual([
+      {
+        id: 2,
+        username: "user",
+        display_name: "user",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "",
+        followersNumber: 0,
+        followingNumber: 0,
+        posts: 0,
+        followedBy: [
           {
-            id: 2,
+            id: 1,
             username: "preslaw",
             display_name: "preslaw",
+            following: [],
           },
+        ],
+        following: [],
+      },
+      {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "",
+        followersNumber: 0,
+        followingNumber: 0,
+        posts: 0,
+        followedBy: [],
+        following: [
           {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
+            id: 2,
+            username: "user",
+            display_name: "user",
+            following: [],
           },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [
-            {
-              id: 5,
-              username: "test",
-              display_name: "test",
-            },
-          ],
-          following: [
-            {
-              id: 5,
-              username: "test",
-              display_name: "test",
-            },
-          ],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      );
+        ],
+      },
+    ]);
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -251,8 +269,6 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.queryByRole("button", { name: "Login" }));
 
-    // screen.debug();
-
     const loading = screen.getByAltText("loading spinner");
 
     expect(loading).toBeInTheDocument();
@@ -260,14 +276,6 @@ describe("should render MainGridInterface", () => {
     await waitForElementToBeRemoved(() =>
       screen.getByAltText("loading spinner"),
     );
-
-    // const loadingLatestUsers = screen.getByText("Loading: latest users...");
-
-    // expect(loadingLatestUsers).toBeInTheDocument();
-
-    // await waitForElementToBeRemoved(() =>
-    //   screen.getByText("Loading: latest users..."),
-    // );
 
     expect(screen.queryByText("Home").textContent).toMatch(/home/i);
 
@@ -295,20 +303,15 @@ describe("should render MainGridInterface", () => {
       screen.queryByText("Added most followed users feature").textContent,
     ).toMatch(/added most followed users feature/i);
 
-    // expect(screen.queryByAltText("Loading: most followed users..."));
+    await waitFor(() => screen.queryByText("Loading latest users..."));
 
-    // await waitForElementToBeRemoved(() =>
-    //   screen.queryByText("Loading: most followed users..."),
-    // );
+    // screen.debug();
 
     await user.click(screen.queryAllByRole("button")[0]);
 
-    // screen.debug();
-
     expect(screen.queryByRole("button", { name: "Unfollow" }));
 
-    spiedFetch.mockRestore();
-    // screen.debug();
+    screen.debug();
   });
 
   it("should login navigate to settings and render the component", async () => {
