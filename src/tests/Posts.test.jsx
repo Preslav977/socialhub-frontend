@@ -5,7 +5,8 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+import { localhostURL } from "../../utility/localhostURL";
 import { routes } from "../router/routes";
 
 describe("should render Post component", () => {
@@ -19,68 +20,14 @@ describe("should render Post component", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -102,14 +49,6 @@ describe("should render Post component", () => {
       screen.getByAltText("loading spinner"),
     );
 
-    // const loadingLatestUsers = screen.queryByText("Loading: latest users...");
-
-    // expect(loadingLatestUsers).toBeInTheDocument();
-
-    // await waitForElementToBeRemoved(() =>
-    //   screen.queryByText("Loading: latest users..."),
-    // );
-
     await user.click(screen.queryByText("Create"));
 
     expect(screen.queryByPlaceholderText("Share whats happening..."));
@@ -121,8 +60,6 @@ describe("should render Post component", () => {
     expect(screen.queryByText("Tags:").textContent).toMatch(/tags/i);
 
     expect(screen.queryByPlaceholderText("Please type to create a tag."));
-
-    spiedFetch.mockRestore();
   });
 
   it("should login, navigate and render create post errors", async () => {
@@ -135,68 +72,14 @@ describe("should render Post component", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -214,14 +97,6 @@ describe("should render Post component", () => {
 
     await waitForElementToBeRemoved(() =>
       screen.getByAltText("loading spinner"),
-    );
-
-    const loadingLatestUsers = screen.getByText("Loading: latest users...");
-
-    expect(loadingLatestUsers).toBeInTheDocument();
-
-    await waitForElementToBeRemoved(() =>
-      screen.getByText("Loading: latest users..."),
     );
 
     await user.click(screen.queryByText("Create"));
@@ -261,8 +136,6 @@ describe("should render Post component", () => {
     expect(screen.queryByText("Tag is required").textContent).toMatch(
       /tag is required/i,
     );
-
-    spiedFetch.mockRestore();
   });
 
   it("should login, navigate and create a post", async () => {
@@ -275,79 +148,34 @@ describe("should render Post component", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
+    const createPost = await fetch(`${localhostURL}/posts`, {
+      method: "POST",
+      body: JSON.stringify({
+        content: "new post",
+        tag: "new",
+        authorId: 1,
+      }),
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json({
-          content: "post",
-          tag: "tag",
-          likes: 0,
-          comments: 0,
-          createdAt: new Date(),
-          authorId: 1,
-        }),
-      );
+    await expect(createPost.json()).resolves.toEqual({
+      id: 2,
+      content: "new post",
+      imageURL: null,
+      tag: "new",
+      likes: 0,
+      comments: 0,
+      createdAt: "2025-09-13T06:03:47.988Z",
+      authorId: 1,
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -387,6 +215,10 @@ describe("should render Post component", () => {
 
     await user.click(screen.queryByRole("button", { name: "Post" }));
 
-    spiedFetch.mockRestore();
+    expect(screen.queryByText("Post created!").textContent).toMatch(
+      /post created!/i,
+    );
+
+    expect(screen.queryByText("X").textContent).toMatch(/x/i);
   });
 });

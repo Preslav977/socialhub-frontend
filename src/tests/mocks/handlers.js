@@ -226,4 +226,21 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.post(`${localhostURL}/posts`, () => {
+    return HttpResponse.json(
+      {
+        id: 2,
+        content: "new post",
+        imageURL: null,
+        tag: "new",
+        likes: 0,
+        comments: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+        authorId: 1,
+      },
+
+      { status: 200 },
+    );
+  }),
 ];
