@@ -10,7 +10,7 @@ export const useFetchUser = (id) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${localhostURL}/users/${Number(id)}`, {
+    fetch(`${localhostURL}/users/${id}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),

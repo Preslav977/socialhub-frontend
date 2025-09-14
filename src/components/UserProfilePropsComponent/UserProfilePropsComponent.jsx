@@ -248,6 +248,7 @@ export function UserProfilePropsComponent({
         ) : (
           <>
             <button
+              data-testid="editProfileBtn"
               className={styles.userProfileBtn}
               onClick={() => setEditUserProfile(true)}
             >

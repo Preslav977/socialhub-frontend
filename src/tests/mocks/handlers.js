@@ -97,6 +97,7 @@ export const handlers = [
   http.get(`${localhostURL}/users/details`, () => {
     return HttpResponse.json(
       {
+        id: 1,
         username: "preslaw",
         display_name: "preslaw",
         bio: "",
@@ -240,6 +241,74 @@ export const handlers = [
         authorId: 1,
       },
 
+      { status: 200 },
+    );
+  }),
+
+  http.get(`${localhostURL}/users/1`, () => {
+    return HttpResponse.json({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+    });
+  }),
+
+  http.put(`${localhostURL}/users/1`, () => {
+    return HttpResponse.json({
+      id: 1,
+      username: "preslaww",
+      display_name: "preslaww1",
+      bio: "1",
+      website: "2",
+      github: "3",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "img",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+    });
+  }),
+
+  http.get(`${localhostURL}/posts/author/1`, () => {
+    return HttpResponse.json(
+      [
+        {
+          id: 1,
+          content: "post on home",
+          imageURL: null,
+          tag: "post",
+          likes: 0,
+          comments: 0,
+          createdAt: "2025-09-13T06:03:47.988Z",
+          authorId: 1,
+          postLikedByUsers: [],
+          author: {
+            id: 1,
+            username: "preslaw",
+            display_name: "preslaw1",
+            bio: "",
+            website: "",
+            github: "",
+            password: "12345678B",
+            confirm_password: "12345678B",
+            profile_picture: "",
+            role: "USER",
+            followersNumber: 0,
+            followingNumber: 0,
+            createdAt: "2025-09-13T06:03:47.988Z",
+          },
+        },
+      ],
       { status: 200 },
     );
   }),

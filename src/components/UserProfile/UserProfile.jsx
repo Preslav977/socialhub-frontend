@@ -16,9 +16,7 @@ export function UserProfile() {
 
   const [userLoggedIn, setUserLoggedIn] = useContext(UserLogInContext);
 
-  const { userDetails, setUserDetails, error, loading } = useFetchUser(
-    Number(id),
-  );
+  const { userDetails, setUserDetails, error, loading } = useFetchUser(id);
 
   const [editUserProfile, setEditUserProfile] = useContext(
     EditUserProfileContext,
@@ -146,6 +144,22 @@ export function UserProfile() {
       {userLoggedIn.id !== Number(id) ? (
         <UserProfilePropsComponent
           onSubmit={(e) => handleSubmit(onSubmit(e))}
+          profile_picture={userLoggedIn.profile_picture}
+          username={userLoggedIn.username}
+          usernameError={usernameError}
+          display_name={userLoggedIn.display_name}
+          displayNameError={displayNameError}
+          followersNumber={userLoggedIn.followersNumber}
+          followingNumber={userLoggedIn.followingNumber}
+          posts={userLoggedIn.posts}
+          bio={userLoggedIn.bio}
+          website={userLoggedIn.website}
+          github={userLoggedIn.github}
+          userLogInID={userLoggedIn.id}
+        />
+      ) : (
+        <UserProfilePropsComponent
+          onSubmit={(e) => handleSubmit(onSubmit(e))}
           profile_picture={userDetails.profile_picture}
           username={userDetails.username}
           usernameError={usernameError}
@@ -161,22 +175,6 @@ export function UserProfile() {
           userLogInID={userDetails.id}
           followOrUnFollowUser={followOrUnFollowUser}
           startConversationWithUser={startChatWithUser}
-        />
-      ) : (
-        <UserProfilePropsComponent
-          onSubmit={(e) => handleSubmit(onSubmit(e))}
-          profile_picture={userLoggedIn.profile_picture}
-          username={userLoggedIn.username}
-          usernameError={usernameError}
-          display_name={userLoggedIn.display_name}
-          displayNameError={displayNameError}
-          followersNumber={userLoggedIn.followersNumber}
-          followingNumber={userLoggedIn.followingNumber}
-          posts={userLoggedIn.posts}
-          bio={userLoggedIn.bio}
-          website={userLoggedIn.website}
-          github={userLoggedIn.github}
-          userLogInID={userLoggedIn.id}
         />
       )}
       <Posts postsHeader={false} />
