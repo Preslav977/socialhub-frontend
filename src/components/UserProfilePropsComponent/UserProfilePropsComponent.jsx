@@ -161,6 +161,7 @@ export function UserProfilePropsComponent({
           {Number(userLogInID) !== userLoggedIn.id ? (
             <div className={styles.userFollowAndStartConversationFlexContainer}>
               <button
+                data-testid="followUserProfileButton"
                 onClick={(e) => {
                   e.preventDefault();
 

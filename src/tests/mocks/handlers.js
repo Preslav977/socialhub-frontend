@@ -352,4 +352,16 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.post(`${localhostURL}/chats`, () => {
+    return HttpResponse.json(
+      {
+        id: "123bg",
+        senderChatId: 1,
+        receiverChatId: 2,
+      },
+
+      { status: 200 },
+    );
+  }),
 ];
