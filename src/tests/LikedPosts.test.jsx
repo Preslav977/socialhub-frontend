@@ -1,290 +1,157 @@
-// import {
-//   render,
-//   screen,
-//   waitForElementToBeRemoved,
-// } from "@testing-library/react";
-// import userEvent from "@testing-library/user-event";
-// import { createMemoryRouter, RouterProvider } from "react-router-dom";
-// import { describe, expect, it, vi } from "vitest";
-// import { routes } from "../router/routes";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { describe, expect, it } from "vitest";
+import { localhostURL } from "../../utility/localhostURL";
+import { routes } from "../router/routes";
+import { server } from "./mocks/server";
 
-// describe("should render Liked posts component", () => {
-//   it("should login and navigate to likes and render liked posts", async () => {
-//     const router = createMemoryRouter(routes, {
-//       initialEntries: ["/login", "/", "/likes"],
-//       initialIndex: 0,
-//     });
+describe("should render Liked posts component", () => {
+  it("should login and navigate to likes and render liked posts", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/likes"],
+      initialIndex: 0,
+    });
 
-//     render(<RouterProvider router={router} />);
+    render(<RouterProvider router={router} />);
 
-//     const user = userEvent.setup();
+    const user = userEvent.setup();
 
-//     const spiedFetch = vi.spyOn(global, "fetch");
+    const response = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-//     spiedFetch
-//       .mockResolvedValueOnce(Response.json("token"))
-//       .mockResolvedValueOnce(
-//         Response.json({
-//           id: 1,
-//           username: "preslaw",
-//           display_name: "preslaw",
-//           bio: "",
-//           website: "",
-//           github: "",
-//           password: "12345678B",
-//           confirm_password: "12345678B",
-//           profile_picture: "./user-default-pfp.jpg",
-//           followedBy: [],
-//           following: [],
-//           createdPostsByUsers: [],
-//           followersNumber: 0,
-//           followingNumber: 0,
-//           posts: 0,
-//         }),
-//       )
+    await expect(response.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-//       .mockResolvedValueOnce(
-//         Response.json([
-//           {
-//             id: 1,
-//             content: "post on home",
-//             imageURL: null,
-//             tag: "post",
-//             likes: 1,
-//             comments: 0,
-//             createdAt: new Date(),
-//             authorId: 1,
-//             postLikedByUsers: [
-//               {
-//                 id: 1,
-//                 username: "author",
-//                 display_name: "user",
-//                 bio: "",
-//                 website: "",
-//                 github: "",
-//                 password: "12345678B",
-//                 confirm_password: "12345678B",
-//                 profile_picture: "",
-//                 role: "USER",
-//                 followersNumber: 0,
-//                 followingNumber: 0,
-//                 posts: 0,
-//                 createdAt: new Date(),
-//               },
-//             ],
-//             author: {
-//               id: 1,
-//               username: "author",
-//               display_name: "user",
-//               bio: "",
-//               website: "",
-//               github: "",
-//               password: "12345678B",
-//               confirm_password: "12345678B",
-//               profile_picture: "",
-//               role: "USER",
-//               followersNumber: 0,
-//               followingNumber: 0,
-//               posts: 1,
-//               createdAt: new Date(),
-//             },
-//           },
-//         ]),
-//       )
+    const likedPosts = await fetch(`${localhostURL}/posts/liked`);
 
-//       .mockResolvedValueOnce(
-//         Response.json([
-//           {
-//             id: 2,
-//             username: "preslaw",
-//             display_name: "preslaw",
-//           },
-//           {
-//             id: 3,
-//             username: "preslaw1",
-//             display_name: "preslaw1",
-//           },
-//           {
-//             id: 4,
-//             username: "preslaw2",
-//             display_name: "preslaw2",
-//           },
-//         ]),
-//       )
+    await expect(likedPosts.json()).resolves.toEqual([
+      {
+        id: 1,
+        content: "post on home",
+        imageURL: null,
+        tag: "post",
+        likes: 1,
+        comments: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+        authorId: 1,
+        postLikedByUsers: [
+          {
+            id: 1,
+            username: "preslaw",
+            display_name: "preslaw1",
+          },
+        ],
+        author: {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw1",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          role: "USER",
+          followersNumber: 0,
+          followingNumber: 0,
+          createdAt: "2025-09-13T06:03:47.988Z",
+        },
+      },
+    ]);
 
-//       .mockResolvedValueOnce(
-//         Response.json([
-//           {
-//             id: 5,
-//             username: "test",
-//             display_name: "test",
-//           },
-//           {
-//             id: 6,
-//             username: "test1",
-//             display_name: "test1",
-//           },
-//           {
-//             id: 7,
-//             username: "test2",
-//             display_name: "test2",
-//           },
-//         ]),
-//       );
+    await user.type(screen.queryByLabelText("username"), "preslaw");
 
-//     await user.type(screen.queryByLabelText("username"), "preslaw");
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
 
-//     expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+    await user.type(screen.queryByLabelText("password"), "12345678B");
 
-//     await user.type(screen.queryByLabelText("password"), "12345678B");
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
 
-//     expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+    await user.click(screen.queryByRole("button", { name: "Login" }));
 
-//     await user.click(screen.queryByRole("button", { name: "Login" }));
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
 
-//     expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
 
-//     await waitForElementToBeRemoved(() =>
-//       screen.queryByAltText("loading spinner"),
-//     );
+    await user.click(screen.queryByText("Likes"));
 
-//     expect(screen.queryByText("Loading..."));
+    screen.debug();
 
-//     await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    expect(screen.queryByText("Liked posts").textContent).toMatch(
+      /liked posts/i,
+    );
 
-//     await user.click(screen.queryByAltText("likes"));
+    expect(screen.queryByText("post on home").textContent).toMatch(
+      /post on home/i,
+    );
 
-//     expect(screen.queryByText("Loading..."));
+    expect(screen.queryByText("preslaw").textContent).toMatch(/preslaw/i);
 
-//     screen.debug();
+    expect(screen.queryAllByText("0")[0].textContent).toEqual("0");
 
-//     expect(screen.queryByText("Liked posts").textContent).toMatch(
-//       /liked posts/i,
-//     );
+    expect(screen.queryByText("1").textContent).toEqual("1");
+  });
 
-//     expect(screen.queryByText("author").textContent).toMatch(/author/i);
+  it("should login and render message that the user doesn't have liked posts", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/likes"],
+      initialIndex: 0,
+    });
 
-//     expect(screen.queryByText("less than a minute ago").textContent).toMatch(
-//       /less than a minute ago/i,
-//     );
+    render(<RouterProvider router={router} />);
 
-//     expect(screen.queryByText("post on home").textContent).toMatch(
-//       /post on home/i,
-//     );
+    const user = userEvent.setup();
 
-//     expect(screen.queryByText("author").textContent).toMatch(/author/i);
+    const response = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-//     expect(screen.queryAllByText("0")[0].textContent).toEqual("0");
+    await expect(response.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-//     expect(screen.queryByText("1").textContent).toEqual("1");
+    server.use(
+      http.get(`${localhostURL}/posts/liked`, () => {
+        return HttpResponse.json({ message: "No liked posts!" });
+      }),
+    );
 
-//     spiedFetch.mockRestore();
-//   });
+    await user.type(screen.queryByLabelText("username"), "preslaw");
 
-//   it("should login and render message that the user doesn't have liked posts", async () => {
-//     const router = createMemoryRouter(routes, {
-//       initialEntries: ["/login", "/", "/likes"],
-//       initialIndex: 0,
-//     });
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
 
-//     render(<RouterProvider router={router} />);
+    await user.type(screen.queryByLabelText("password"), "12345678B");
 
-//     const user = userEvent.setup();
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
 
-//     const spiedFetch = vi.spyOn(global, "fetch");
+    await user.click(screen.queryByRole("button", { name: "Login" }));
 
-//     spiedFetch
-//       .mockResolvedValueOnce(Response.json("token"))
-//       .mockResolvedValueOnce(
-//         Response.json({
-//           id: 1,
-//           username: "preslaw",
-//           display_name: "preslaw",
-//           bio: "",
-//           website: "",
-//           github: "",
-//           password: "12345678B",
-//           confirm_password: "12345678B",
-//           profile_picture: "./user-default-pfp.jpg",
-//           followedBy: [],
-//           following: [],
-//           createdPostsByUsers: [],
-//           followersNumber: 0,
-//           followingNumber: 0,
-//           posts: 0,
-//         }),
-//       )
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
 
-//       .mockResolvedValueOnce(Response.json({ message: "No liked posts!" }))
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
 
-//       .mockResolvedValueOnce(
-//         Response.json([
-//           {
-//             id: 2,
-//             username: "preslaw",
-//             display_name: "preslaw",
-//           },
-//           {
-//             id: 3,
-//             username: "preslaw1",
-//             display_name: "preslaw1",
-//           },
-//           {
-//             id: 4,
-//             username: "preslaw2",
-//             display_name: "preslaw2",
-//           },
-//         ]),
-//       )
+    await user.click(screen.queryByText("Likes"));
 
-//       .mockResolvedValueOnce(
-//         Response.json([
-//           {
-//             id: 5,
-//             username: "test",
-//             display_name: "test",
-//           },
-//           {
-//             id: 6,
-//             username: "test1",
-//             display_name: "test1",
-//           },
-//           {
-//             id: 7,
-//             username: "test2",
-//             display_name: "test2",
-//           },
-//         ]),
-//       );
+    await user.click(screen.queryByAltText("dislike the post"));
 
-//     await user.type(screen.queryByLabelText("username"), "preslaw");
+    screen.debug();
 
-//     expect(screen.queryByLabelText("username").value).toEqual("preslaw");
-
-//     await user.type(screen.queryByLabelText("password"), "12345678B");
-
-//     expect(screen.queryByLabelText("password").value).toEqual("12345678B");
-
-//     await user.click(screen.queryByRole("button", { name: "Login" }));
-
-//     expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
-
-//     await waitForElementToBeRemoved(() =>
-//       screen.queryByAltText("loading spinner"),
-//     );
-
-//     expect(screen.queryByText("Loading..."));
-
-//     await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
-//     expect(screen.queryByText("Recent").textContent).toMatch(/recent/i);
-
-//     expect(screen.queryByText("Following").textContent).toMatch(/following/i);
-
-//     expect(screen.queryByText("No liked posts!").textContent).toMatch(
-//       /no liked posts!/i,
-//     );
-
-//     spiedFetch.mockRestore();
-//   });
-// });
+    expect(screen.queryByText("No liked posts!").textContent).toMatch(
+      /no liked posts!/i,
+    );
+  });
+});
