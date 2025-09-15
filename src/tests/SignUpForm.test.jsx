@@ -1,11 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+import { localhostURL } from "../../utility/localhostURL";
 import { routes } from "../router/routes";
+import { server } from "./mocks/server";
 
 describe("should render SignUpForm", () => {
-  it("should render the form with it's content", () => {
+  it("should render the form with it's content", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/signup"],
     });
@@ -52,23 +55,23 @@ describe("should render SignUpForm", () => {
 
     await user.click(signUpBtn);
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const response = await fetch(`${localhostURL}/signup`, {
+      method: "POST",
+    });
 
-    spiedFetch.mockResolvedValueOnce(
-      Response.json({
-        username: "preslaw",
-        display_name: "preslaw",
-        bio: "",
-        website: "",
-        github: "",
-        password: "12345678B",
-        confirm_password: "12345678B",
-        profile_picture: "",
-        followersNumber: 0,
-        followingNumber: 0,
-        posts: 0,
-      }),
-    );
+    await expect(response.json()).resolves.toEqual({
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 0,
+      followingNumber: 0,
+      posts: 0,
+    });
 
     expect(screen.queryByText("Username is required").textContent).toMatch(
       /username is required/i,
@@ -85,8 +88,6 @@ describe("should render SignUpForm", () => {
     expect(
       screen.queryByText("Confirm password is required").textContent,
     ).toMatch(/confirm password is required/i);
-
-    spiedFetch.mockRestore();
   });
 
   it("should not render the span errors when the inputs are not empty", async () => {
@@ -98,23 +99,23 @@ describe("should render SignUpForm", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const response = await fetch(`${localhostURL}/signup`, {
+      method: "POST",
+    });
 
-    spiedFetch.mockResolvedValueOnce(
-      Response.json({
-        username: "preslaw",
-        display_name: "preslaw",
-        bio: "",
-        website: "",
-        github: "",
-        password: "12345678B",
-        confirm_password: "12345678B",
-        profile_picture: "",
-        followersNumber: 0,
-        followingNumber: 0,
-        posts: 0,
-      }),
-    );
+    await expect(response.json()).resolves.toEqual({
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 0,
+      followingNumber: 0,
+      posts: 0,
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -139,8 +140,6 @@ describe("should render SignUpForm", () => {
     expect(
       screen.queryByText("Confirm password is required"),
     ).not.toBeInTheDocument();
-
-    spiedFetch.mockRestore();
   });
 
   it("should render a user information when signup", async () => {
@@ -152,23 +151,23 @@ describe("should render SignUpForm", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const response = await fetch(`${localhostURL}/signup`, {
+      method: "POST",
+    });
 
-    spiedFetch.mockResolvedValueOnce(
-      Response.json({
-        username: "preslaw",
-        display_name: "preslaw",
-        bio: "",
-        website: "",
-        github: "",
-        password: "12345678B",
-        confirm_password: "12345678B",
-        profile_picture: "",
-        followersNumber: 0,
-        followingNumber: 0,
-        posts: 0,
-      }),
-    );
+    await expect(response.json()).resolves.toEqual({
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 0,
+      followingNumber: 0,
+      posts: 0,
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -191,8 +190,6 @@ describe("should render SignUpForm", () => {
     const signUpBtn = screen.queryByRole("button", { name: "Sign up" });
 
     await user.click(signUpBtn);
-
-    spiedFetch.mockRestore();
   });
 
   it("should display errors if the username, and display name are taken", async () => {
@@ -204,17 +201,34 @@ describe("should render SignUpForm", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
-
-    spiedFetch.mockResolvedValueOnce(
-      Response.json(
-        [
-          { msg: "Username is already taken" },
-          { msg: "Display name is already taken" },
-        ],
-        { status: 400 },
-      ),
+    server.use(
+      http.post(`${localhostURL}/signup`, () => {
+        return HttpResponse.json(
+          [
+            {
+              msg: "Username is already taken",
+            },
+            {
+              msg: "Display name is already taken",
+            },
+          ],
+          { status: 400 },
+        );
+      }),
     );
+
+    const response = await fetch(`${localhostURL}/signup`, {
+      method: "POST",
+    });
+
+    await expect(response.json()).resolves.toEqual([
+      {
+        msg: "Username is already taken",
+      },
+      {
+        msg: "Display name is already taken",
+      },
+    ]);
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -238,13 +252,11 @@ describe("should render SignUpForm", () => {
 
     await user.click(signUpBtn);
 
-    screen.debug();
+    // screen.debug();
 
     screen.queryByText("Username is already taken");
 
     screen.queryByText("Display name is already taken");
-
-    spiedFetch.mockRestore();
   });
 
   it("should navigate to login form and render the form", async () => {

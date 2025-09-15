@@ -1,0 +1,19 @@
+.errorElementContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-background-color);
+  height: 100vh;
+  color: var(--secondary-color);
+  text-align: center;
+  padding: var(--main-padding);
+}
+
+.errorImg {
+  width: 100px;
+}
+
+.errorPara {
+  font-size: 2rem;
+}

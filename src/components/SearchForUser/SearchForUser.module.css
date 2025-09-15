@@ -1,12 +1,11 @@
 .flexedSearchForUsersWrapper {
-  /* outline: 2px solid white; */
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 2em;
+  padding: var(--main-padding);
   gap: 2em;
-  color: var(--paragraph--secondary-color);
+  color: var(--secondary-color);
 }
 
 .flexedSearchUsersContainer {
@@ -23,18 +22,18 @@
   width: 100%;
   border-radius: 0.5em;
   padding: 0.25em 0;
+  background-color: var(--main-background-color);
+  outline: 0.5px solid var(--main-color-input);
+  color: var(--secondary-color);
 }
 
 .showFoundOrNotUsersContainer {
-  /* outline: 2px solid beige; */
   text-align: center;
   width: 100%;
 }
 
 .foundUsersContainer {
-  /* outline: 2px solid green; */
   display: flex;
-  /* text-align: left; */
   align-items: center;
   gap: 1em;
 }
@@ -50,14 +49,23 @@
   flex-direction: column;
 }
 
-.foundUserNameContainer a {
-  color: var(--paragraph--secondary-color);
+.foundUserNameAnchor {
+  color: var(--secondary-color);
   text-decoration: none;
   margin: 0;
 }
 
-.foundUserNameContainer a:visited {
-  color: var(--paragraph--secondary-color);
+.foundUserNameAnchor:visited {
+  color: var(--secondary-color);
+}
+
+.foundUserNameAnchor:hover {
+  text-decoration: underline;
+}
+
+.foundUserDisplayName,
+.noResultsPara {
+  color: var(--main-color-input);
 }
 
 @media screen and (max-width: 940px) {

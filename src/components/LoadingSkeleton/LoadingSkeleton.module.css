@@ -1,0 +1,55 @@
+.skeletonContainer {
+  position: relative;
+  transform: translate(0%, 4.5em);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5em;
+  top: -3%;
+  gap: 1.2em;
+}
+
+.skeletonFlexContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.skeletonImg,
+.skeletonContent,
+.skeletonFullWidthContent {
+  background-color: var(--main-background-hover-color);
+  height: 20px;
+}
+
+.skeletonImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.skeletonContent {
+  width: 50px;
+  height: 20px;
+}
+
+.skeletonContent {
+  width: 125px;
+  height: 20px;
+}
+
+.skeletonImg,
+.skeletonContent,
+.skeletonFullWidthContent {
+  animation: shimmer 1s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-color: var(--main-background-hover-color);
+  }
+
+  100% {
+    background-color: gray;
+  }
+}

@@ -1,14 +1,14 @@
 .chatDetailsContainer {
-  color: white;
-  height: 90vh;
+  height: 75vh;
   overflow-y: scroll;
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  padding: var(--main-padding);
+  color: var(--secondary-color);
 }
 
-.chatDetailsUserMessage {
+.chatDetailsUserMessage,
+.chatDetailsUserReceiverMessage {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -17,23 +17,41 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin-right: 1.5em;
-  margin-top: 1.5em;
-  /* outline: 2px solid blue; */
 }
 
 .chatDetailsUserReceiverMessage {
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-  line-break: anywhere;
-  text-align: center;
-  margin-left: 1.5em;
+}
+
+.chatDetailsMessage {
+  max-width: 22em;
+  gap: 0.5em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding: 0.5em 1em;
+  border-radius: 1em;
   margin-top: 1.5em;
-  /* outline: 2px solid red; */
+  background-color: #3a3b3c;
+  color: var(--secondary-color);
+}
+
+.chatDetailsUserMessage .chatDetailsMessage:first-child {
+  border-bottom-right-radius: 0;
+}
+
+.chatDetailsUserReceiverMessage .chatDetailsMessage:last-child {
+  border-bottom-left-radius: 0;
+}
+
+.chatDetailsImage {
+  max-width: 16rem;
+  height: auto;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .chatReceiverSendingMessagesContainer {
@@ -43,25 +61,41 @@
   max-width: 22rem;
 }
 
-.chatDetailsSendMessageOrImageContainer {
-  margin-top: auto;
-  position: sticky;
-  bottom: 0%;
+.chatDetailsForm {
+  display: flex;
+  align-items: center;
+  padding: 1.5em 0.5em;
+  gap: 0.5em;
 }
 
-.chatDetailsSendImage {
-  border-radius: 0.5rem;
-  max-width: 16rem;
-  height: auto;
-  margin-bottom: 1em;
+.chatDetailsSendImgInput,
+.chatDetailsSendBtn {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  opacity: 0;
+  z-index: 1;
 }
 
-.chatDetailsSendMessage {
-  max-width: 22em;
-  /* outline: 2px solid black; */
-  padding: 0.5em 1em;
-  /* margin-left: 0.25em; */
-  border-radius: 1em;
-  background-color: #3a3b3c;
-  color: white;
+.chatDetailsSendImageSVG,
+.chatDetailsSendMessageSVG {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  position: relative;
+  top: 5%;
+  outline: 2px solid var(--main-color-input);
+}
+
+.chatDetailsInput {
+  width: 100%;
+  outline: 1px solid var(--main-color-input);
+  background-color: var(--main-background-color);
+  color: var(--secondary-color);
+  padding: 0.15em 0;
+  border-radius: 0.5em;
+}
+
+.chatDetailsInput::placeholder {
+  padding: 0.5em;
 }

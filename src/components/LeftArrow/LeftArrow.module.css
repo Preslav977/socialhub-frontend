@@ -1,11 +1,11 @@
 .leftArrowFlexContainer {
   padding: 1em;
   display: flex;
-  gap: 2em;
-  color: var(--paragraph--secondary-color);
-  outline: 2px solid var(--paragraph--secondary-color);
-  max-width: 960px;
-  margin: 0;
+  align-items: center;
+  gap: 1.5em;
+  color: var(--secondary-color);
+  outline: 2px solid var(--main-color-input);
+  font-size: 1.25rem;
 }
 
 .leftArrowImgContainer {
@@ -19,7 +19,7 @@
 }
 
 .leftArrowImgContainer:hover {
-  background-color: var(--paragraph--main-color);
+  background-color: var(--main-background-hover-color);
 }
 
 .leftArrowSVG {

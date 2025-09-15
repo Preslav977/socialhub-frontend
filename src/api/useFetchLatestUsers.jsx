@@ -18,7 +18,7 @@ export const useFetchLatestUsers = () => {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new Error("Failed to fetch latest users. Try to login again!");
+          throw new Error("Failed to fetch latest users!");
         }
         return response.json();
       })

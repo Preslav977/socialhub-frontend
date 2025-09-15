@@ -1,15 +1,28 @@
 .articlePostContainer,
-.articleCommentContainer {
-  color: white;
-  padding: 1.5em;
+.articleCommentContainer,
+.articleCommentReplyCommentsContainer {
   display: flex;
   flex-direction: column;
   gap: 1em;
-  outline: 1px solid white;
+  padding: var(--main-padding);
+  color: var(--secondary-color);
+  outline: 1px solid (--main-color-input);
 }
 
 .articlePostContainer:hover {
-  background-color: lightgray;
+  background-color: var(--main-background-hover-color);
+  cursor: pointer;
+}
+
+.articlePostAuthor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.articlePostAuthorAndDate {
+  display: flex;
+  gap: 0.75em;
 }
 
 .articleAuthorImg,
@@ -23,18 +36,7 @@
 .articlePostLikeAndComment,
 .articleCommentUser {
   display: flex;
-  gap: 0.5em;
-}
-
-.articlePostAuthorAndDate {
-  display: flex;
-  gap: 0.75em;
-}
-
-.articlePostAuthor {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: 1em;
 }
 
 .articleLike,
@@ -45,16 +47,22 @@
   object-fit: scale-down;
 }
 
+.articlePostImg {
+  width: 100%;
+}
+
 .articlePostLikesContainer,
 .articlePostCommentsContainer,
-.articleCommentLikeAndReply {
+.articleCommentLikeAndReply,
+.articlePostCommentReply,
+.articlePostCommentReplies {
   display: flex;
   align-items: center;
   gap: 0.25em;
 }
 
-.articlePostImg {
-  width: 100%;
+.createReplyArticleComment {
+  margin: 0 -1.3em 0 -1.5em;
 }
 
 .createArticleComment,
@@ -63,18 +71,37 @@
   justify-content: flex-end;
   align-items: end;
   display: flex;
+}
 
-  & textarea {
-    width: 100%;
-    resize: none;
-    background-color: black;
-    color: white;
-    border: 0;
-    outline: 1px solid white;
-  }
+.createArticleCommentTextarea,
+.createArticleReplyCommentTextarea {
+  width: 100%;
+  resize: none;
+  padding: 1em;
+  background-color: var(--main-background-color);
+  color: var(--main-color-input);
+  border: 0;
+  outline: 1px solid var(--main-color-input);
+  position: relative;
+}
 
-  & .createCommentBtn,
-  & .createReplyCommentBtn {
-    position: absolute;
-  }
+.createCommentBtn,
+.createReplyCommentBtn {
+  position: absolute;
+  padding: 0.25em 1.25em;
+  border-radius: 0.75em;
+  margin-right: 2em;
+  margin-bottom: 1em;
+  background-color: var(--main-background-color);
+  outline: 1px solid var(--secondary-color);
+  color: var(--secondary-color);
+  transition: background-color 0.35s ease-in-out color 0.35s ease-in-out;
+}
+
+.createCommentBtn:hover,
+.createReplyCommentBtn:hover {
+  background-color: var(--secondary-color);
+  color: #121212;
+  outline: none;
+  cursor: pointer;
 }

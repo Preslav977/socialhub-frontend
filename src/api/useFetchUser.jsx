@@ -10,7 +10,7 @@ export const useFetchUser = (id) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${localhostURL}/users/${Number(id)}`, {
+    fetch(`${localhostURL}/users/${id}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -18,7 +18,7 @@ export const useFetchUser = (id) => {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new Error("Failed to fetch user details. Try to login again!");
+          throw new Error("Failed to fetch user details!");
         }
         return response.json();
       })

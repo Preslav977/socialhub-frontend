@@ -1,3 +1,8 @@
+.asideUlContainer {
+  position: sticky;
+  top: 70px;
+}
+
 .asideUlContainer img {
   width: 30px;
 }
@@ -10,10 +15,11 @@
   border-radius: 1em;
   transition: transform 0.25s ease-in-out;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .asideUlContainer a {
-  color: var(--paragraph--secondary-color);
+  color: var(--secondary-color);
   display: flex;
   align-items: center;
   gap: 1em;
@@ -21,15 +27,15 @@
 }
 
 .asideUlContainer a:visited {
-  color: var(--paragraph--secondary-color);
+  color: var(--secondary-color);
 }
 
 .asideUlContainer li:hover {
-  background-color: var(--paragraph--main-color);
+  background-color: var(--main-color--input);
   transform: translateX(-5px);
 }
 
-@media screen and (max-width: 940px) {
+@media screen and (max-width: 1280px) {
   .asideUlContainer span {
     display: none;
   }

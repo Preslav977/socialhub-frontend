@@ -211,7 +211,10 @@ export function SignUpForm() {
           </button>
 
           <p className={styles.alreadyHaveAccountPara}>
-            Already have an account? <Link to="/login">Login</Link>
+            Already have an account?{" "}
+            <Link className={styles.alreadyHaveAccountAnchor} to="/login">
+              Login
+            </Link>
           </p>
         </form>
       </div>

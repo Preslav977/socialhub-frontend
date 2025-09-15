@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { ErrorElement } from "../ErrorElement/ErrorElement";
 import styles from "./SearchForUser.module.css";
 
 export function SearchForUser() {
@@ -8,7 +9,9 @@ export function SearchForUser() {
 
   const [searchForUser, setSearchForUser] = useState("");
 
-  async function SearchAndRenderUser(e) {
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
+
+  async function searchAndRenderUser(e) {
     e.preventDefault();
 
     try {
@@ -24,17 +27,25 @@ export function SearchForUser() {
 
       const result = await response.json();
 
-      console.log(result);
-
       setUser(result);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
+  if (isTokenHasExpired)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
+
   return (
     <form
-      onSubmit={SearchAndRenderUser}
+      onSubmit={searchAndRenderUser}
       className={styles.flexedSearchForUsersWrapper}
     >
       <div className={styles.flexedSearchUsersContainer}>
@@ -69,15 +80,20 @@ export function SearchForUser() {
                   alt="user profile picture"
                 />
                 <div className={styles.foundUserNameContainer}>
-                  <Link to={`/profile/${foundUser.id}`}>
-                    <p>{foundUser.username}</p>
+                  <Link
+                    className={styles.foundUserNameAnchor}
+                    to={`/profile/${foundUser.id}`}
+                  >
+                    <p className={styles.foundUserName}>{foundUser.username}</p>
                   </Link>
-                  <p>{foundUser.display_name}</p>
+                  <p className={styles.foundUserDisplayName}>
+                    {foundUser.display_name}
+                  </p>
                 </div>
               </div>
             ))
           ) : (
-            <p>No results!</p>
+            <p className={styles.noResultsPara}>No results!</p>
           )}
         </>
       </div>

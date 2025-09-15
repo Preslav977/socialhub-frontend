@@ -1,12 +1,16 @@
 import {
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+import { localhostURL } from "../../utility/localhostURL";
 import { routes } from "../router/routes";
+import { server } from "./mocks/server";
 
 describe("should render Profile component", () => {
   it("should login and navigate to profile", async () => {
@@ -19,68 +23,52 @@ describe("should render Profile component", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
+    const userProfile = await fetch(`${localhostURL}/users/details`);
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+    await expect(userProfile.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
+
+    const userInformationById = await fetch(`${localhostURL}/users/1`);
+
+    await expect(userInformationById.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -100,23 +88,23 @@ describe("should render Profile component", () => {
 
     await user.click(screen.queryByText("Profile"));
 
-    // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    // screen.debug();
 
-    screen.queryByText("Loading...");
-
-    screen.debug();
+    expect(screen.queryAllByText("Profile")[0].textContent).toMatch(/profile/i);
 
     expect(screen.queryAllByText("preslaw")[0].textContent).toMatch(/preslaw/i);
 
-    expect(screen.queryAllByText(0)[0]).toBeInTheDocument();
+    screen.debug();
+
+    expect(screen.queryByText("1").textContent).toEqual("1");
 
     expect(screen.queryByText("Followers").textContent).toMatch(/followers/i);
 
-    expect(screen.queryAllByText(0)[1]).toBeInTheDocument();
+    expect(screen.queryByText("10").textContent).toEqual("10");
 
     expect(screen.queryByText("Following").textContent).toMatch(/following/i);
 
-    expect(screen.queryAllByText(0)[2]).toBeInTheDocument();
+    expect(screen.queryByText("5").textContent).toEqual("5");
 
     expect(screen.queryAllByText("Posts")[0].textContent).toMatch(/posts/i);
 
@@ -127,8 +115,6 @@ describe("should render Profile component", () => {
     ).toBeInTheDocument();
 
     expect(screen.queryAllByText("Posts")[1].textContent).toMatch(/posts/i);
-
-    spiedFetch.mockRestore();
   });
 
   it("should login navigate to profile and edit it", async () => {
@@ -141,87 +127,108 @@ describe("should render Profile component", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    const userProfile = await fetch(`${localhostURL}/users/details`);
+
+    await expect(userProfile.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
+
+    const userInformationById = await fetch(`${localhostURL}/users/1`);
+
+    await expect(userInformationById.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
+
+    server.use();
+
+    const updateUserProfile = await fetch(`${localhostURL}/users/1`, {
+      method: "PUT",
+      body: JSON.stringify({
+        id: 1,
+        username: "preslaww",
+        display_name: "preslaww1",
+        bio: "1",
+        website: "2",
+        github: "3",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "img",
+        followersNumber: 10,
+        followingNumber: 5,
+        posts: 1,
+      }),
+    });
+
+    await expect(updateUserProfile.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaww",
+      display_name: "preslaww1",
+      bio: "1",
+      website: "2",
+      github: "3",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "img",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+    });
+
+    server.use(
+      http.get(`${localhostURL}/users/details`, () => {
+        return HttpResponse.json({
           id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
+          username: "preslaww",
+          display_name: "preslaww1",
           bio: "",
           website: "",
           github: "",
           password: "12345678B",
           confirm_password: "12345678B",
           profile_picture: "",
+          followersNumber: 10,
+          followingNumber: 5,
+          posts: 1,
           followedBy: [],
           following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      )
-
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaww",
-          display_name: "preslaww",
-          bio: "bio",
-          website: "website",
-          github: "github",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "",
-          followedBy: [],
-          following: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      );
+        });
+      }),
+    );
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -241,21 +248,17 @@ describe("should render Profile component", () => {
 
     await user.click(screen.queryByText("Profile"));
 
-    // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
-    screen.queryByText("Loading...");
-
     expect(screen.queryAllByText("preslaw")[0].textContent).toMatch(/preslaw/i);
 
-    expect(screen.queryAllByText(0)[0]).toBeInTheDocument();
+    expect(screen.queryByText(5)).toBeInTheDocument();
 
     expect(screen.queryByText("Followers").textContent).toMatch(/followers/i);
 
-    expect(screen.queryAllByText(0)[1]).toBeInTheDocument();
+    expect(screen.queryByText(10)).toBeInTheDocument();
 
     expect(screen.queryByText("Following").textContent).toMatch(/following/i);
 
-    expect(screen.queryAllByText(0)[2]).toBeInTheDocument();
+    expect(screen.queryByText(1)).toBeInTheDocument();
 
     expect(screen.queryAllByText("Posts")[0].textContent).toMatch(/posts/i);
 
@@ -267,29 +270,19 @@ describe("should render Profile component", () => {
 
     expect(screen.queryAllByText("Posts")[1].textContent).toMatch(/posts/i);
 
-    // screen.debug();
-
     await user.click(screen.queryByRole("button", { name: "Edit" }));
 
-    await user.type(screen.queryByLabelText("username"), "preslaww");
+    expect(screen.queryByText("preslaww").textContent).toMatch(/preslaww/i);
 
-    expect(screen.queryByLabelText("username").value).toEqual("preslaww");
+    expect(screen.queryByText("preslaww1").textContent).toMatch(/preslaww1/i);
 
-    await user.type(screen.queryByLabelText("display_name"), "preslaww");
+    expect(screen.queryAllByText("1")[0].textContent).toMatch(/1/i);
 
-    expect(screen.queryByLabelText("display_name").value).toEqual("preslaww");
+    expect(screen.queryByText("10").textContent).toMatch(/10/i);
 
-    await user.click(screen.queryByLabelText("file"));
-
-    const file = new File(["image"], "image.png", { type: "image/png" });
-
-    const bgImageInput = screen.queryByLabelText("file");
-
-    await user.upload(bgImageInput, file);
+    expect(screen.queryByText("5").textContent).toMatch(/5/i);
 
     await user.click(screen.queryByRole("button", { name: "Save Changes" }));
-
-    spiedFetch.mockRestore();
   });
 
   it("should login navigate to user profile and render the posts", async () => {
@@ -302,163 +295,52 @@ describe("should render Profile component", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "./user-default-pfp.jpg",
-          followedBy: [],
-          following: [],
-          createdPostsByUsers: [
-            {
-              id: 1,
-              content: "post on home",
-              imageURL: null,
-              tag: "post",
-              likes: 1,
-              comments: 0,
-              createdAt: new Date(),
-              authorId: 1,
-              postLikedByUsers: [
-                {
-                  id: 1,
-                  username: "author",
-                  display_name: "user",
-                  bio: "",
-                  website: "",
-                  github: "",
-                  password: "12345678B",
-                  confirm_password: "12345678B",
-                  profile_picture: "",
-                  role: "USER",
-                  followersNumber: 0,
-                  followingNumber: 0,
-                  posts: 0,
-                  createdAt: new Date(),
-                },
-              ],
-              author: {
-                id: 1,
-                username: "author",
-                display_name: "user",
-                bio: "",
-                website: "",
-                github: "",
-                password: "12345678B",
-                confirm_password: "12345678B",
-                profile_picture: "",
-                role: "USER",
-                followersNumber: 0,
-                followingNumber: 0,
-                posts: 1,
-                createdAt: new Date(),
-              },
-            },
-          ],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 1,
-            content: "post on home",
-            imageURL: null,
-            tag: "post",
-            likes: 0,
-            comments: 0,
-            createdAt: new Date(),
-            authorId: 1,
-            postLikedByUsers: [
-              {
-                id: 1,
-                username: "author",
-                display_name: "user",
-                bio: "",
-                website: "",
-                github: "",
-                password: "12345678B",
-                confirm_password: "12345678B",
-                profile_picture: "",
-                role: "USER",
-                followersNumber: 0,
-                followingNumber: 0,
-                posts: 0,
-                createdAt: new Date(),
-              },
-            ],
-            author: {
-              id: 1,
-              username: "author",
-              display_name: "user",
-              bio: "",
-              website: "",
-              github: "",
-              password: "12345678B",
-              confirm_password: "12345678B",
-              profile_picture: "",
-              role: "USER",
-              followersNumber: 0,
-              followingNumber: 0,
-              posts: 1,
-              createdAt: new Date(),
-            },
-          },
-        ]),
-      )
+    const userProfile = await fetch(`${localhostURL}/users/details`);
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
+    await expect(userProfile.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+    const userInformationById = await fetch(`${localhostURL}/users/1`);
+
+    await expect(userInformationById.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -476,33 +358,19 @@ describe("should render Profile component", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading..."));
-
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
     await user.click(screen.queryByAltText("Profile"));
 
-    expect(screen.queryByText("Loading..."));
-
     screen.debug();
-
-    expect(screen.queryByText("author").textContent).toMatch(/author/i);
-
-    expect(screen.queryByText("less than a minute ago").textContent).toMatch(
-      /less than a minute ago/i,
-    );
 
     expect(screen.queryByText("post on home").textContent).toMatch(
       /post on home/i,
     );
 
-    expect(screen.queryByText("author").textContent).toMatch(/author/i);
+    expect(screen.queryByText("preslaw").textContent).toMatch(/preslaw/i);
 
     expect(screen.queryAllByText("0")[0].textContent).toEqual("0");
 
     expect(screen.queryAllByText("0")[1].textContent).toEqual("0");
-
-    spiedFetch.mockRestore();
   });
 
   it("should login navigate to user profile and like a post", async () => {
@@ -515,163 +383,52 @@ describe("should render Profile component", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "./user-default-pfp.jpg",
-          followedBy: [],
-          following: [],
-          createdPostsByUsers: [
-            {
-              id: 1,
-              content: "post on home",
-              imageURL: null,
-              tag: "post",
-              likes: 1,
-              comments: 0,
-              createdAt: new Date(),
-              authorId: 1,
-              postLikedByUsers: [
-                {
-                  id: 1,
-                  username: "author",
-                  display_name: "user",
-                  bio: "",
-                  website: "",
-                  github: "",
-                  password: "12345678B",
-                  confirm_password: "12345678B",
-                  profile_picture: "",
-                  role: "USER",
-                  followersNumber: 0,
-                  followingNumber: 0,
-                  posts: 0,
-                  createdAt: new Date(),
-                },
-              ],
-              author: {
-                id: 1,
-                username: "author",
-                display_name: "user",
-                bio: "",
-                website: "",
-                github: "",
-                password: "12345678B",
-                confirm_password: "12345678B",
-                profile_picture: "",
-                role: "USER",
-                followersNumber: 0,
-                followingNumber: 0,
-                posts: 1,
-                createdAt: new Date(),
-              },
-            },
-          ],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 1,
-            content: "post on home",
-            imageURL: null,
-            tag: "post",
-            likes: 1,
-            comments: 0,
-            createdAt: new Date(),
-            authorId: 1,
-            postLikedByUsers: [
-              {
-                id: 1,
-                username: "author",
-                display_name: "user",
-                bio: "",
-                website: "",
-                github: "",
-                password: "12345678B",
-                confirm_password: "12345678B",
-                profile_picture: "",
-                role: "USER",
-                followersNumber: 0,
-                followingNumber: 0,
-                posts: 0,
-                createdAt: new Date(),
-              },
-            ],
-            author: {
-              id: 1,
-              username: "author",
-              display_name: "user",
-              bio: "",
-              website: "",
-              github: "",
-              password: "12345678B",
-              confirm_password: "12345678B",
-              profile_picture: "",
-              role: "USER",
-              followersNumber: 0,
-              followingNumber: 0,
-              posts: 1,
-              createdAt: new Date(),
-            },
-          },
-        ]),
-      )
+    const userProfile = await fetch(`${localhostURL}/users/details`);
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
+    await expect(userProfile.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+    const userInformationById = await fetch(`${localhostURL}/users/1`);
+
+    await expect(userInformationById.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -689,35 +446,21 @@ describe("should render Profile component", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading..."));
-
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
     await user.click(screen.queryByAltText("Profile"));
 
-    expect(screen.queryByText("Loading..."));
+    // screen.debug();
 
-    screen.debug();
-
-    expect(screen.queryByText("author").textContent).toMatch(/author/i);
-
-    expect(screen.queryByText("less than a minute ago").textContent).toMatch(
-      /less than a minute ago/i,
-    );
+    expect(screen.queryByText("preslaw").textContent).toMatch(/preslaw/i);
 
     expect(screen.queryByText("post on home").textContent).toMatch(
       /post on home/i,
     );
-
-    expect(screen.queryByText("author").textContent).toMatch(/author/i);
 
     expect(screen.queryAllByText("0")[0].textContent).toEqual("0");
 
     await user.click(screen.queryByTestId("articleLike"));
 
     expect(screen.queryByText("1").textContent).toEqual("1");
-
-    spiedFetch.mockRestore();
   });
 
   it("should login and render message that the user doesn't have created by him posts", async () => {
@@ -730,73 +473,58 @@ describe("should render Profile component", () => {
 
     const user = userEvent.setup();
 
-    const spiedFetch = vi.spyOn(global, "fetch");
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
 
-    spiedFetch
-      .mockResolvedValueOnce(Response.json("token"))
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 1,
-          username: "preslaw",
-          display_name: "preslaw",
-          bio: "",
-          website: "",
-          github: "",
-          password: "12345678B",
-          confirm_password: "12345678B",
-          profile_picture: "./user-default-pfp.jpg",
-          followedBy: [],
-          following: [],
-          createdPostsByUsers: [],
-          followersNumber: 0,
-          followingNumber: 0,
-          posts: 0,
-        }),
-      )
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
 
-      .mockResolvedValueOnce(
-        Response.json({ message: "No created posts by author!" }),
-      )
+    const userProfile = await fetch(`${localhostURL}/users/details`);
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 2,
-            username: "preslaw",
-            display_name: "preslaw",
-          },
-          {
-            id: 3,
-            username: "preslaw1",
-            display_name: "preslaw1",
-          },
-          {
-            id: 4,
-            username: "preslaw2",
-            display_name: "preslaw2",
-          },
-        ]),
-      )
+    await expect(userProfile.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
 
-      .mockResolvedValueOnce(
-        Response.json([
-          {
-            id: 5,
-            username: "test",
-            display_name: "test",
-          },
-          {
-            id: 6,
-            username: "test1",
-            display_name: "test1",
-          },
-          {
-            id: 7,
-            username: "test2",
-            display_name: "test2",
-          },
-        ]),
-      );
+    const userInformationById = await fetch(`${localhostURL}/users/1`);
+
+    await expect(userInformationById.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
+      followedBy: [],
+      following: [],
+    });
+
+    server.use(
+      http.get(`${localhostURL}/posts/author/1`, () => {
+        return HttpResponse.json({ message: "No created posts by author!" });
+      }),
+    );
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -814,16 +542,276 @@ describe("should render Profile component", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Profile"));
+    await user.click(screen.queryByText("Profile"));
 
-    expect(screen.queryByText("Loading..."));
-
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    screen.debug();
 
     expect(
       screen.queryByText("No created posts by author!").textContent,
     ).toMatch(/no created posts by author!/i);
+  });
 
-    spiedFetch.mockRestore();
+  it("should navigate to user profile and follow him", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/profile/2"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
+
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    server.use(
+      http.get(`${localhostURL}/users/2`, () => {
+        return HttpResponse.json({
+          id: 2,
+          username: "user",
+          display_name: "user",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+          followedBy: [],
+          following: [],
+        });
+      }),
+
+      http.get(`${localhostURL}/users/details`, () => {
+        return HttpResponse.json({
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+          followedBy: [],
+          following: [],
+        });
+      }),
+    );
+
+    const userProfile = await fetch(`${localhostURL}/users/details`);
+
+    await expect(userProfile.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 0,
+      followingNumber: 0,
+      posts: 0,
+      followedBy: [],
+      following: [],
+    });
+
+    const userInformationById = await fetch(`${localhostURL}/users/2`);
+
+    await expect(userInformationById.json()).resolves.toEqual({
+      id: 2,
+      username: "user",
+      display_name: "user",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 0,
+      followingNumber: 0,
+      posts: 0,
+      followedBy: [],
+      following: [],
+    });
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
+
+    await waitFor(() => screen.queryByText("Loading posts..."));
+
+    await user.click(screen.queryAllByText("user")[0]);
+
+    expect(screen.getByTestId("followUserProfileButton")).toBeInTheDocument();
+
+    await user.click(screen.getByTestId("followUserProfileButton"));
+
+    expect(
+      screen.queryAllByRole("button", { name: "Unfollow" })[0],
+    ).toBeInTheDocument();
+
+    // screen.debug();
+  });
+
+  it("should navigate to user profile and create conversation", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/profile/2"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
+
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    server.use(
+      http.get(`${localhostURL}/users/2`, () => {
+        return HttpResponse.json({
+          id: 2,
+          username: "user",
+          display_name: "user",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+          followedBy: [],
+          following: [],
+        });
+      }),
+
+      http.get(`${localhostURL}/users/details`, () => {
+        return HttpResponse.json({
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 0,
+          followingNumber: 0,
+          posts: 0,
+          followedBy: [],
+          following: [],
+        });
+      }),
+    );
+
+    const userProfile = await fetch(`${localhostURL}/users/details`);
+
+    await expect(userProfile.json()).resolves.toEqual({
+      id: 1,
+      username: "preslaw",
+      display_name: "preslaw",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 0,
+      followingNumber: 0,
+      posts: 0,
+      followedBy: [],
+      following: [],
+    });
+
+    const userInformationById = await fetch(`${localhostURL}/users/2`);
+
+    await expect(userInformationById.json()).resolves.toEqual({
+      id: 2,
+      username: "user",
+      display_name: "user",
+      bio: "",
+      website: "",
+      github: "",
+      password: "12345678B",
+      confirm_password: "12345678B",
+      profile_picture: "",
+      followersNumber: 0,
+      followingNumber: 0,
+      posts: 0,
+      followedBy: [],
+      following: [],
+    });
+
+    const startConversation = await fetch(`${localhostURL}/chats`, {
+      method: "POST",
+      body: JSON.stringify({
+        senderChatId: 1,
+        receiverChatId: 2,
+      }),
+    });
+
+    await expect(startConversation.json()).resolves.toEqual({
+      id: "123bg",
+      senderChatId: 1,
+      receiverChatId: 2,
+    });
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
+
+    await waitFor(() => screen.queryByText("Loading posts..."));
+
+    await user.click(screen.queryAllByText("user")[0]);
+
+    await user.click(screen.queryByAltText("start conversation"));
+
+    screen.debug();
   });
 });

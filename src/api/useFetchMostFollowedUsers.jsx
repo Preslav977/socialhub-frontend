@@ -18,9 +18,7 @@ export const useFetchMostFollowedUsers = () => {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new Error(
-            "Failed to fetch most followed users. Try to login again!",
-          );
+          throw new Error("Failed to fetch most followed users!");
         }
         return response.json();
       })

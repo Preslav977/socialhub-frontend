@@ -1,6 +1,7 @@
 import { App } from "../App";
 import { ChatsDetails } from "../components/ChatsDetails/ChatsDetails";
 import { CreatePost } from "../components/CreatePost/CreatePost";
+import { ErrorElement } from "../components/ErrorElement/ErrorElement";
 import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SearchForUser } from "../components/SearchForUser/SearchForUser";
@@ -16,6 +17,14 @@ export const routes = [
   {
     path: "/",
     element: <App />,
+    errorElement: (
+      <ErrorElement
+        textProp={"404 Page not found"}
+        textDescriptionProp={
+          "Lost in the wilderness? This page couldn't find its way also"
+        }
+      />
+    ),
     children: [
       {
         index: true,
@@ -27,26 +36,16 @@ export const routes = [
           </ProtectRoutes>
         ),
       },
-
       { path: "/signup", element: <SignUpForm /> },
       {
         path: "/login",
         element: <LogInForm />,
       },
-
       {
         path: "/create",
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={<CreatePost />}></MainGridInterface>
-          </ProtectRoutes>
-        ),
-      },
-      {
-        path: "/settings",
-        element: (
-          <ProtectRoutes>
-            <MainGridInterface pageProp={<Settings />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -59,10 +58,18 @@ export const routes = [
         ),
       },
       {
-        path: "/profile/:id",
+        path: "/messages",
         element: (
           <ProtectRoutes>
-            <MainGridInterface pageProp={<UserProfile />}></MainGridInterface>
+            <MainGridInterface pageProp={<Chats />}></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/message/:id",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface pageProp={<ChatsDetails />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -73,6 +80,22 @@ export const routes = [
             <MainGridInterface
               pageProp={<Posts postsHeader={false} />}
             ></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/profile/:id",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface pageProp={<UserProfile />}></MainGridInterface>
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/settings",
+        element: (
+          <ProtectRoutes>
+            <MainGridInterface pageProp={<Settings />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },
@@ -91,22 +114,6 @@ export const routes = [
         element: (
           <ProtectRoutes>
             <MainGridInterface pageProp={<PostDetails />}></MainGridInterface>
-          </ProtectRoutes>
-        ),
-      },
-      {
-        path: "/messages",
-        element: (
-          <ProtectRoutes>
-            <MainGridInterface pageProp={<Chats />}></MainGridInterface>
-          </ProtectRoutes>
-        ),
-      },
-      {
-        path: "/message/:id",
-        element: (
-          <ProtectRoutes>
-            <MainGridInterface pageProp={<ChatsDetails />}></MainGridInterface>
           </ProtectRoutes>
         ),
       },

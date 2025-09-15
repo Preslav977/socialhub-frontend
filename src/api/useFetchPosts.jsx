@@ -17,7 +17,7 @@ export const useFetchPosts = (url) => {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new Error("Failed to fetch posts! Try to login again!");
+          throw new Error("Failed to fetch posts!");
         }
         return response.json();
       })

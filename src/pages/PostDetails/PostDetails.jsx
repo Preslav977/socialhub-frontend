@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPost } from "../../api/useFetchPost";
+import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
+import { Loading } from "../../components/Loading/Loading";
 import { PostDetailsPropsComponent } from "../../components/PostDetailsPropsComponent/PostDetailsPropsComponent";
 
 export function PostDetails() {
@@ -10,6 +12,10 @@ export function PostDetails() {
   const { id } = useParams();
 
   const [repliedCommentId, setRepliedCommentId] = useState(0);
+
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
+
+  const navigate = useNavigate();
 
   async function likeOrDislikePost(post) {
     try {
@@ -33,7 +39,7 @@ export function PostDetails() {
 
       setPost(likedOrDislikedPostObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -62,14 +68,12 @@ export function PostDetails() {
 
       setPost(likedOrDislikedCommentObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
   async function leavingAComment(data) {
     const { text } = data;
-
-    console.log(text);
 
     try {
       const response = await fetch(`${localhostURL}/posts/${post.id}/comment`, {
@@ -94,7 +98,7 @@ export function PostDetails() {
 
       setPost(commentPostObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -129,7 +133,7 @@ export function PostDetails() {
 
       setPost(commentPostObject);
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -146,21 +150,23 @@ export function PostDetails() {
         }),
       });
 
-      const result = await response.json();
+      await response.json();
 
-      console.log(result);
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
-  if (loading) {
-    return <p>Loading post details...</p>;
-  }
+  if (loading) return <Loading></Loading>;
 
-  if (error) {
-    return <p>Error...</p>;
-  }
+  if (error || isTokenHasExpired)
+    <ErrorElement
+      textProp={"400 Bad Request"}
+      textDescriptionProp={
+        "Token seems to be lost in the darkness. Login can fix that!"
+      }
+    ></ErrorElement>;
 
   return (
     <>

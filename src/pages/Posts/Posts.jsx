@@ -1,9 +1,12 @@
 import { formatDistance } from "date-fns";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import "react-loading-skeleton/dist/skeleton.css";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
+import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
+// import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleton";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./Posts.module.css";
 
@@ -20,13 +23,13 @@ export function Posts({ postsHeader }) {
 
   const { posts, setPosts, loading, error } = useFetchPosts(url);
 
-  console.log(posts);
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   const navigate = useNavigate();
 
   async function likeOrDislikePost(post) {
     try {
-      const response = await fetch(`${localhostURL}/posts/${id}/like`, {
+      const response = await fetch(`${localhostURL}/posts/${post.id}/like`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -36,6 +39,7 @@ export function Posts({ postsHeader }) {
           id: post.id,
         }),
       });
+
       const result = await response.json();
 
       setPosts(
@@ -52,7 +56,7 @@ export function Posts({ postsHeader }) {
         }),
       );
     } catch (error) {
-      console.log(error);
+      setIsTokenHasExpired(error);
     }
   }
 
@@ -79,26 +83,42 @@ export function Posts({ postsHeader }) {
     }
   }
 
-  if (loading) {
-    return <p>Loading posts...</p>;
-  }
+  // if (loading) return <LoadingSkeleton />;
 
-  if (error) {
-    return <p>Error...</p>;
-  }
+  if (loading) return <p>Loading posts...</p>;
+
+  if (error || isTokenHasExpired)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
 
   return (
     <>
       {!postsHeader ? (
         ""
       ) : (
-        <header
-          style={{
-            color: "white",
-          }}
-        >
-          <Link to={"/"}>Recent</Link>
-          <Link to={"/following"}>Following</Link>
+        <header className={styles.articlePostHeader}>
+          <Link className={styles.articlePostHeaderAnchor} to={"/"}>
+            <span
+              className={pathname === "/" ? styles.articlePosHeaderSpan : ""}
+            >
+              Recent
+            </span>
+          </Link>
+          <Link className={styles.articlePostHeaderAnchor} to={"/following"}>
+            <span
+              className={
+                pathname === "/following" ? styles.articlePosHeaderSpan : ""
+              }
+            >
+              Following
+            </span>
+          </Link>
         </header>
       )}
       {pathname === "/likes" ? <LeftArrow textProp={"Liked posts"} /> : ""}
@@ -106,7 +126,6 @@ export function Posts({ postsHeader }) {
         <>
           {posts.map((post) => (
             <article
-              data-testid="article"
               onClick={() => navigateToPostDetails(post)}
               className={styles.articlePostContainer}
               key={post.id}
@@ -115,9 +134,10 @@ export function Posts({ postsHeader }) {
                 <img
                   className={styles.articleAuthorImg}
                   src={post.author.profile_picture}
-                  alt=""
+                  alt="article post author profile picture"
                 />
                 <span
+                  className={styles.articleAuthor}
                   onClick={(e) => {
                     e.stopPropagation();
 
@@ -126,7 +146,7 @@ export function Posts({ postsHeader }) {
                 >
                   {post.author.username}
                 </span>
-                <span>
+                <span className={styles.articleDate}>
                   {formatDistance(post.createdAt, new Date(), {
                     addSuffix: true,
                   })}
@@ -138,7 +158,7 @@ export function Posts({ postsHeader }) {
                 <img
                   className={styles.articlePostImg}
                   src={post.imageURL}
-                  alt="post image"
+                  alt="article post image"
                 />
               ) : (
                 ""

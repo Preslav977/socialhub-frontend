@@ -1,7 +1,7 @@
 .settingsFlexWrapper {
   height: 100%;
-  outline: 2px solid var(--paragraph--secondary-color);
-  color: var(--paragraph--secondary-color);
+  outline: 2px solid var(--main-color-input);
+  color: var(--main-color-input);
   max-width: 960px;
 }
 
@@ -9,12 +9,13 @@
   display: flex;
   align-items: center;
   padding: 1em;
-  color: var(--paragraph--secondary-color);
+  color: var(--main-color-input);
   gap: 0.25em;
-  background-color: var(--paragraph--main-color);
+  background-color: var(--main-background-hover-color);
   border-radius: 0.5em;
   width: 97%;
   margin: 0 auto;
+  text-decoration: none;
 }
 
 .accountPara {

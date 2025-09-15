@@ -1,0 +1,54 @@
+.modalContainer {
+  background-color: green;
+  outline: 2px solid var(--secondary-color);
+  width: 350px;
+  color: var(--secondary-color);
+  padding: 0.5em;
+  height: 70px;
+  animation: pop-up 2000ms 3000ms;
+  animation-timing-function: ease-out;
+  position: fixed;
+  right: 10px;
+  top: 20px;
+}
+
+.modalClose {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modalTickContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.25em;
+}
+
+.modalTick {
+  width: 20px;
+}
+
+.modalBar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--secondary-color);
+  animation: fill 3000ms;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes fill {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0;
+  }
+}
+
+@keyframes pop-up {
+  100% {
+    transform: translateX(100%);
+    right: -100%;
+  }
+}

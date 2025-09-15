@@ -1,30 +1,31 @@
 .mainGridContainer {
   display: grid;
-  grid-template-columns: 450px 1fr 500px;
-  min-height: 100vh;
-  outline: 2px solid var(--paragraph--main-color);
+  grid-template-columns: 1fr 2fr 1fr;
+  scroll-behavior: smooth;
+  outline: 2px solid var(--main-color-input);
+  min-height: 91.5vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .mainGridAsideNavigation {
-  background-color: var(--main-bg-color);
   display: flex;
   justify-content: flex-end;
-  padding-top: 2em;
-  padding-right: 3em;
+  padding: 1.5em 6em 0 0;
+  background-color: var(--main-background-color);
 }
 
 .mainGridRightSectionContainer {
-  background-color: var(--main-bg-color);
-  color: var(--paragraph--secondary-color);
-  height: 100%;
+  background-color: var(--main-background-color);
+  color: var(--secondary-color);
+  outline: 2px solid var(--main-color-input);
 }
 
 .latestUsersContainer,
 .mostFollowedUsersContainer,
 .announcementsContainer {
-  outline: 2px solid var(--paragraph--main-color);
-  max-width: 275px;
-  padding: 0.5em;
+  outline: 2px solid var(--main-color-input);
+  max-width: fit-content;
   margin-top: 1em;
   margin-left: 1.25em;
 }
@@ -34,26 +35,50 @@
   padding: 0;
 }
 
-.announcementsContainer li {
+.announcementsPara {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.announcementsContainer > li {
   font-size: 0.95rem;
   margin-left: 0.75em;
 }
 
-.mainGridSectionContainer {
-  background-color: black;
-  outline: 2px solid white;
-  max-width: 965px;
+.announcementsHr {
+  margin: 0.5em 0 0.5em 0;
+  background-color: var(--main-color-input);
 }
 
-@media screen and (max-width: 940px) {
+.mainGridSectionContainer {
+  background-color: var(--main-background-color);
+  outline: 2px solid var(--main-color-input);
+  width: 100%;
+  position: relative;
+}
+
+@media screen and (max-width >= 1200px) {
+  .mainGridContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 1000px) {
   .latestUsersContainer,
   .mostFollowedUsersContainer,
   .announcementsContainer {
     display: none;
   }
+}
+
+@media screen and (max-width: 600px) {
+  .mainGridAsideNavigation,
+  .mainGridRightSectionContainer {
+    display: none;
+  }
 
   .mainGridContainer {
-    display: grid;
-    grid-template-columns: 250px 1fr 200px;
+    grid-template-columns: 1fr;
   }
 }

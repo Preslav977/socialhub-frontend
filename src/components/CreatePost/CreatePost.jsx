@@ -2,7 +2,9 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { HasNewPostBeenCreatedContext } from "../../context/HasNewPostBeenCreatedContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
+import { ErrorElement } from "../ErrorElement/ErrorElement";
 import styles from "./CreatePost.module.css";
 
 export function CreatePost() {
@@ -11,6 +13,12 @@ export function CreatePost() {
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
   const [checkIfImgIsUploaded, setCheckIfImageIsUploaded] = useState(false);
+
+  const [hasNewPostBeenCreated, setHasNewPostBeenCreated] = useContext(
+    HasNewPostBeenCreatedContext,
+  );
+
+  const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   const navigate = useNavigate();
 
@@ -32,8 +40,8 @@ export function CreatePost() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify({
-          content: content,
-          tag: tag,
+          content,
+          tag,
           authorId: userLogIn.id,
         }),
       });
@@ -43,8 +51,16 @@ export function CreatePost() {
       reset();
 
       navigate("/");
+
+      setHasNewPostBeenCreated(true);
+    } catch (error) {
+      setIsTokenHasExpired(error);
     } finally {
       setCheckIfImageIsUploaded(false);
+
+      setTimeout(() => {
+        setHasNewPostBeenCreated(false);
+      }, 5000);
     }
   };
 
@@ -67,14 +83,32 @@ export function CreatePost() {
       reset();
 
       navigate("/");
+
+      setHasNewPostBeenCreated(true);
+    } catch (error) {
+      setIsTokenHasExpired(error);
     } finally {
       setCheckIfImageIsUploaded(false);
+
+      setTimeout(() => {
+        setHasNewPostBeenCreated(false);
+      }, 5000);
     }
   };
 
   const onChange = (e) => {
     setPostLetterLength(e.target.value.length);
   };
+
+  if (isTokenHasExpired)
+    return (
+      <ErrorElement
+        textProp={"400 Bad Request"}
+        textDescriptionProp={
+          "Token seems to be lost in the darkness. Login can fix that!"
+        }
+      ></ErrorElement>
+    );
 
   return (
     <form
@@ -105,7 +139,9 @@ export function CreatePost() {
       ></textarea>
 
       {errors.content?.type === "required" && (
-        <span role="alert">Content is required</span>
+        <span className={styles.spanInputTagError} role="alert">
+          Content is required
+        </span>
       )}
 
       {errors.content?.type === "minLength" ||
@@ -120,7 +156,7 @@ export function CreatePost() {
           <img
             className={styles.formControlsImg}
             src="/upload-image.svg"
-            alt="uploading a image"
+            alt="upload image for post"
           />
           <label htmlFor="file"></label>
           <input
@@ -134,7 +170,7 @@ export function CreatePost() {
           <img
             className={styles.formControlsImg}
             src="/add-tag.svg"
-            alt="adding a tag"
+            alt="add tag for post"
           />
         </div>
 
@@ -154,7 +190,7 @@ export function CreatePost() {
           name="tag"
           id="tag"
           aria-label="tag"
-          placeholder="Please type to create a tag."
+          placeholder="Please Type to create a tag."
           {...register("tag", {
             required: true,
             minLength: 1,
