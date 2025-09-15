@@ -1,17 +1,21 @@
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-export function LoadingSkeletonChats({ chats }) {
+import { useFetchChats } from "../../api/userFetchChats";
+export function LoadingSkeletonChats() {
+  const { chats } = useFetchChats();
+
   return (
     <>
       {chats ? (
         <>
           {chats.map((chat) => (
             <SkeletonTheme
+              data-testid="loadingSkeletonChats"
+              key={chat.id}
               duration={5}
               baseColor="#464545"
               highlightColor="gray"
-              key={chat.id}
             >
               <div
                 style={{

@@ -125,7 +125,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByText("Added most followed users feature").textContent,
     ).toMatch(/added most followed users feature/i);
 
-    await waitFor(() => screen.queryByText("Loading latest users..."));
+    screen.debug();
+
+    await waitFor(() => screen.queryByTestId("loadingSkeletonUsers"));
 
     expect(screen.queryAllByText("user")[0].textContent).toMatch(/user/);
 
@@ -306,7 +308,7 @@ describe("should render MainGridInterface", () => {
       screen.queryByText("Added most followed users feature").textContent,
     ).toMatch(/added most followed users feature/i);
 
-    await waitFor(() => screen.queryByText("Loading latest users..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeletonUsers"));
 
     await user.click(screen.queryAllByRole("button")[0]);
 
@@ -475,9 +477,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
 
     // screen.debug();
 
@@ -589,10 +591,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
-
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
     screen.debug();
 
     expect(screen.queryByText("Recent").textContent).toMatch(/recent/i);
@@ -653,9 +654,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
 
     expect(screen.queryByText("Recent").textContent).toMatch(/recent/i);
 
@@ -731,9 +732,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
 
     await user.click(screen.queryByText("post on home"));
 
@@ -821,9 +822,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
 
     await user.click(screen.queryByText("post on home"));
 
@@ -957,9 +958,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
 
     await user.click(screen.queryByText("post on home"));
 
@@ -1176,9 +1177,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
 
     await user.click(screen.queryByText("post on home"));
 
@@ -1475,9 +1476,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
 
     await user.click(screen.queryByText("post on home"));
 
@@ -1608,9 +1609,9 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("loading spinner"),
     );
 
-    expect(screen.queryByText("Loading posts..."));
+    expect(screen.queryByTestId("loadingSkeleton"));
 
-    await waitFor(() => screen.queryByText("Loading posts..."));
+    await waitFor(() => screen.queryByTestId("loadingSkeleton"));
 
     await user.click(screen.queryByText("post on home"));
 

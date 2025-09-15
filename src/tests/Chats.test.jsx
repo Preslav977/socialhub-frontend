@@ -1,6 +1,7 @@
 import {
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -73,11 +74,11 @@ describe("should render Chats component", () => {
 
     await user.click(screen.queryByText("Message"));
 
+    await waitFor(() => screen.queryByTestId("loadingSkeletonChats"));
+
     expect(screen.queryByText("Messages").textContent).toMatch(/messages/i);
 
     expect(screen.queryAllByText("user")[1].textContent).toMatch(/user/i);
-
-    screen.debug();
   });
 
   it("should render chats details", async () => {
@@ -164,6 +165,8 @@ describe("should render Chats component", () => {
     );
 
     await user.click(screen.queryByText("Message"));
+
+    await waitFor(() => screen.queryByTestId("loadingSkeletonChats"));
 
     expect(screen.queryByText("Messages").textContent).toMatch(/messages/i);
 
@@ -306,6 +309,8 @@ describe("should render Chats component", () => {
     );
 
     await user.click(screen.queryByText("Message"));
+
+    await waitFor(() => screen.queryByTestId("loadingSkeletonChats"));
 
     expect(screen.queryByText("Messages").textContent).toMatch(/messages/i);
 

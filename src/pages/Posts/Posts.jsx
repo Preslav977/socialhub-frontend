@@ -6,7 +6,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPosts } from "../../api/useFetchPosts";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
-// import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleton";
+import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleton";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./Posts.module.css";
 
@@ -83,9 +83,7 @@ export function Posts({ postsHeader }) {
     }
   }
 
-  // if (loading) return <LoadingSkeleton />;
-
-  if (loading) return <p>Loading posts...</p>;
+  if (loading) return <LoadingSkeleton />;
 
   if (error || isTokenHasExpired)
     return (

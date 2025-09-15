@@ -10,8 +10,7 @@ export function Chats() {
 
   const navigate = useNavigate();
 
-  if (loading)
-    return <LoadingSkeletonChats chats={chats}></LoadingSkeletonChats>;
+  if (loading) return <LoadingSkeletonChats />;
 
   if (error)
     return (
