@@ -207,6 +207,7 @@ export function ChatsDetails() {
               </div>
               <div>
                 <button
+                  data-testid="sendMessageBtn"
                   type="submit"
                   className={styles.chatDetailsSendBtn}
                 ></button>

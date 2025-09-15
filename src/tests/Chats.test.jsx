@@ -80,7 +80,7 @@ describe("should render Chats component", () => {
     screen.debug();
   });
 
-  it.only("should render chats details", async () => {
+  it("should render chats details", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/chats", "/chats/123bg"],
       initialIndex: 0,
@@ -144,6 +144,301 @@ describe("should render Chats component", () => {
       },
       messages: [],
     });
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    const loading = screen.getByAltText("loading spinner");
+
+    expect(loading).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.getByAltText("loading spinner"),
+    );
+
+    await user.click(screen.queryByText("Message"));
+
+    expect(screen.queryByText("Messages").textContent).toMatch(/messages/i);
+
+    expect(screen.queryAllByText("user")[1].textContent).toMatch(/user/i);
+
+    await user.click(screen.queryAllByText("user")[0]);
+
+    expect(screen.queryAllByText("user")[0].textContent).toMatch(/user/i);
+
+    expect(
+      screen.queryByPlaceholderText("Enter a message..."),
+    ).toBeInTheDocument();
+
+    expect(screen.queryByAltText("send message in chat")).toBeInTheDocument();
+
+    expect(screen.queryByAltText("send image in chat")).toBeInTheDocument();
+
+    screen.debug();
+  });
+
+  it("should render chats details and send a message", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/chats", "/chats/123bg"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
+
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    const chats = await fetch(`${localhostURL}/chats`);
+
+    await expect(chats.json()).resolves.toEqual([
+      {
+        id: "123bg",
+        senderChatId: 1,
+        receiverChatId: 2,
+        senderChat: {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          createdAt: "2025-08-17T05:29:01.873Z",
+        },
+        receiverChat: {
+          id: 2,
+          username: "user",
+          display_name: "user",
+
+          createdAt: "2025-08-17T05:29:16.247Z",
+        },
+        messages: [],
+      },
+    ]);
+
+    const chatDetails = await fetch(`${localhostURL}/chats/123bg`);
+
+    await expect(chatDetails.json()).resolves.toEqual({
+      id: "123bg",
+      senderChatId: 1,
+      receiverChatId: 2,
+      senderChat: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw",
+        createdAt: "2025-08-17T05:29:01.873Z",
+      },
+      receiverChat: {
+        id: 2,
+        username: "user",
+        display_name: "user",
+
+        createdAt: "2025-08-17T05:29:16.247Z",
+      },
+      messages: [],
+    });
+
+    const sendAMessage = await fetch(`${localhostURL}/chats/123bg/message`, {
+      method: "POST",
+      body: JSON.stringify({
+        text: "hello",
+        receiverId: 2,
+      }),
+    });
+
+    await expect(sendAMessage.json()).resolves.toEqual({
+      id: "123bg",
+      senderChatId: 1,
+      receiverChatId: 2,
+      senderChat: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw",
+        createdAt: "2025-08-17T05:29:01.873Z",
+      },
+      receiverChat: {
+        id: 2,
+        username: "user",
+        display_name: "user",
+
+        createdAt: "2025-08-17T05:29:16.247Z",
+      },
+      messages: [
+        {
+          id: 1,
+          text: "hello",
+          imageURL: null,
+          createdAt: "2025-09-04T08:05:44.454Z",
+          senderMessageId: 1,
+          receiverMessageId: 3,
+          chatId: "1c2de638-ac34-49e4-9eb0-123bg",
+        },
+      ],
+    });
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    const loading = screen.getByAltText("loading spinner");
+
+    expect(loading).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.getByAltText("loading spinner"),
+    );
+
+    await user.click(screen.queryByText("Message"));
+
+    expect(screen.queryByText("Messages").textContent).toMatch(/messages/i);
+
+    expect(screen.queryAllByText("user")[1].textContent).toMatch(/user/i);
+
+    await user.click(screen.queryAllByText("user")[0]);
+
+    expect(screen.queryAllByText("user")[0].textContent).toMatch(/user/i);
+
+    expect(
+      screen.queryByPlaceholderText("Enter a message..."),
+    ).toBeInTheDocument();
+
+    expect(screen.queryByAltText("send message in chat")).toBeInTheDocument();
+
+    expect(screen.queryByAltText("send image in chat")).toBeInTheDocument();
+
+    await user.type(
+      screen.queryByPlaceholderText("Enter a message..."),
+      "hello",
+    );
+
+    expect(screen.queryByPlaceholderText("Enter a message..."), "hello");
+
+    await user.click(screen.queryByTestId("sendMessageBtn"));
+
+    expect(screen.queryByText("hello").textContent).toMatch(/hello/i);
+
+    screen.debug();
+  });
+
+  it.only("should render chats details and send a image", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/chats", "/chats/123bg"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
+
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    const chats = await fetch(`${localhostURL}/chats`);
+
+    await expect(chats.json()).resolves.toEqual([
+      {
+        id: "123bg",
+        senderChatId: 1,
+        receiverChatId: 2,
+        senderChat: {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          createdAt: "2025-08-17T05:29:01.873Z",
+        },
+        receiverChat: {
+          id: 2,
+          username: "user",
+          display_name: "user",
+
+          createdAt: "2025-08-17T05:29:16.247Z",
+        },
+        messages: [],
+      },
+    ]);
+
+    const chatDetails = await fetch(`${localhostURL}/chats/123bg`);
+
+    await expect(chatDetails.json()).resolves.toEqual({
+      id: "123bg",
+      senderChatId: 1,
+      receiverChatId: 2,
+      senderChat: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw",
+        createdAt: "2025-08-17T05:29:01.873Z",
+      },
+      receiverChat: {
+        id: 2,
+        username: "user",
+        display_name: "user",
+
+        createdAt: "2025-08-17T05:29:16.247Z",
+      },
+      messages: [],
+    });
+
+    // const sendAMessage = await fetch(`${localhostURL}/chats/123bg/message`, {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     text: "hello",
+    //     receiverId: 2,
+    //   }),
+    // });
+
+    // await expect(sendAMessage.json()).resolves.toEqual({
+    //   id: "123bg",
+    //   senderChatId: 1,
+    //   receiverChatId: 2,
+    //   senderChat: {
+    //     id: 1,
+    //     username: "preslaw",
+    //     display_name: "preslaw",
+    //     createdAt: "2025-08-17T05:29:01.873Z",
+    //   },
+    //   receiverChat: {
+    //     id: 2,
+    //     username: "user",
+    //     display_name: "user",
+
+    //     createdAt: "2025-08-17T05:29:16.247Z",
+    //   },
+    //   messages: [
+    //     {
+    //       id: 1,
+    //       text: "hello",
+    //       imageURL: null,
+    //       createdAt: "2025-09-04T08:05:44.454Z",
+    //       senderMessageId: 1,
+    //       receiverMessageId: 3,
+    //       chatId: "1c2de638-ac34-49e4-9eb0-123bg",
+    //     },
+    //   ],
+    // });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
