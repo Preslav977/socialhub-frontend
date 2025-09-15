@@ -71,6 +71,8 @@ export function ChatsDetails() {
 
     formData.append("receiverId", chatDetails.receiverChatId);
 
+    console.log(formData);
+
     try {
       const response = await fetch(
         `${localhostURL}/chats/${chatDetails.id}/image`,
@@ -195,6 +197,7 @@ export function ChatsDetails() {
                 <input
                   onClick={() => setSendMessageOrImage(true)}
                   className={styles.chatDetailsSendImgInput}
+                  aria-label="file"
                   type="file"
                   name="file"
                   id="file"

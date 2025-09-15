@@ -402,43 +402,42 @@ describe("should render Chats component", () => {
       messages: [],
     });
 
-    // const sendAMessage = await fetch(`${localhostURL}/chats/123bg/message`, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     text: "hello",
-    //     receiverId: 2,
-    //   }),
-    // });
+    const sendAMessage = await fetch(`${localhostURL}/chats/123bg/image`, {
+      method: "POST",
+      body: FormData,
+      receiverChatId: 2,
+    });
 
-    // await expect(sendAMessage.json()).resolves.toEqual({
-    //   id: "123bg",
-    //   senderChatId: 1,
-    //   receiverChatId: 2,
-    //   senderChat: {
-    //     id: 1,
-    //     username: "preslaw",
-    //     display_name: "preslaw",
-    //     createdAt: "2025-08-17T05:29:01.873Z",
-    //   },
-    //   receiverChat: {
-    //     id: 2,
-    //     username: "user",
-    //     display_name: "user",
+    await expect(sendAMessage.json()).resolves.toEqual({
+      id: "123bg",
+      senderChatId: 1,
+      receiverChatId: 2,
+      senderChat: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw",
+        createdAt: "2025-08-17T05:29:01.873Z",
+      },
+      receiverChat: {
+        id: 2,
+        username: "user",
+        display_name: "user",
 
-    //     createdAt: "2025-08-17T05:29:16.247Z",
-    //   },
-    //   messages: [
-    //     {
-    //       id: 1,
-    //       text: "hello",
-    //       imageURL: null,
-    //       createdAt: "2025-09-04T08:05:44.454Z",
-    //       senderMessageId: 1,
-    //       receiverMessageId: 3,
-    //       chatId: "1c2de638-ac34-49e4-9eb0-123bg",
-    //     },
-    //   ],
-    // });
+        createdAt: "2025-08-17T05:29:16.247Z",
+      },
+      messages: [
+        {
+          id: 2,
+          text: "",
+          imageURL:
+            "https://bjrwqfjliniwoqghdrkl.supabase.co/storage/v1/object/public/socialhub-images/public/socialhub-black.png",
+          createdAt: "2025-09-04T08:05:44.454Z",
+          senderMessageId: 1,
+          receiverMessageId: 2,
+          chatId: "1c2de638-ac34-49e4-9eb0-123bg",
+        },
+      ],
+    });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -475,6 +474,28 @@ describe("should render Chats component", () => {
     expect(screen.queryByAltText("send message in chat")).toBeInTheDocument();
 
     expect(screen.queryByAltText("send image in chat")).toBeInTheDocument();
+
+    const inputFile = screen.queryByLabelText("file");
+
+    await user.click(inputFile);
+
+    const file = new File(["image"], "image.png", { type: "image/png" });
+
+    console.log(file);
+
+    await user.upload(inputFile, file);
+
+    expect(inputFile.files[0]).toBe(file);
+
+    expect(inputFile.files.item(0)).toBe(file);
+
+    expect(inputFile.files).toHaveLength(1);
+
+    await user.click(screen.queryByTestId("sendMessageBtn"));
+
+    expect(screen.queryAllByText("user")[0]);
+
+    expect(screen.queryByAltText("chat details image")).toBeInTheDocument();
 
     screen.debug();
   });

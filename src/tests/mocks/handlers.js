@@ -671,4 +671,41 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.post(`${localhostURL}/chats/123bg/image`, () => {
+    return HttpResponse.json(
+      {
+        id: "123bg",
+        senderChatId: 1,
+        receiverChatId: 2,
+        senderChat: {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          createdAt: "2025-08-17T05:29:01.873Z",
+        },
+        receiverChat: {
+          id: 2,
+          username: "user",
+          display_name: "user",
+
+          createdAt: "2025-08-17T05:29:16.247Z",
+        },
+        messages: [
+          {
+            id: 2,
+            text: "",
+            imageURL:
+              "https://bjrwqfjliniwoqghdrkl.supabase.co/storage/v1/object/public/socialhub-images/public/socialhub-black.png",
+            createdAt: "2025-09-04T08:05:44.454Z",
+            senderMessageId: 1,
+            receiverMessageId: 2,
+            chatId: "1c2de638-ac34-49e4-9eb0-123bg",
+          },
+        ],
+      },
+
+      { status: 200 },
+    );
+  }),
 ];
