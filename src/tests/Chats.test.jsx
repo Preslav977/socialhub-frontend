@@ -337,7 +337,7 @@ describe("should render Chats component", () => {
     screen.debug();
   });
 
-  it.only("should render chats details and send a image", async () => {
+  it("should render chats details and send a image", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/chats", "/chats/123bg"],
       initialIndex: 0,

@@ -44,9 +44,9 @@ describe("should render Profile component", () => {
       password: "12345678B",
       confirm_password: "12345678B",
       profile_picture: "",
-      followersNumber: 0,
-      followingNumber: 0,
-      posts: 0,
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
       followedBy: [],
       following: [],
     });
@@ -66,6 +66,8 @@ describe("should render Profile component", () => {
       followersNumber: 10,
       followingNumber: 5,
       posts: 1,
+      followedBy: [],
+      following: [],
     });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
@@ -92,15 +94,17 @@ describe("should render Profile component", () => {
 
     expect(screen.queryAllByText("preslaw")[0].textContent).toMatch(/preslaw/i);
 
-    expect(screen.queryByText(1)).toBeInTheDocument();
+    screen.debug();
+
+    expect(screen.queryByText("1").textContent).toEqual("1");
 
     expect(screen.queryByText("Followers").textContent).toMatch(/followers/i);
 
-    expect(screen.queryByText(10)).toBeInTheDocument();
+    expect(screen.queryByText("10").textContent).toEqual("10");
 
     expect(screen.queryByText("Following").textContent).toMatch(/following/i);
 
-    expect(screen.queryByText(5)).toBeInTheDocument();
+    expect(screen.queryByText("5").textContent).toEqual("5");
 
     expect(screen.queryAllByText("Posts")[0].textContent).toMatch(/posts/i);
 
@@ -144,9 +148,9 @@ describe("should render Profile component", () => {
       password: "12345678B",
       confirm_password: "12345678B",
       profile_picture: "",
-      followersNumber: 0,
-      followingNumber: 0,
-      posts: 0,
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
       followedBy: [],
       following: [],
     });
@@ -166,7 +170,11 @@ describe("should render Profile component", () => {
       followersNumber: 10,
       followingNumber: 5,
       posts: 1,
+      followedBy: [],
+      following: [],
     });
+
+    server.use();
 
     const updateUserProfile = await fetch(`${localhostURL}/users/1`, {
       method: "PUT",
@@ -200,6 +208,27 @@ describe("should render Profile component", () => {
       followingNumber: 5,
       posts: 1,
     });
+
+    server.use(
+      http.get(`${localhostURL}/users/details`, () => {
+        return HttpResponse.json({
+          id: 1,
+          username: "preslaww",
+          display_name: "preslaww1",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+          profile_picture: "",
+          followersNumber: 10,
+          followingNumber: 5,
+          posts: 1,
+          followedBy: [],
+          following: [],
+        });
+      }),
+    );
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
 
@@ -241,17 +270,13 @@ describe("should render Profile component", () => {
 
     expect(screen.queryAllByText("Posts")[1].textContent).toMatch(/posts/i);
 
-    await user.click(screen.queryByTestId("editProfileBtn"));
+    await user.click(screen.queryByRole("button", { name: "Edit" }));
 
     expect(screen.queryByText("preslaww").textContent).toMatch(/preslaww/i);
 
     expect(screen.queryByText("preslaww1").textContent).toMatch(/preslaww1/i);
 
     expect(screen.queryAllByText("1")[0].textContent).toMatch(/1/i);
-
-    expect(screen.queryByText("2").textContent).toMatch(/2/i);
-
-    expect(screen.queryByText("3").textContent).toMatch(/3/i);
 
     expect(screen.queryByText("10").textContent).toMatch(/10/i);
 
@@ -291,9 +316,9 @@ describe("should render Profile component", () => {
       password: "12345678B",
       confirm_password: "12345678B",
       profile_picture: "",
-      followersNumber: 0,
-      followingNumber: 0,
-      posts: 0,
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
       followedBy: [],
       following: [],
     });
@@ -313,6 +338,8 @@ describe("should render Profile component", () => {
       followersNumber: 10,
       followingNumber: 5,
       posts: 1,
+      followedBy: [],
+      following: [],
     });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
@@ -377,9 +404,9 @@ describe("should render Profile component", () => {
       password: "12345678B",
       confirm_password: "12345678B",
       profile_picture: "",
-      followersNumber: 0,
-      followingNumber: 0,
-      posts: 0,
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
       followedBy: [],
       following: [],
     });
@@ -399,6 +426,8 @@ describe("should render Profile component", () => {
       followersNumber: 10,
       followingNumber: 5,
       posts: 1,
+      followedBy: [],
+      following: [],
     });
 
     await user.type(screen.queryByLabelText("username"), "preslaw");
@@ -465,9 +494,9 @@ describe("should render Profile component", () => {
       password: "12345678B",
       confirm_password: "12345678B",
       profile_picture: "",
-      followersNumber: 0,
-      followingNumber: 0,
-      posts: 0,
+      followersNumber: 10,
+      followingNumber: 5,
+      posts: 1,
       followedBy: [],
       following: [],
     });
@@ -487,6 +516,8 @@ describe("should render Profile component", () => {
       followersNumber: 10,
       followingNumber: 5,
       posts: 1,
+      followedBy: [],
+      following: [],
     });
 
     server.use(

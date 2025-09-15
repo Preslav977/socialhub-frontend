@@ -106,9 +106,9 @@ export const handlers = [
         password: "12345678B",
         confirm_password: "12345678B",
         profile_picture: "",
-        followersNumber: 0,
-        followingNumber: 0,
-        posts: 0,
+        followersNumber: 10,
+        followingNumber: 5,
+        posts: 1,
         followedBy: [],
         following: [],
       },
@@ -259,6 +259,8 @@ export const handlers = [
       followersNumber: 10,
       followingNumber: 5,
       posts: 1,
+      followedBy: [],
+      following: [],
     });
   }),
 
