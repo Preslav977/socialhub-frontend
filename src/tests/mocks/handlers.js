@@ -504,4 +504,71 @@ export const handlers = [
       },
     });
   }),
+
+  http.post(`${localhostURL}/posts/1/comment/1`, () => {
+    return HttpResponse.json({
+      id: 1,
+      content: "post on home",
+      imageURL: null,
+      tag: "post",
+      likes: 0,
+      comments: 2,
+      createdAt: "2025-09-13T06:03:47.988Z",
+      authorId: 1,
+      postLikedByUsers: [],
+      postCommentedByUsers: [
+        {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          text: "hello",
+          createdAt: "2025-09-02T08:41:06.396Z",
+          commentRelatedToPostId: 1,
+          likes: 1,
+          parentCommentId: null,
+          textReply: null,
+          commentLeftByUser: {
+            id: 1,
+            username: "preslaw",
+            display_name: "preslaw",
+            createdAt: "2025-08-17T05:29:01.873Z",
+          },
+          commentLikedByUsers: [],
+          childCommentReply: [
+            {
+              id: 2,
+              commentLeftByUserId: 1,
+              createdAt: "2025-09-15T06:55:29.094Z",
+              commentRelatedToPostId: 1,
+              likes: 0,
+              parentCommentId: 1,
+              textReply: "hello back",
+              commentLeftByUser: {
+                id: 1,
+                username: "preslaw",
+                display_name: "preslaw",
+                createdAt: "2025-08-17T05:29:01.873Z",
+              },
+              commentLikedByUsers: [],
+            },
+          ],
+        },
+      ],
+      author: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "/user-details.pfp.jpg",
+        role: "USER",
+        followersNumber: 0,
+        followingNumber: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+      },
+    });
+  }),
 ];

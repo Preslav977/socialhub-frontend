@@ -991,7 +991,7 @@ describe("should render MainGridInterface", () => {
     screen.debug();
   });
 
-  it.only("should navigate to post details and like the comment", async () => {
+  it("should navigate to post details and like the comment", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/posts/1"],
       initialIndex: 0,
@@ -1210,6 +1210,324 @@ describe("should render MainGridInterface", () => {
     await user.click(screen.queryByAltText("like the comment"));
 
     expect(screen.queryAllByText(1)[1].textContent).toEqual("1");
+
+    screen.debug();
+  });
+
+  it.only("should navigate to post details and leave a reply in the comment ", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/posts/1"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
+
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    const postDetails = await fetch(`${localhostURL}/posts/1`);
+
+    await expect(postDetails.json()).resolves.toEqual({
+      id: 1,
+      content: "post on home",
+      imageURL: null,
+      tag: "post",
+      likes: 0,
+      comments: 0,
+      createdAt: "2025-09-13T06:03:47.988Z",
+      authorId: 1,
+      postLikedByUsers: [],
+      postCommentedByUsers: [],
+      author: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "/user-details.pfp.jpg",
+        role: "USER",
+        followersNumber: 0,
+        followingNumber: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+      },
+    });
+
+    const postComment = await fetch(`${localhostURL}/posts/1/comment`, {
+      method: "POST",
+      body: JSON.stringify({
+        id: 1,
+        text: "hello",
+        commentLeftByUserId: 1,
+        commentRelatedToPostId: 1,
+      }),
+    });
+
+    await expect(postComment.json()).resolves.toEqual({
+      id: 1,
+      content: "post on home",
+      imageURL: null,
+      tag: "post",
+      likes: 0,
+      comments: 1,
+      createdAt: "2025-09-13T06:03:47.988Z",
+      authorId: 1,
+      postLikedByUsers: [],
+      postCommentedByUsers: [
+        {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          text: "hello",
+          createdAt: "2025-09-02T08:41:06.396Z",
+          commentRelatedToPostId: 1,
+          likes: 0,
+          parentCommentId: null,
+          textReply: null,
+          commentLeftByUser: {
+            id: 1,
+            username: "preslaw",
+            display_name: "preslaw",
+            createdAt: "2025-08-17T05:29:01.873Z",
+          },
+          commentLikedByUsers: [],
+          childCommentReply: [],
+        },
+      ],
+      author: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "/user-details.pfp.jpg",
+        role: "USER",
+        followersNumber: 0,
+        followingNumber: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+      },
+    });
+
+    const likeTheComment = await fetch(`${localhostURL}/posts/1/like/1`, {
+      method: "PUT",
+      body: JSON.stringify({
+        id: 1,
+        commentRelatedToPostId: 1,
+      }),
+    });
+
+    await expect(likeTheComment.json()).resolves.toEqual({
+      id: 1,
+      content: "post on home",
+      imageURL: null,
+      tag: "post",
+      likes: 0,
+      comments: 1,
+      createdAt: "2025-09-13T06:03:47.988Z",
+      authorId: 1,
+      postLikedByUsers: [],
+      postCommentedByUsers: [
+        {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          text: "hello",
+          createdAt: "2025-09-02T08:41:06.396Z",
+          commentRelatedToPostId: 1,
+          likes: 1,
+          parentCommentId: null,
+          textReply: null,
+          commentLeftByUser: {
+            id: 1,
+            username: "preslaw",
+            display_name: "preslaw",
+            createdAt: "2025-08-17T05:29:01.873Z",
+          },
+          commentLikedByUsers: [
+            {
+              id: 1,
+              username: "preslaw",
+              display_name: "preslaw",
+            },
+          ],
+          childCommentReply: [],
+        },
+      ],
+      author: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "/user-details.pfp.jpg",
+        role: "USER",
+        followersNumber: 0,
+        followingNumber: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+      },
+    });
+
+    const postCommentReply = await fetch(`${localhostURL}/posts/1/comment/1`, {
+      method: "POST",
+      body: JSON.stringify({
+        id: 1,
+        textReply: "hello back",
+        commentLeftByUserId: 1,
+        commentRelatedToPostId: 1,
+        commentId: 1,
+      }),
+    });
+
+    await expect(postCommentReply.json()).resolves.toEqual({
+      id: 1,
+      content: "post on home",
+      imageURL: null,
+      tag: "post",
+      likes: 0,
+      comments: 2,
+      createdAt: "2025-09-13T06:03:47.988Z",
+      authorId: 1,
+      postLikedByUsers: [],
+      postCommentedByUsers: [
+        {
+          id: 1,
+          username: "preslaw",
+          display_name: "preslaw",
+          text: "hello",
+          createdAt: "2025-09-02T08:41:06.396Z",
+          commentRelatedToPostId: 1,
+          likes: 1,
+          parentCommentId: null,
+          textReply: null,
+          commentLeftByUser: {
+            id: 1,
+            username: "preslaw",
+            display_name: "preslaw",
+            createdAt: "2025-08-17T05:29:01.873Z",
+          },
+          commentLikedByUsers: [],
+          childCommentReply: [
+            {
+              id: 2,
+              commentLeftByUserId: 1,
+              createdAt: "2025-09-15T06:55:29.094Z",
+              commentRelatedToPostId: 1,
+              parentCommentId: 1,
+              likes: 0,
+              textReply: "hello back",
+              commentLeftByUser: {
+                id: 1,
+                username: "preslaw",
+                display_name: "preslaw",
+                createdAt: "2025-08-17T05:29:01.873Z",
+              },
+              commentLikedByUsers: [],
+            },
+          ],
+        },
+      ],
+      author: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "/user-details.pfp.jpg",
+        role: "USER",
+        followersNumber: 0,
+        followingNumber: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+      },
+    });
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
+
+    expect(screen.queryByText("Loading posts..."));
+
+    await waitFor(() => screen.queryByText("Loading posts..."));
+
+    await user.click(screen.queryByText("post on home"));
+
+    await user.type(
+      screen.queryByPlaceholderText("Type a comment..."),
+      "hello",
+    );
+
+    expect(screen.queryByPlaceholderText("Type a comment...").value).toEqual(
+      "hello",
+    );
+
+    await user.click(screen.queryByRole("button", { name: "Post" }));
+
+    expect(screen.queryByText("View comments 1").textContent).toMatch(
+      /view comments 1/i,
+    );
+
+    expect(screen.queryByText(1).textContent).toEqual("1");
+
+    expect(screen.queryAllByText("preslaw")[1].textContent).toMatch(/preslaw/i);
+
+    expect(screen.queryByText("hello").textContent).toMatch(/hello/i);
+
+    expect(screen.queryAllByText(0)[1].textContent).toEqual("0");
+
+    expect(screen.queryByText("reply").textContent).toMatch(/reply/i);
+
+    await user.click(screen.queryByAltText("like the comment"));
+
+    expect(screen.queryAllByText(1)[1].textContent).toEqual("1");
+
+    await user.click(screen.queryByText("reply"));
+
+    await user.type(
+      screen.queryByPlaceholderText("Add a reply..."),
+      "hello back",
+    );
+
+    expect(screen.queryByPlaceholderText("Add a reply...").value).toEqual(
+      "hello back",
+    );
+
+    await user.click(screen.queryByRole("button", { name: "Reply" }));
+
+    await user.click(screen.queryByText("show replies"));
+
+    expect(screen.queryAllByText("preslaw")[2].textContent).toMatch(/preslaw/i);
+
+    expect(screen.queryByText("hello back").textContent).toMatch(/hello back/i);
 
     screen.debug();
   });
