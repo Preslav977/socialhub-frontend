@@ -581,4 +581,32 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.get(`${localhostURL}/chats`, () => {
+    return HttpResponse.json(
+      [
+        {
+          id: "123bg",
+          senderChatId: 1,
+          receiverChatId: 2,
+          senderChat: {
+            id: 1,
+            username: "preslaw",
+            display_name: "preslaw",
+            createdAt: "2025-08-17T05:29:01.873Z",
+          },
+          receiverChat: {
+            id: 2,
+            username: "user",
+            display_name: "user",
+
+            createdAt: "2025-08-17T05:29:16.247Z",
+          },
+          messages: [],
+        },
+      ],
+
+      { status: 200 },
+    );
+  }),
 ];

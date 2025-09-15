@@ -1532,7 +1532,7 @@ describe("should render MainGridInterface", () => {
     screen.debug();
   });
 
-  it.only("should navigate to post details and delete the post", async () => {
+  it("should navigate to post details and delete the post", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/posts/1"],
       initialIndex: 0,

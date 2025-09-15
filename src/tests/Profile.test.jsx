@@ -648,7 +648,7 @@ describe("should render Profile component", () => {
     // screen.debug();
   });
 
-  it.only("should navigate to user profile and create conversation", async () => {
+  it("should navigate to user profile and create conversation", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/profile/2"],
       initialIndex: 0,
