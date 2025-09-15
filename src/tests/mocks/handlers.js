@@ -571,4 +571,14 @@ export const handlers = [
       },
     });
   }),
+
+  http.delete(`${localhostURL}/posts/1`, () => {
+    return HttpResponse.json(
+      {
+        id: 1,
+      },
+
+      { status: 200 },
+    );
+  }),
 ];

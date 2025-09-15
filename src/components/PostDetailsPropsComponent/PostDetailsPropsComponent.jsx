@@ -56,7 +56,7 @@ export function PostDetailsPropsComponent({
               <img
                 className={styles.articleDelete}
                 src="/trashcan.svg"
-                alt="delete a post"
+                alt="delete the post"
               />
             </div>
           ) : (

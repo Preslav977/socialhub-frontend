@@ -1214,7 +1214,7 @@ describe("should render MainGridInterface", () => {
     screen.debug();
   });
 
-  it.only("should navigate to post details and leave a reply in the comment ", async () => {
+  it("should navigate to post details and leave a reply to the comment", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/", "/posts/1"],
       initialIndex: 0,
@@ -1528,6 +1528,93 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryAllByText("preslaw")[2].textContent).toMatch(/preslaw/i);
 
     expect(screen.queryByText("hello back").textContent).toMatch(/hello back/i);
+
+    screen.debug();
+  });
+
+  it.only("should navigate to post details and delete the post", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/", "/posts/1"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const loginResponse = await fetch(`${localhostURL}/login`, {
+      method: "POST",
+    });
+
+    await expect(loginResponse.json()).resolves.toEqual({
+      username: "preslaw",
+      password: "12345678B",
+    });
+
+    const postDetails = await fetch(`${localhostURL}/posts/1`);
+
+    await expect(postDetails.json()).resolves.toEqual({
+      id: 1,
+      content: "post on home",
+      imageURL: null,
+      tag: "post",
+      likes: 0,
+      comments: 0,
+      createdAt: "2025-09-13T06:03:47.988Z",
+      authorId: 1,
+      postLikedByUsers: [],
+      postCommentedByUsers: [],
+      author: {
+        id: 1,
+        username: "preslaw",
+        display_name: "preslaw1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+        profile_picture: "/user-details.pfp.jpg",
+        role: "USER",
+        followersNumber: 0,
+        followingNumber: 0,
+        createdAt: "2025-09-13T06:03:47.988Z",
+      },
+    });
+
+    const deletePost = await fetch(`${localhostURL}/posts/1`, {
+      method: "DELETE",
+      body: JSON.stringify({
+        id: 1,
+      }),
+    });
+
+    await expect(deletePost.json()).resolves.toEqual({
+      id: 1,
+    });
+
+    await user.type(screen.queryByLabelText("username"), "preslaw");
+
+    expect(screen.queryByLabelText("username").value).toEqual("preslaw");
+
+    await user.type(screen.queryByLabelText("password"), "12345678B");
+
+    expect(screen.queryByLabelText("password").value).toEqual("12345678B");
+
+    await user.click(screen.queryByRole("button", { name: "Login" }));
+
+    expect(screen.queryByAltText("loading spinner")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByAltText("loading spinner"),
+    );
+
+    expect(screen.queryByText("Loading posts..."));
+
+    await waitFor(() => screen.queryByText("Loading posts..."));
+
+    await user.click(screen.queryByText("post on home"));
+
+    await user.click(screen.queryByAltText("delete the post"));
 
     screen.debug();
   });
