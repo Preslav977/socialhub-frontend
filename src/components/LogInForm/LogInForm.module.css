@@ -2,6 +2,8 @@
   display: grid;
   grid-template-columns: var(--grid-template-cols);
   min-height: 100vh;
+  font-family: var(--main-font);
+  font-weight: 500;
 }
 
 .formFlexedContainer {

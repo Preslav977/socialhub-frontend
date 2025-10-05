@@ -4,6 +4,8 @@
   align-items: center;
   padding: 1em;
   background-color: var(--main-background-color);
+  font-family: var(--main-font);
+  font-weight: 900;
 }
 
 .homeLinkContainer {

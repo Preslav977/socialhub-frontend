@@ -249,6 +249,7 @@ export function UserProfilePropsComponent({
         ) : (
           <>
             <button
+              disabled={userLoggedIn.role === "GUEST"}
               data-testid="editProfileBtn"
               className={styles.userProfileBtn}
               onClick={() => setEditUserProfile(true)}

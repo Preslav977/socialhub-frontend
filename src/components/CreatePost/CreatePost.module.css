@@ -1,6 +1,8 @@
 .formCreatePostContainer {
   background-color: var(--main-background-color);
   color: var(--secondary-color);
+  font-family: var(--main-font);
+  font-weight: 700;
 }
 
 .formTextarea {

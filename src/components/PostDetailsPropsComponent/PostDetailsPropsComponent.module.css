@@ -7,6 +7,13 @@
   padding: var(--main-padding);
   color: var(--secondary-color);
   outline: 1px solid (--main-color-input);
+  font-family: var(--main-font);
+}
+
+.createArticleCommentTextarea,
+.createCommentBtn {
+  font-family: var(--main-font);
+  font-weight: 700;
 }
 
 .articlePostContainer:hover {
@@ -18,11 +25,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-weight: 500;
 }
 
 .articlePostAuthorAndDate {
   display: flex;
   gap: 0.5em;
+}
+
+.articlePostAuthorAndDate > span:nth-child(3),
+.articleCommentUser > p:nth-child(3) {
+  color: var(--main-color-input);
 }
 
 .articleAuthorImg,
@@ -37,6 +50,7 @@
 .articleCommentUser {
   display: flex;
   gap: 1em;
+  font-weight: 500;
 }
 
 .articleLike,

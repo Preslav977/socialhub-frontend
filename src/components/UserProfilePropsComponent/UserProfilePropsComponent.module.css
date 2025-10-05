@@ -1,6 +1,8 @@
 .userProfileWrapper {
   padding: var(--main-padding);
   color: var(--secondary-color);
+  font-family: var(--main-font);
+  font-weight: 500;
 }
 
 .userProfileFlexContainer {

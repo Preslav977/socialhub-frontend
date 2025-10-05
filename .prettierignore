@@ -1,6 +1,5 @@
 # Ignore artifacts:
 build
 coverage
-index.html
 package-lock.json
 package.json

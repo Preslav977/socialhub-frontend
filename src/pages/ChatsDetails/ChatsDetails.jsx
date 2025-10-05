@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchSingleChat } from "../../api/useFetchSingleChat";
+import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
+import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
+import { Loading } from "../../components/Loading/Loading";
 import { UserLogInContext } from "../../context/UserLogInContext";
-import { ErrorElement } from "../ErrorElement/ErrorElement";
-import { LeftArrow } from "../LeftArrow/LeftArrow";
-import { Loading } from "../Loading/Loading";
 import styles from "./ChatsDetails.module.css";
 
 export function ChatsDetails() {

@@ -6,6 +6,8 @@
   color: var(--secondary-color);
   outline: 2px solid var(--main-color-input);
   font-size: 1.25rem;
+  font-family: var(--main-font);
+  font-weight: 500;
 }
 
 .leftArrowImgContainer {

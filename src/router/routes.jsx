@@ -1,5 +1,4 @@
 import { App } from "../App";
-import { ChatsDetails } from "../components/ChatsDetails/ChatsDetails";
 import { CreatePost } from "../components/CreatePost/CreatePost";
 import { ErrorElement } from "../components/ErrorElement/ErrorElement";
 import { LogInForm } from "../components/LogInForm/LogInForm";
@@ -8,6 +7,7 @@ import { SearchForUser } from "../components/SearchForUser/SearchForUser";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
 import { UserProfile } from "../components/UserProfile/UserProfile";
 import { Chats } from "../pages/Chats/Chats";
+import { ChatsDetails } from "../pages/ChatsDetails/ChatsDetails";
 import { MainGridInterface } from "../pages/MainGrindInterface/MainGridInterface";
 import { PostDetails } from "../pages/PostDetails/PostDetails";
 import { Posts } from "../pages/Posts/Posts";

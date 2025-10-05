@@ -4,6 +4,8 @@
   align-items: center;
   gap: 1em;
   color: var(--secondary-color);
+  font-family: var(--main-font);
+  font-weight: 500;
 }
 
 .userReceiverImg {
