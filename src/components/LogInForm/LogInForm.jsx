@@ -143,6 +143,7 @@ export function LogInForm() {
             name="username"
             id="username"
             aria-label="username"
+            defaultValue={"guestuser"}
             {...register("username", {
               required: true,
             })}
@@ -158,6 +159,7 @@ export function LogInForm() {
             type="password"
             name="password"
             id="password"
+            defaultValue={"12345678B"}
             aria-label="password"
             {...register("password", {
               required: true,
