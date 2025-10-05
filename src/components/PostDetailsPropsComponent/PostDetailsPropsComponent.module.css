@@ -16,6 +16,13 @@
   font-weight: 700;
 }
 
+.viewCommentsPara {
+  color: var(--secondary-color);
+  font-weight: 700;
+  margin-top: 1em;
+  margin-left: 2em;
+}
+
 .articlePostContainer:hover {
   background-color: var(--main-background-hover-color);
   cursor: pointer;

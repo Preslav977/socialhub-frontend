@@ -135,7 +135,9 @@ export function PostDetailsPropsComponent({
         </button>
       </form>
       <>
-        <p>View comments {post.comments}</p>
+        <p className={styles.viewCommentsPara}>
+          View comments ({post.comments})
+        </p>
         {post.postCommentedByUsers.map((comment) => (
           <>
             {comment.text ? (
