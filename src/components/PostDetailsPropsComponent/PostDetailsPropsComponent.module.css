@@ -22,7 +22,7 @@
 
 .articlePostAuthorAndDate {
   display: flex;
-  gap: 0.75em;
+  gap: 0.5em;
 }
 
 .articleAuthorImg,
@@ -59,6 +59,11 @@
   display: flex;
   align-items: center;
   gap: 0.25em;
+  cursor: pointer;
+}
+
+.articlePostCommentReplies {
+  margin-right: 0.5em;
 }
 
 .createReplyArticleComment {

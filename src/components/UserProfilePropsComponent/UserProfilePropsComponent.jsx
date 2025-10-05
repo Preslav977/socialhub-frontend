@@ -255,7 +255,11 @@ export function UserProfilePropsComponent({
             >
               Edit
             </button>
-            <button className={styles.userProfileBtn} type="submit">
+            <button
+              disabled={!editUserProfile}
+              className={styles.userProfileBtn}
+              type="submit"
+            >
               Save Changes
             </button>
           </>

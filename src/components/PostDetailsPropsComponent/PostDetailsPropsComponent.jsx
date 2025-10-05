@@ -39,7 +39,11 @@ export function PostDetailsPropsComponent({
           <div className={styles.articlePostAuthorAndDate}>
             <img
               className={styles.articleAuthorImg}
-              src={post.author.profile_picture}
+              src={
+                post.author.profile_picture
+                  ? post.author.profile_picture
+                  : "/user-default-pfp.jpg"
+              }
               alt="user profile picture"
             />
 
@@ -133,148 +137,166 @@ export function PostDetailsPropsComponent({
       <>
         <p>View comments {post.comments}</p>
         {post.postCommentedByUsers.map((comment) => (
-          <div key={comment.id} className={styles.articleCommentContainer}>
-            <div className={styles.articleCommentUser}>
-              <img
-                className={styles.articleUserImg}
-                src={comment.commentLeftByUser.profile_picture}
-                alt="user profile picture"
-              />
-
-              <p>{comment.commentLeftByUser.username}</p>
-
-              <p>
-                {formatDistance(comment.createdAt, new Date(), {
-                  addSuffix: true,
-                })}
-              </p>
-            </div>
-
-            <p>{comment.text}</p>
-
-            <div className={styles.articlePostLikeAndComment}>
-              <div className={styles.articlePostLikesContainer}>
-                {!comment.commentLikedByUsers.some(
-                  (user) => user.id === userLogIn.id,
-                ) ? (
+          <>
+            {comment.text ? (
+              <div key={comment.id} className={styles.articleCommentContainer}>
+                <div className={styles.articleCommentUser}>
                   <img
-                    onClick={() => onClickLikeComment(comment)}
-                    className={styles.articleLike}
-                    src="/likes.svg"
-                    alt="like the comment"
+                    className={styles.articleUserImg}
+                    src={
+                      comment.commentLeftByUser.profile_picture
+                        ? comment.commentLeftByUser.profile_picture
+                        : "/user-default-pfp.jpg"
+                    }
+                    alt="user profile picture"
                   />
-                ) : (
-                  <img
-                    onClick={() => onClickLikeComment(comment)}
-                    className={styles.articleLike}
-                    src="/liked.png"
-                    alt="dislike the comment"
-                  />
-                )}
-                <p>{comment.likes}</p>
-              </div>
 
-              <div className={styles.articlePostCommentsContainer}>
-                {comment.childCommentReply.length !== 0 ? (
-                  <div
-                    className={styles.articlePostCommentReplies}
-                    onClick={() => {
-                      onToggleShowOrHideReplyComments();
+                  <p>{comment.commentLeftByUser.username}</p>
 
-                      setRepliedCommentId(comment.id);
-                    }}
-                  >
-                    <img
-                      className={styles.articleComment}
-                      src="/messages.svg"
-                      alt="show replies"
-                    />
-                    <p>show replies </p>
+                  <p>
+                    {formatDistance(comment.createdAt, new Date(), {
+                      addSuffix: true,
+                    })}
+                  </p>
+                </div>
+
+                <p>{comment.text}</p>
+
+                <div className={styles.articlePostLikeAndComment}>
+                  <div className={styles.articlePostLikesContainer}>
+                    {!comment.commentLikedByUsers.some(
+                      (user) => user.id === userLogIn.id,
+                    ) ? (
+                      <img
+                        onClick={() => onClickLikeComment(comment)}
+                        className={styles.articleLike}
+                        src="/likes.svg"
+                        alt="like the comment"
+                      />
+                    ) : (
+                      <img
+                        onClick={() => onClickLikeComment(comment)}
+                        className={styles.articleLike}
+                        src="/liked.png"
+                        alt="dislike the comment"
+                      />
+                    )}
+                    <p>{comment.likes}</p>
                   </div>
+
+                  <div className={styles.articlePostCommentsContainer}>
+                    {comment.childCommentReply.length > 0 ? (
+                      <div
+                        className={styles.articlePostCommentReplies}
+                        onClick={() => {
+                          onToggleShowOrHideReplyComments();
+
+                          setRepliedCommentId(comment.id);
+                        }}
+                      >
+                        <img
+                          className={styles.articleComment}
+                          src="/messages.svg"
+                          alt="show replies"
+                        />
+                        <p>show replies </p>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
+                    <div
+                      className={styles.articlePostCommentReply}
+                      onClick={() => {
+                        onToggledReplyOnComment();
+
+                        setRepliedCommentId(comment.id);
+                      }}
+                    >
+                      <img
+                        className={styles.articleComment}
+                        src="/comment-reply.svg"
+                        alt="reply on the comment"
+                      />
+                      <span>reply</span>
+                    </div>
+                  </div>
+                </div>
+                {showOrHideReplyComments && comment.id === repliedCommentId ? (
+                  <>
+                    {comment.childCommentReply.map((childComment) => (
+                      <div
+                        className={styles.articleCommentReplyCommentsContainer}
+                        key={childComment.id}
+                      >
+                        <div className={styles.articleCommentUser}>
+                          <img
+                            className={styles.articleUserImg}
+                            src={
+                              childComment.commentLeftByUser.profile_picture
+                                ? childComment.commentLeftByUser.profile_picture
+                                : "/user-default-pfp.jpg"
+                            }
+                            alt="user profile picture"
+                          />
+
+                          <p>{childComment.commentLeftByUser.username}</p>
+
+                          <p>
+                            {formatDistance(
+                              childComment.createdAt,
+                              new Date(),
+                              {
+                                addSuffix: true,
+                              },
+                            )}
+                          </p>
+                        </div>
+
+                        <p>{childComment.textReply}</p>
+                      </div>
+                    ))}
+                  </>
                 ) : (
                   ""
                 )}
 
-                <div
-                  className={styles.articlePostCommentReply}
-                  onClick={() => {
-                    onToggledReplyOnComment();
-
-                    setRepliedCommentId(comment.id);
-                  }}
-                >
-                  <img
-                    className={styles.articleComment}
-                    src="/comment-reply.svg"
-                    alt="reply on the comment"
-                  />
-                  <span>reply</span>
-                </div>
-              </div>
-            </div>
-            {showOrHideReplyComments && comment.id === repliedCommentId ? (
-              <>
-                {comment.childCommentReply.map((childComment) => (
-                  <div
-                    className={styles.articleCommentReplyCommentsContainer}
-                    key={childComment.id}
+                {toggleReplyOnComment && repliedCommentId === comment.id ? (
+                  <form
+                    onSubmit={handleSubmit(onSubmitCommentReply)}
+                    className={styles.createReplyArticleComment}
                   >
-                    <div className={styles.articleCommentUser}>
-                      <img
-                        className={styles.articleUserImg}
-                        src={childComment.commentLeftByUser.profile_picture}
-                        alt="user profile picture"
-                      />
+                    <label htmlFor="textReply"></label>
+                    <textarea
+                      className={styles.createArticleReplyCommentTextarea}
+                      name="textReply"
+                      id="textReply"
+                      rows={3}
+                      placeholder="Add a reply..."
+                      {...register("textReply")}
+                    ></textarea>
+                    <button
+                      onClick={() => {
+                        setTimeout(() => {
+                          reset({ textReply: "" });
 
-                      <p>{childComment.commentLeftByUser.username}</p>
-
-                      <p>
-                        {formatDistance(childComment.createdAt, new Date(), {
-                          addSuffix: true,
-                        })}
-                      </p>
-                    </div>
-
-                    <p>{childComment.textReply}</p>
-                  </div>
-                ))}
-              </>
+                          setToggleReplyOnComment(false);
+                        }, 1500);
+                      }}
+                      className={styles.createReplyCommentBtn}
+                      type="submit"
+                    >
+                      Reply
+                    </button>
+                  </form>
+                ) : (
+                  ""
+                )}
+              </div>
             ) : (
               ""
             )}
-
-            {toggleReplyOnComment && repliedCommentId === comment.id ? (
-              <form
-                onSubmit={handleSubmit(onSubmitCommentReply)}
-                className={styles.createReplyArticleComment}
-              >
-                <label htmlFor="textReply"></label>
-                <textarea
-                  className={styles.createArticleReplyCommentTextarea}
-                  name="textReply"
-                  id="textReply"
-                  rows={3}
-                  placeholder="Add a reply..."
-                  {...register("textReply")}
-                ></textarea>
-                <button
-                  onClick={() => {
-                    setTimeout(() => {
-                      reset({ textReply: "" });
-
-                      setToggleReplyOnComment(false);
-                    }, 1000);
-                  }}
-                  className={styles.createReplyCommentBtn}
-                  type="submit"
-                >
-                  Reply
-                </button>
-              </form>
-            ) : (
-              ""
-            )}
-          </div>
+          </>
         ))}
       </>
     </>

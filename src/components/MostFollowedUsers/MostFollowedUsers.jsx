@@ -97,6 +97,7 @@ export function MostFollowedUsers() {
                 </div>
                 <div className={styles.followOrUnfollowButtonContainer}>
                   <button
+                    disabled={userLogIn.id === user.id}
                     onClick={() => followMostFollowedUsers(user)}
                     className={
                       !userLogIn.following.some(

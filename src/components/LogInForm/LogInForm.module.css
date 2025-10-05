@@ -36,13 +36,17 @@
 
 .logInForm > input {
   background-color: var(--main-background-color);
+  color: #fff;
 }
 
 .logInForm > input,
 .logInBtn {
-  color: var(--main-color);
   border-radius: 0.7em;
   padding: 0.35em;
+}
+
+.logInBtn {
+  color: var(--main-color);
 }
 
 .guestLoginBtn {

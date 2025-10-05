@@ -174,8 +174,6 @@ describe("should render Profile component", () => {
       following: [],
     });
 
-    server.use();
-
     const updateUserProfile = await fetch(`${localhostURL}/users/1`, {
       method: "PUT",
       body: JSON.stringify({
@@ -269,8 +267,6 @@ describe("should render Profile component", () => {
     ).toBeInTheDocument();
 
     expect(screen.queryAllByText("Posts")[1].textContent).toMatch(/posts/i);
-
-    await user.click(screen.queryByRole("button", { name: "Edit" }));
 
     expect(screen.queryByText("preslaww").textContent).toMatch(/preslaww/i);
 

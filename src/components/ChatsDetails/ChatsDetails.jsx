@@ -71,8 +71,6 @@ export function ChatsDetails() {
 
     formData.append("receiverId", chatDetails.receiverChatId);
 
-    console.log(formData);
-
     try {
       const response = await fetch(
         `${localhostURL}/chats/${chatDetails.id}/image`,

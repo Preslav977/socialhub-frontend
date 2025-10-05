@@ -31,7 +31,9 @@ export function Navbar() {
               <img
                 className={styles.userProfilePictureImg}
                 src={
-                  profile_picture ? profile_picture : "/default-profile-pfp.png"
+                  profile_picture !== ""
+                    ? profile_picture
+                    : "/user-default-pfp.jpg"
                 }
                 alt="user profile picture"
               />

@@ -67,7 +67,7 @@ export function SearchForUser() {
       </div>
       <div className={styles.showFoundOrNotUsersContainer}>
         <>
-          {user ? (
+          {user && !user.message ? (
             user.map((foundUser) => (
               <div key={foundUser.id} className={styles.foundUsersContainer}>
                 <img

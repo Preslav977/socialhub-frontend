@@ -85,6 +85,7 @@
   position: relative;
   top: 5%;
   outline: 2px solid var(--main-color-input);
+  object-fit: contain;
 }
 
 .chatDetailsInput {

@@ -78,8 +78,8 @@ export function Posts({ postsHeader }) {
         return `${localhostURL}/posts/author/${id}`;
       case "/following":
         return `${localhostURL}/posts/following`;
-      case `/posts/${id}`:
-        return `${localhostURL}/posts/${id}`;
+      case `/posts/${Number(id)}`:
+        return `${localhostURL}/posts/${Number(id)}`;
     }
   }
 
@@ -131,7 +131,11 @@ export function Posts({ postsHeader }) {
               <article className={styles.articlePostAuthor}>
                 <img
                   className={styles.articleAuthorImg}
-                  src={post.author.profile_picture}
+                  src={
+                    post.author.profile_picture
+                      ? post.author.profile_picture
+                      : "/user-default-pfp.jpg"
+                  }
                   alt="article post author profile picture"
                 />
                 <span
@@ -208,7 +212,7 @@ export function Posts({ postsHeader }) {
           ))}
         </>
       ) : (
-        <p>{posts.message}</p>
+        <p className={styles.articlePostMessagePara}>{posts.message}</p>
       )}
     </>
   );

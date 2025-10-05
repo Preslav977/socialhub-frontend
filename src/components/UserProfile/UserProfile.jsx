@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchUser } from "../../api/useFetchUser";
 import { EditUserProfileContext } from "../../context/EditUserProfileContext";
@@ -20,8 +20,6 @@ export function UserProfile() {
     Number(id),
   );
 
-  // console.log(userLoggedIn.id, Number(id));
-
   const [editUserProfile, setEditUserProfile] = useContext(
     EditUserProfileContext,
   );
@@ -33,6 +31,8 @@ export function UserProfile() {
   const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   const { handleSubmit, reset } = useForm();
+
+  const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -61,7 +61,7 @@ export function UserProfile() {
       } else {
         const result = await response.json();
 
-        setUserDetails(result);
+        setUserLoggedIn(result);
 
         setEditUserProfile(false);
 
@@ -124,7 +124,9 @@ export function UserProfile() {
           receiverId: userDetails.id,
         }),
       });
-      await response.json();
+      const result = await response.json();
+
+      navigate(`/message/${result.id}`);
     } catch (error) {
       setIsTokenHasExpired(error);
     }

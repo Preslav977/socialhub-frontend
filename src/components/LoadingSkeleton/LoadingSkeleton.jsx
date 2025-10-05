@@ -7,7 +7,7 @@ export function LoadingSkeleton() {
 
   return (
     <>
-      {posts ? (
+      {posts && !posts.message ? (
         <>
           {posts.map((post) => (
             <SkeletonTheme

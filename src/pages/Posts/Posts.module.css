@@ -74,3 +74,10 @@
 .articlePostImg {
   width: 100%;
 }
+
+.articlePostMessagePara {
+  color: var(--secondary-color);
+  display: flex;
+  place-content: center;
+  margin-top: 0.5em;
+}
