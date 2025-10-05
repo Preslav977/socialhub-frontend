@@ -82,7 +82,7 @@ export function LogInForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: "pylot@abv.bg",
+          username: "guestuser",
           password: "12345678B",
         }),
       });
