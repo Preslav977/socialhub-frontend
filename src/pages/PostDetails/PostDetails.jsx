@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { useFetchPost } from "../../api/useFetchPost";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { Loading } from "../../components/Loading/Loading";
 import { PostDetailsPropsComponent } from "../../components/PostDetailsPropsComponent/PostDetailsPropsComponent";
+import { HasNewCommentBeenCreatedContext } from "../../context/HasNewCommentBeenCreatedContext";
+import { HasNewCommentReplyBeenCreatedContext } from "../../context/HasNewCommentReplyBeenCreatedContext";
 
 export function PostDetails() {
   const { post, setPost, loading, error } = useFetchPost();
@@ -14,6 +16,13 @@ export function PostDetails() {
   const [repliedCommentId, setRepliedCommentId] = useState(0);
 
   const [isTokenHasExpired, setIsTokenHasExpired] = useState();
+
+  const [hasNewCommentBeenCreated, setHasNewCommentBeenCreated] = useContext(
+    HasNewCommentBeenCreatedContext,
+  );
+
+  const [hasNewCommentReplyBeenCreated, setHasNewCommentReplyBeenCreated] =
+    useContext(HasNewCommentReplyBeenCreatedContext);
 
   const navigate = useNavigate();
 
@@ -97,8 +106,14 @@ export function PostDetails() {
       };
 
       setPost(commentPostObject);
+
+      setHasNewCommentBeenCreated(true);
     } catch (error) {
       setIsTokenHasExpired(error);
+    } finally {
+      setTimeout(() => {
+        setHasNewCommentBeenCreated(false);
+      }, 1000);
     }
   }
 
@@ -123,8 +138,6 @@ export function PostDetails() {
       );
       const result = await response.json();
 
-      console.log(result);
-
       const commentPostObject = {
         ...post,
         postCommentedByUsers: result.postCommentedByUsers,
@@ -132,8 +145,14 @@ export function PostDetails() {
       };
 
       setPost(commentPostObject);
+
+      setHasNewCommentReplyBeenCreated(true);
     } catch (error) {
       setIsTokenHasExpired(error);
+    } finally {
+      setTimeout(() => {
+        setHasNewCommentReplyBeenCreated(false);
+      }, 1500);
     }
   }
 

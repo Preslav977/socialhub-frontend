@@ -47,6 +47,7 @@ export function ChatsDetails() {
           }),
         },
       );
+
       const result = await response.json();
 
       const chatDetailsMessagesObject = {
@@ -82,6 +83,7 @@ export function ChatsDetails() {
           body: formData,
         },
       );
+
       const result = await response.json();
 
       const chatDetailsMessagesObject = {
@@ -134,6 +136,7 @@ export function ChatsDetails() {
                       </div>
                     ) : (
                       <div className={styles.chatDetailsImage}>
+                        <p>{message.text}</p>
                         <img src={message.imageURL} alt="chat details image" />
                         <div>
                           <p>{format(message.createdAt, "HH:mm aaaaa'm'")}</p>
@@ -152,6 +155,7 @@ export function ChatsDetails() {
                       </div>
                     ) : (
                       <div className={styles.chatDetailsImage}>
+                        <p>{message.text}</p>
                         <img src={message.imageURL} alt="chat details image" />
                         <div>
                           <p>{format(message.createdAt, "HH:mm aaaaa'm'")}</p>
@@ -179,12 +183,19 @@ export function ChatsDetails() {
                 type="text"
                 name="text"
                 id="text"
+                minLength={!sendMessageOrImage ? 1 : ""}
+                required={!sendMessageOrImage ? true : false}
                 placeholder="Enter a message..."
                 {...register("text", {
+                  minLength: "1",
                   maxLength: "666",
                 })}
                 aria-invalid={errors.text ? "true" : "false"}
               />
+              {errors.text?.type === "minLength" && (
+                <span role="alert">Message should be at least 1 character</span>
+              )}
+
               {errors.text?.type === "maxLength" && (
                 <span role="alert">
                   Message shouldn't be more than 666 characters

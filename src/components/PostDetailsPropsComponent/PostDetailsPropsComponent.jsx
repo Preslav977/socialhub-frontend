@@ -1,6 +1,8 @@
 import { formatDistance } from "date-fns";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+import { HasNewCommentBeenCreatedContext } from "../../context/HasNewCommentBeenCreatedContext";
+import { HasNewCommentReplyBeenCreatedContext } from "../../context/HasNewCommentReplyBeenCreatedContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
 import styles from "./PostDetailsPropsComponent.module.css";
@@ -30,6 +32,13 @@ export function PostDetailsPropsComponent({
     setShowOrHideReplyComments(
       (showOrHideReplyComments) => !showOrHideReplyComments,
     );
+
+  const [hasNewCommentBeenCreated, setHasNewCommentBeenCreated] = useContext(
+    HasNewCommentBeenCreatedContext,
+  );
+
+  const [hasNewCommentReplyBeenCreated, setHasNewCommentReplyBeenCreated] =
+    useContext(HasNewCommentReplyBeenCreatedContext);
 
   return (
     <>
@@ -119,10 +128,13 @@ export function PostDetailsPropsComponent({
           name="text"
           id="text"
           rows={3}
+          minLength={1}
+          required
           placeholder="Type a comment..."
           {...register("text")}
         ></textarea>
         <button
+          disabled={hasNewCommentBeenCreated}
           onClick={() => {
             setTimeout(() => {
               reset();
@@ -275,9 +287,12 @@ export function PostDetailsPropsComponent({
                       id="textReply"
                       rows={3}
                       placeholder="Add a reply..."
+                      minLength={1}
+                      required
                       {...register("textReply")}
                     ></textarea>
                     <button
+                      disabled={hasNewCommentReplyBeenCreated}
                       onClick={() => {
                         setTimeout(() => {
                           reset({ textReply: "" });

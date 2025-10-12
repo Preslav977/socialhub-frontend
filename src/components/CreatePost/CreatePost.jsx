@@ -5,6 +5,7 @@ import { localhostURL } from "../../../utility/localhostURL";
 import { HasNewPostBeenCreatedContext } from "../../context/HasNewPostBeenCreatedContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { ErrorElement } from "../ErrorElement/ErrorElement";
+import { Loading } from "../Loading/Loading";
 import styles from "./CreatePost.module.css";
 
 export function CreatePost() {
@@ -19,6 +20,8 @@ export function CreatePost() {
   );
 
   const [isTokenHasExpired, setIsTokenHasExpired] = useState();
+
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -46,13 +49,15 @@ export function CreatePost() {
         }),
       });
 
+      setLoading(true);
+
       await response.json();
 
       reset();
 
-      navigate("/");
-
       setHasNewPostBeenCreated(true);
+
+      navigate("/");
     } catch (error) {
       setIsTokenHasExpired(error);
     } finally {
@@ -71,6 +76,8 @@ export function CreatePost() {
 
     formData.append("authorId", Number(userLogIn.id));
 
+    setLoading(true);
+
     try {
       await fetch(`${localhostURL}/posts/with-image`, {
         method: "POST",
@@ -82,9 +89,9 @@ export function CreatePost() {
 
       reset();
 
-      navigate("/");
-
       setHasNewPostBeenCreated(true);
+
+      navigate("/");
     } catch (error) {
       setIsTokenHasExpired(error);
     } finally {
@@ -175,9 +182,9 @@ export function CreatePost() {
         </div>
 
         <div className={styles.formFlexedLengthContainer}>
-          <p>{postLetterLength}/2000</p>
+          {loading ? <Loading /> : <p>{postLetterLength}/2000</p>}
           <button
-            disabled={hasNewPostBeenCreated}
+            disabled={loading ? true : false}
             className={styles.submitPostBtn}
             type="submit"
           >
