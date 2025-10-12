@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { EditUserProfileContext } from "./context/EditUserProfileContext";
+import { HasNewCommentBeenCreatedContext } from "./context/HasNewCommentBeenCreatedContext";
+import { HasNewCommentReplyBeenCreatedContext } from "./context/HasNewCommentReplyBeenCreatedContext";
 import { HasNewPostBeenCreatedContext } from "./context/HasNewPostBeenCreatedContext";
 import { PostsContext } from "./context/PostsContext";
 import { UserDetailsContext } from "./context/UserDetailsContext";
@@ -37,31 +39,52 @@ export function App() {
 
   const [hasNewPostBeenCreated, setHasNewPostBeenCreated] = useState(false);
 
+  const [hasNewCommentBeenCreated, setHasNewCommentBeenCreated] =
+    useState(false);
+
+  const [hasNewCommentReplyBeenCreated, setHasNewCommentReplyBeenCreated] =
+    useState(false);
+
   return (
     <>
-      <HasNewPostBeenCreatedContext.Provider
-        value={[hasNewPostBeenCreated, setHasNewPostBeenCreated]}
+      <HasNewCommentReplyBeenCreatedContext.Provider
+        value={[
+          hasNewCommentReplyBeenCreated,
+          setHasNewCommentReplyBeenCreated,
+        ]}
       >
-        <PostsContext.Provider value={[posts, setPosts]}>
-          <EditUserProfileContext.Provider
-            value={[editUserProfile, setEditUserProfile]}
+        <HasNewCommentBeenCreatedContext.Provider
+          value={[hasNewCommentBeenCreated, setHasNewCommentBeenCreated]}
+        >
+          <HasNewPostBeenCreatedContext.Provider
+            value={[hasNewPostBeenCreated, setHasNewPostBeenCreated]}
           >
-            <UserDetailsContext.Provider value={[userDetails, setUserDetails]}>
-              <UserIsLoggedInContext.Provider
-                value={[isUserLoggedIn, setIsUserLoggedIn]}
+            <PostsContext.Provider value={[posts, setPosts]}>
+              <EditUserProfileContext.Provider
+                value={[editUserProfile, setEditUserProfile]}
               >
-                <UserLogInContext.Provider value={[userLogIn, setUserLogIn]}>
-                  <UserSignUpContext.Provider
-                    value={{ userSignUp, setUserSignUp }}
+                <UserDetailsContext.Provider
+                  value={[userDetails, setUserDetails]}
+                >
+                  <UserIsLoggedInContext.Provider
+                    value={[isUserLoggedIn, setIsUserLoggedIn]}
                   >
-                    <Outlet />
-                  </UserSignUpContext.Provider>
-                </UserLogInContext.Provider>
-              </UserIsLoggedInContext.Provider>
-            </UserDetailsContext.Provider>
-          </EditUserProfileContext.Provider>
-        </PostsContext.Provider>
-      </HasNewPostBeenCreatedContext.Provider>
+                    <UserLogInContext.Provider
+                      value={[userLogIn, setUserLogIn]}
+                    >
+                      <UserSignUpContext.Provider
+                        value={{ userSignUp, setUserSignUp }}
+                      >
+                        <Outlet />
+                      </UserSignUpContext.Provider>
+                    </UserLogInContext.Provider>
+                  </UserIsLoggedInContext.Provider>
+                </UserDetailsContext.Provider>
+              </EditUserProfileContext.Provider>
+            </PostsContext.Provider>
+          </HasNewPostBeenCreatedContext.Provider>
+        </HasNewCommentBeenCreatedContext.Provider>
+      </HasNewCommentReplyBeenCreatedContext.Provider>
     </>
   );
 }

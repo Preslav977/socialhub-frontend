@@ -176,7 +176,11 @@ export function CreatePost() {
 
         <div className={styles.formFlexedLengthContainer}>
           <p>{postLetterLength}/2000</p>
-          <button className={styles.submitPostBtn} type="submit">
+          <button
+            disabled={hasNewPostBeenCreated}
+            className={styles.submitPostBtn}
+            type="submit"
+          >
             Post
           </button>
         </div>
