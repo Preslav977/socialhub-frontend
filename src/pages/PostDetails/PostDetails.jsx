@@ -84,6 +84,8 @@ export function PostDetails() {
   async function leavingAComment(data) {
     const { text } = data;
 
+    setHasNewCommentBeenCreated(true);
+
     try {
       const response = await fetch(`${localhostURL}/posts/${post.id}/comment`, {
         method: "POST",
@@ -106,8 +108,6 @@ export function PostDetails() {
       };
 
       setPost(commentPostObject);
-
-      setHasNewCommentBeenCreated(true);
     } catch (error) {
       setIsTokenHasExpired(error);
     } finally {
@@ -119,6 +119,8 @@ export function PostDetails() {
 
   async function leavingACommentReply(data) {
     const { textReply } = data;
+
+    setHasNewCommentReplyBeenCreated(true);
 
     try {
       const response = await fetch(
@@ -145,8 +147,6 @@ export function PostDetails() {
       };
 
       setPost(commentPostObject);
-
-      setHasNewCommentReplyBeenCreated(true);
     } catch (error) {
       setIsTokenHasExpired(error);
     } finally {

@@ -35,6 +35,8 @@ export function CreatePost() {
   const onSubmitPostText = async (data) => {
     const { content, tag } = data;
 
+    setLoading(true);
+
     try {
       const response = await fetch(`${localhostURL}/posts`, {
         method: "POST",
@@ -48,8 +50,6 @@ export function CreatePost() {
           authorId: userLogIn.id,
         }),
       });
-
-      setLoading(true);
 
       await response.json();
 
