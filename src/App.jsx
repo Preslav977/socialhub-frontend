@@ -12,6 +12,9 @@ import {
 } from "./context/UserLogInContext";
 import { UserSignUpContext } from "./context/UserSignUpContext";
 
+import { HasPostDetailsBeenLikedContext } from "./context/HasPostDetailsBeenLikedContext";
+import { HasPostDetailsCommentBeenLikedContext } from "./context/HasPostDetailsCommentBeenLikedContext";
+
 export function App() {
   const [userSignUp, setUserSignUp] = useState({
     username: "",
@@ -45,46 +48,62 @@ export function App() {
   const [hasNewCommentReplyBeenCreated, setHasNewCommentReplyBeenCreated] =
     useState(false);
 
+  const [hasPostDetailsBeenLiked, setHasPostDetailsBeenLiked] = useState(false);
+
+  const [hasPostDetailsCommentBeenLiked, setHasPostDetailsCommentBeenLiked] =
+    useState(false);
+
   return (
     <>
-      <HasNewCommentReplyBeenCreatedContext.Provider
+      <HasPostDetailsCommentBeenLikedContext.Provider
         value={[
-          hasNewCommentReplyBeenCreated,
-          setHasNewCommentReplyBeenCreated,
+          hasPostDetailsCommentBeenLiked,
+          setHasPostDetailsCommentBeenLiked,
         ]}
       >
-        <HasNewCommentBeenCreatedContext.Provider
-          value={[hasNewCommentBeenCreated, setHasNewCommentBeenCreated]}
+        <HasPostDetailsBeenLikedContext.Provider
+          value={[hasPostDetailsBeenLiked, setHasPostDetailsBeenLiked]}
         >
-          <HasNewPostBeenCreatedContext.Provider
-            value={[hasNewPostBeenCreated, setHasNewPostBeenCreated]}
+          <HasNewCommentReplyBeenCreatedContext.Provider
+            value={[
+              hasNewCommentReplyBeenCreated,
+              setHasNewCommentReplyBeenCreated,
+            ]}
           >
-            <PostsContext.Provider value={[posts, setPosts]}>
-              <EditUserProfileContext.Provider
-                value={[editUserProfile, setEditUserProfile]}
+            <HasNewCommentBeenCreatedContext.Provider
+              value={[hasNewCommentBeenCreated, setHasNewCommentBeenCreated]}
+            >
+              <HasNewPostBeenCreatedContext.Provider
+                value={[hasNewPostBeenCreated, setHasNewPostBeenCreated]}
               >
-                <UserDetailsContext.Provider
-                  value={[userDetails, setUserDetails]}
-                >
-                  <UserIsLoggedInContext.Provider
-                    value={[isUserLoggedIn, setIsUserLoggedIn]}
+                <PostsContext.Provider value={[posts, setPosts]}>
+                  <EditUserProfileContext.Provider
+                    value={[editUserProfile, setEditUserProfile]}
                   >
-                    <UserLogInContext.Provider
-                      value={[userLogIn, setUserLogIn]}
+                    <UserDetailsContext.Provider
+                      value={[userDetails, setUserDetails]}
                     >
-                      <UserSignUpContext.Provider
-                        value={{ userSignUp, setUserSignUp }}
+                      <UserIsLoggedInContext.Provider
+                        value={[isUserLoggedIn, setIsUserLoggedIn]}
                       >
-                        <Outlet />
-                      </UserSignUpContext.Provider>
-                    </UserLogInContext.Provider>
-                  </UserIsLoggedInContext.Provider>
-                </UserDetailsContext.Provider>
-              </EditUserProfileContext.Provider>
-            </PostsContext.Provider>
-          </HasNewPostBeenCreatedContext.Provider>
-        </HasNewCommentBeenCreatedContext.Provider>
-      </HasNewCommentReplyBeenCreatedContext.Provider>
+                        <UserLogInContext.Provider
+                          value={[userLogIn, setUserLogIn]}
+                        >
+                          <UserSignUpContext.Provider
+                            value={{ userSignUp, setUserSignUp }}
+                          >
+                            <Outlet />
+                          </UserSignUpContext.Provider>
+                        </UserLogInContext.Provider>
+                      </UserIsLoggedInContext.Provider>
+                    </UserDetailsContext.Provider>
+                  </EditUserProfileContext.Provider>
+                </PostsContext.Provider>
+              </HasNewPostBeenCreatedContext.Provider>
+            </HasNewCommentBeenCreatedContext.Provider>
+          </HasNewCommentReplyBeenCreatedContext.Provider>
+        </HasPostDetailsBeenLikedContext.Provider>
+      </HasPostDetailsCommentBeenLikedContext.Provider>
     </>
   );
 }

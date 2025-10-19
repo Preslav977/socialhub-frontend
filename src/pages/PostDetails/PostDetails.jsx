@@ -7,6 +7,8 @@ import { Loading } from "../../components/Loading/Loading";
 import { PostDetailsPropsComponent } from "../../components/PostDetailsPropsComponent/PostDetailsPropsComponent";
 import { HasNewCommentBeenCreatedContext } from "../../context/HasNewCommentBeenCreatedContext";
 import { HasNewCommentReplyBeenCreatedContext } from "../../context/HasNewCommentReplyBeenCreatedContext";
+import { HasPostDetailsBeenLikedContext } from "../../context/HasPostDetailsBeenLikedContext";
+import { HasPostDetailsCommentBeenLikedContext } from "../../context/HasPostDetailsCommentBeenLikedContext";
 
 export function PostDetails() {
   const { post, setPost, loading, error } = useFetchPost();
@@ -23,6 +25,13 @@ export function PostDetails() {
 
   const [hasNewCommentReplyBeenCreated, setHasNewCommentReplyBeenCreated] =
     useContext(HasNewCommentReplyBeenCreatedContext);
+
+  const [hasPostDetailsBeenLiked, setHasPostDetailsBeenLiked] = useContext(
+    HasPostDetailsBeenLikedContext,
+  );
+
+  const [hasPostDetailsCommentBeenLiked, setHasPostDetailsCommentBeenLiked] =
+    useContext(HasPostDetailsCommentBeenLikedContext);
 
   const navigate = useNavigate();
 
@@ -49,6 +58,10 @@ export function PostDetails() {
       setPost(likedOrDislikedPostObject);
     } catch (error) {
       setIsTokenHasExpired(error);
+    } finally {
+      setTimeout(() => {
+        setHasPostDetailsBeenLiked(false);
+      }, 0);
     }
   }
 
@@ -78,6 +91,10 @@ export function PostDetails() {
       setPost(likedOrDislikedCommentObject);
     } catch (error) {
       setIsTokenHasExpired(error);
+    } finally {
+      setTimeout(() => {
+        setHasPostDetailsCommentBeenLiked(false);
+      }, 0);
     }
   }
 

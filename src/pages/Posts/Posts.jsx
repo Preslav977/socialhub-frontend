@@ -25,6 +25,8 @@ export function Posts({ postsHeader }) {
 
   const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
+  const [hasPostBeenLiked, setHasPostBeenLiked] = useState(false);
+
   const navigate = useNavigate();
 
   async function likeOrDislikePost(post) {
@@ -57,6 +59,10 @@ export function Posts({ postsHeader }) {
       );
     } catch (error) {
       setIsTokenHasExpired(error);
+    } finally {
+      setTimeout(() => {
+        setHasPostBeenLiked(false);
+      }, 0);
     }
   }
 
@@ -171,12 +177,17 @@ export function Posts({ postsHeader }) {
                     (user) => user.id === userLogIn.id,
                   ) ? (
                     <img
+                      style={{
+                        pointerEvents: hasPostBeenLiked ? "none" : "auto",
+                      }}
                       data-testid="articleLike"
                       id="articleLike"
                       onClick={(e) => {
                         likeOrDislikePost(post);
 
                         e.stopPropagation();
+
+                        setHasPostBeenLiked(true);
                       }}
                       className={styles.articleLike}
                       src="/likes.svg"
@@ -184,11 +195,16 @@ export function Posts({ postsHeader }) {
                     />
                   ) : (
                     <img
+                      style={{
+                        pointerEvents: hasPostBeenLiked ? "none" : "auto",
+                      }}
                       id="articleLike"
                       onClick={(e) => {
                         likeOrDislikePost(post);
 
                         e.stopPropagation();
+
+                        setHasPostBeenLiked(true);
                       }}
                       className={styles.articleLike}
                       src="/liked.png"

@@ -1,8 +1,10 @@
 import { formatDistance } from "date-fns";
-import { useContext, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HasNewCommentBeenCreatedContext } from "../../context/HasNewCommentBeenCreatedContext";
 import { HasNewCommentReplyBeenCreatedContext } from "../../context/HasNewCommentReplyBeenCreatedContext";
+import { HasPostDetailsBeenLikedContext } from "../../context/HasPostDetailsBeenLikedContext";
+import { HasPostDetailsCommentBeenLikedContext } from "../../context/HasPostDetailsCommentBeenLikedContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { LeftArrow } from "../LeftArrow/LeftArrow";
 import styles from "./PostDetailsPropsComponent.module.css";
@@ -39,6 +41,13 @@ export function PostDetailsPropsComponent({
 
   const [hasNewCommentReplyBeenCreated, setHasNewCommentReplyBeenCreated] =
     useContext(HasNewCommentReplyBeenCreatedContext);
+
+  const [hasPostDetailsBeenLiked, setHasPostDetailsBeenLiked] = useContext(
+    HasPostDetailsBeenLikedContext,
+  );
+
+  const [hasPostDetailsCommentBeenLiked, setHasPostDetailsCommentBeenLiked] =
+    useContext(HasPostDetailsCommentBeenLikedContext);
 
   return (
     <>
@@ -91,7 +100,14 @@ export function PostDetailsPropsComponent({
           <div className={styles.articlePostLikesContainer}>
             {!post.postLikedByUsers.some((user) => user.id === userLogIn.id) ? (
               <img
-                onClick={() => onClickLikePost(post)}
+                style={{
+                  pointerEvents: hasPostDetailsBeenLiked ? "none" : "auto",
+                }}
+                onClick={() => {
+                  onClickLikePost(post);
+
+                  setHasPostDetailsBeenLiked(true);
+                }}
                 data-testid="articleLike"
                 className={styles.articleLike}
                 src="/likes.svg"
@@ -99,7 +115,14 @@ export function PostDetailsPropsComponent({
               />
             ) : (
               <img
-                onClick={() => onClickLikePost(post)}
+                style={{
+                  pointerEvents: hasPostDetailsBeenLiked ? "none" : "auto",
+                }}
+                onClick={() => {
+                  onClickLikePost(post);
+
+                  setHasPostDetailsBeenLiked(true);
+                }}
                 className={styles.articleLike}
                 src="/liked.png"
                 alt="dislike the post"
@@ -151,7 +174,7 @@ export function PostDetailsPropsComponent({
           View comments ({post.comments})
         </p>
         {post.postCommentedByUsers.map((comment) => (
-          <>
+          <Fragment key={comment.id}>
             {comment.text ? (
               <div key={comment.id} className={styles.articleCommentContainer}>
                 <div className={styles.articleCommentUser}>
@@ -182,14 +205,32 @@ export function PostDetailsPropsComponent({
                       (user) => user.id === userLogIn.id,
                     ) ? (
                       <img
-                        onClick={() => onClickLikeComment(comment)}
+                        style={{
+                          pointerEvents: hasPostDetailsCommentBeenLiked
+                            ? "none"
+                            : "auto",
+                        }}
+                        onClick={() => {
+                          onClickLikeComment(comment);
+
+                          setHasPostDetailsCommentBeenLiked(true);
+                        }}
                         className={styles.articleLike}
                         src="/likes.svg"
                         alt="like the comment"
                       />
                     ) : (
                       <img
-                        onClick={() => onClickLikeComment(comment)}
+                        style={{
+                          pointerEvents: hasPostDetailsCommentBeenLiked
+                            ? "none"
+                            : "auto",
+                        }}
+                        onClick={() => {
+                          onClickLikeComment(comment);
+
+                          setHasPostDetailsCommentBeenLiked(true);
+                        }}
                         className={styles.articleLike}
                         src="/liked.png"
                         alt="dislike the comment"
@@ -313,7 +354,7 @@ export function PostDetailsPropsComponent({
             ) : (
               ""
             )}
-          </>
+          </Fragment>
         ))}
       </>
     </>
