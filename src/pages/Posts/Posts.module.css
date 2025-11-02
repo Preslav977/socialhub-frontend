@@ -81,6 +81,7 @@
 
 .articlePostMessagePara {
   color: var(--secondary-color);
+  text-align: center;
   display: flex;
   place-content: center;
   margin-top: 0.5em;

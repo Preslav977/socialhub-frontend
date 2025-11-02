@@ -212,6 +212,21 @@ export function LogInForm() {
             ""
           )}
         </form>
+
+        <div className={styles.gitHubAuthContainer}>
+          <button
+            className={styles.gitHubButton}
+            onClick={() => {
+              window.location.href = `${localhostURL}/auth/github`;
+            }}
+          >
+            <img
+              className={styles.gitHubButtonImg}
+              src="/github.svg"
+              alt="github"
+            />
+          </button>
+        </div>
       </div>
       <div className={styles.gridRightSideContainer}>
         <h1 className={styles.gridRightSideHeader}>SocialHub</h1>

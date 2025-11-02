@@ -1,6 +1,7 @@
 import { App } from "../App";
 import { CreatePost } from "../components/CreatePost/CreatePost";
 import { ErrorElement } from "../components/ErrorElement/ErrorElement";
+import { GitHubAuthenticationToken } from "../components/GitHubAuthenticationToken/GitHubAuthenticationToken";
 import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SearchForUser } from "../components/SearchForUser/SearchForUser";
@@ -116,6 +117,10 @@ export const routes = [
             <MainGridInterface pageProp={<PostDetails />}></MainGridInterface>
           </ProtectRoutes>
         ),
+      },
+      {
+        path: "/token/:id",
+        element: <GitHubAuthenticationToken />,
       },
     ],
   },
