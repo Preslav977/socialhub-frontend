@@ -212,6 +212,14 @@ export function LogInForm() {
             ""
           )}
         </form>
+
+        <button
+          onClick={() => {
+            window.location.href = "http://localhost:5000/auth/github";
+          }}
+        >
+          Github
+        </button>
       </div>
       <div className={styles.gridRightSideContainer}>
         <h1 className={styles.gridRightSideHeader}>SocialHub</h1>

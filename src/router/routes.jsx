@@ -5,6 +5,7 @@ import { LogInForm } from "../components/LogInForm/LogInForm";
 import { ProtectRoutes } from "../components/ProtectRoutes/ProtectRoutes";
 import { SearchForUser } from "../components/SearchForUser/SearchForUser";
 import { SignUpForm } from "../components/SignUpForm/SignUpForm";
+import { Token } from "../components/Token/Token";
 import { UserProfile } from "../components/UserProfile/UserProfile";
 import { Chats } from "../pages/Chats/Chats";
 import { ChatsDetails } from "../pages/ChatsDetails/ChatsDetails";
@@ -115,6 +116,14 @@ export const routes = [
           <ProtectRoutes>
             <MainGridInterface pageProp={<PostDetails />}></MainGridInterface>
           </ProtectRoutes>
+        ),
+      },
+      {
+        path: "/token/:id",
+        element: (
+          // <ProtectRoutes>
+          <Token />
+          // </ProtectRoutes>
         ),
       },
     ],
