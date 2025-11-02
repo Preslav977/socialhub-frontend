@@ -144,6 +144,25 @@
   justify-content: center;
 }
 
+.gitHubAuthContainer {
+  margin-top: 1em;
+  width: 75%;
+}
+
+.gitHubButton {
+  display: flex;
+  background-color: black;
+  width: 100%;
+  place-content: center;
+  border-radius: 0.7em;
+  padding: 0.35em;
+  cursor: pointer;
+}
+
+.gitHubButtonImg {
+  width: 20px;
+}
+
 @media screen and (max-width: 1300px) {
   .gridFormWrapper {
     display: grid;
