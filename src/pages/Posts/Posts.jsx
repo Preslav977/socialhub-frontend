@@ -23,6 +23,8 @@ export function Posts({ postsHeader }) {
 
   const { posts, setPosts, loading, error } = useFetchPosts(url);
 
+  // socket.on("post:created", (createPost) => {});
+
   const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   const [hasPostBeenLiked, setHasPostBeenLiked] = useState(false);

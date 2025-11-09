@@ -1,12 +1,16 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetchChats } from "../../api/userFetchChats";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
 import { LoadingSkeletonChats } from "../../components/LoadingSkeletonChats/LoadingSkeletonChats";
+import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./Chats.module.css";
 
 export function Chats() {
   const { chats, loading, error } = useFetchChats();
+
+  const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
   const navigate = useNavigate();
 
@@ -45,7 +49,11 @@ export function Chats() {
                 }
                 alt="user profile picture"
               />
-              <p>{chat.receiverChat.username}</p>
+              <p>
+                {chat.receiverChatId !== userLogIn.id
+                  ? chat.receiverChat.username
+                  : chat.senderChat.username}
+              </p>
             </li>
           ))}
         </ul>
