@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { socket } from "../../../utility/socket";
 import { useFetchPosts } from "../../api/useFetchPosts";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
@@ -21,9 +22,23 @@ export function Posts({ postsHeader }) {
 
   const url = changeURLDependingOnPathName();
 
-  const { posts, setPosts, loading, error } = useFetchPosts(url);
+  let { posts, setPosts, loading, error } = useFetchPosts(url);
 
-  // socket.on("post:created", (createPost) => {});
+  socket.on("post:created", (postWithText) => {
+    console.log(postWithText);
+
+    if (postWithText) {
+      posts = postWithText;
+    }
+  });
+
+  socket.on("post:created-image", (postWithImg) => {
+    console.log(postWithImg);
+
+    if (postWithImg) {
+      posts = postWithImg;
+    }
+  });
 
   const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
