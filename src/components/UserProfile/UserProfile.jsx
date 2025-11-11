@@ -73,6 +73,38 @@ export function UserProfile() {
     }
   };
 
+  useEffect(() => {
+    socket.on("user:update-profile", (updatedUserProfile) => {
+      if (updatedUserProfile) {
+        if (updatedUserProfile.id !== userLoggedIn.id) {
+          setUserDetails((prev) => ({
+            ...prev,
+            username: updatedUserProfile.username,
+            display_name: updatedUserProfile.display_name,
+            profile_picture: updatedUserProfile.profile_picture,
+            bio: updatedUserProfile.bio,
+            website: updatedUserProfile.website,
+            github: updatedUserProfile.github,
+          }));
+        } else {
+          setUserLoggedIn((prev) => ({
+            ...prev,
+            username: updatedUserProfile.username,
+            display_name: updatedUserProfile.display_name,
+            profile_picture: updatedUserProfile.profile_picture,
+            bio: updatedUserProfile.bio,
+            website: updatedUserProfile.website,
+            github: updatedUserProfile.github,
+          }));
+        }
+      }
+    });
+
+    return () => {
+      socket.off("user:update-profile");
+    };
+  }, []);
+
   async function followOrUnFollowUser() {
     try {
       const response = await fetch(
