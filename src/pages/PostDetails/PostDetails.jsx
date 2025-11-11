@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { socket } from "../../../utility/socket";
 import { useFetchPost } from "../../api/useFetchPost";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { Loading } from "../../components/Loading/Loading";
@@ -65,6 +66,22 @@ export function PostDetails() {
     }
   }
 
+  useEffect(() => {
+    socket.on("post:liked", (likedPost) => {
+      if (likedPost) {
+        setPost((prev) => ({
+          ...prev,
+          postLikedByUsers: likedPost.postLikedByUsers,
+          likes: likedPost.likes,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("post:liked");
+    };
+  }, []);
+
   async function likeOrDislikeComment(comment) {
     try {
       const response = await fetch(
@@ -97,6 +114,21 @@ export function PostDetails() {
       }, 0);
     }
   }
+
+  useEffect(() => {
+    socket.on("post:comment-liked", (likedPostComment) => {
+      if (likedPostComment) {
+        setPost((prev) => ({
+          ...prev,
+          postCommentedByUsers: likedPostComment.postCommentedByUsers,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("post:comment-liked");
+    };
+  }, []);
 
   async function leavingAComment(data) {
     const { text } = data;
@@ -133,6 +165,23 @@ export function PostDetails() {
       }, 1000);
     }
   }
+
+  useEffect(() => {
+    socket.on("post:comment", (commentOnPost) => {
+      console.log(commentOnPost);
+      if (commentOnPost) {
+        setPost((prev) => ({
+          ...prev,
+          postCommentedByUsers: commentOnPost.postCommentedByUsers,
+          comments: commentOnPost.comments,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("post:comment");
+    };
+  }, []);
 
   async function leavingACommentReply(data) {
     const { textReply } = data;
@@ -172,6 +221,22 @@ export function PostDetails() {
       }, 1500);
     }
   }
+
+  useEffect(() => {
+    socket.on("post:comment-reply", (replyCommentOnPost) => {
+      if (replyCommentOnPost) {
+        setPost((prev) => ({
+          ...prev,
+          postCommentedByUsers: replyCommentOnPost.postCommentedByUsers,
+          comments: replyCommentOnPost.comments,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("post:comment-reply");
+    };
+  }, []);
 
   async function deletingAPost(post) {
     try {
