@@ -1,5 +1,5 @@
 import { formatDistance } from "date-fns";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
@@ -24,25 +24,57 @@ export function Posts({ postsHeader }) {
 
   let { posts, setPosts, loading, error } = useFetchPosts(url);
 
-  socket.on("post:created", (postWithText) => {
-    console.log(postWithText);
+  useEffect(() => {
+    socket.on("post:created", (postWithText) => {
+      console.log(postWithText);
 
-    if (postWithText) {
-      posts = postWithText;
-    }
-  });
+      if (postWithText) {
+        setPosts((prev) => [...prev, postWithText]);
+      }
+    });
 
-  socket.on("post:created-image", (postWithImg) => {
-    console.log(postWithImg);
+    return () => {
+      socket.off("post:created");
+    };
+  }, []);
 
-    if (postWithImg) {
-      posts = postWithImg;
-    }
-  });
+  useEffect(() => {
+    socket.on("post:created-image", (postWithImg) => {
+      console.log(postWithImg);
 
-  socket.on("post:liked", (likedPost) => {
-    console.log(likedPost);
-  });
+      if (postWithImg) {
+        setPosts((prev) => [...prev, postWithImg]);
+      }
+    });
+
+    return () => {
+      socket.off("post:created-image");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("post:liked", (likedPost) => {
+      if (likedPost) {
+        setPosts((prev) =>
+          prev.map((obj) => {
+            if (obj.id === likedPost.id) {
+              return {
+                ...obj,
+                likes: likedPost.likes,
+                postLikedByUsers: likedPost.postLikedByUsers,
+              };
+            } else {
+              return obj;
+            }
+          }),
+        );
+      }
+
+      return () => {
+        socket.off("post:liked");
+      };
+    });
+  }, []);
 
   const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 

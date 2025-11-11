@@ -35,10 +35,6 @@ export function UserProfile() {
 
   const navigate = useNavigate();
 
-  // socket.on("user:followed", (follower) => {
-  //   console.log(follower);
-  // });
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
