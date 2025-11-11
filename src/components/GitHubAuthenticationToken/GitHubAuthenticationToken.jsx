@@ -22,16 +22,16 @@ export function GitHubAuthenticationToken() {
   if (sliceBearerTokenFromURL) {
     const bearerToken = `Bearer ${sliceBearerTokenFromURL}`;
 
-    localStorage.setItem("token", bearerToken);
+    sessionStorage.setItem("token", bearerToken);
   }
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
       const getLoggedInUser = async () => {
         const loggedInUser = await fetch(`${localhostURL}/users/details`, {
           mode: "cors",
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
         });
 

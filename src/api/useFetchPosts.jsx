@@ -12,7 +12,7 @@ export const useFetchPosts = (url) => {
     fetch(url, {
       mode: "cors",
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: sessionStorage.getItem("token"),
       },
     })
       .then((response) => {

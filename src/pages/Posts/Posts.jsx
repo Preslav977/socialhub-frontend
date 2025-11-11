@@ -40,6 +40,10 @@ export function Posts({ postsHeader }) {
     }
   });
 
+  socket.on("post:liked", (likedPost) => {
+    console.log(likedPost);
+  });
+
   const [isTokenHasExpired, setIsTokenHasExpired] = useState();
 
   const [hasPostBeenLiked, setHasPostBeenLiked] = useState(false);
@@ -52,7 +56,7 @@ export function Posts({ postsHeader }) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           id: post.id,

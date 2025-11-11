@@ -41,7 +41,7 @@ export function PostDetails() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           id: post.id,
@@ -73,7 +73,7 @@ export function PostDetails() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: JSON.stringify({
             id: comment.commentRelatedToPostId,
@@ -108,7 +108,7 @@ export function PostDetails() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           id: post.id,
@@ -146,7 +146,7 @@ export function PostDetails() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: JSON.stringify({
             id: post.id,
@@ -179,7 +179,7 @@ export function PostDetails() {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           id: post.id,

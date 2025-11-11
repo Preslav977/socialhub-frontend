@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { socket } from "../../../utility/socket";
 import { useFetchUser } from "../../api/useFetchUser";
 import { EditUserProfileContext } from "../../context/EditUserProfileContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
@@ -34,6 +35,10 @@ export function UserProfile() {
 
   const navigate = useNavigate();
 
+  // socket.on("user:followed", (follower) => {
+  //   console.log(follower);
+  // });
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -43,7 +48,7 @@ export function UserProfile() {
       const response = await fetch(`${localhostURL}/users/${Number(id)}`, {
         method: "PUT",
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: formData,
       });
@@ -80,7 +85,7 @@ export function UserProfile() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: JSON.stringify({
             id: userDetails.id,
@@ -111,13 +116,53 @@ export function UserProfile() {
     }
   }
 
+  useEffect(() => {
+    socket.on("user:followed", (followerUser) => {
+      if (followerUser) {
+        const [follower, following] = followerUser;
+
+        console.log("Follower", follower, "Following", following);
+
+        if (userLoggedIn.id === following.id) {
+          setUserDetails((prev) => ({
+            ...prev,
+            followedBy: follower.followedBy,
+            followersNumber: follower.followersNumber,
+          }));
+
+          setUserLoggedIn((prev) => ({
+            ...prev,
+            following: following.following,
+            followingNumber: following.followingNumber,
+          }));
+        } else {
+          setUserDetails((prev) => ({
+            ...prev,
+            following: following.following,
+            followingNumber: following.followingNumber,
+          }));
+
+          setUserLoggedIn((prev) => ({
+            ...prev,
+            followedBy: follower.followedBy,
+            followersNumber: follower.followersNumber,
+          }));
+        }
+      }
+    });
+
+    return () => {
+      socket.off("user:followed");
+    };
+  }, []);
+
   async function startChatWithUser() {
     try {
       const response = await fetch(`${localhostURL}/chats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           senderId: userLoggedIn.id,

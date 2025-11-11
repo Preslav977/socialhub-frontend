@@ -12,7 +12,7 @@ export const useFetchSingleChat = (id) => {
     fetch(`${localhostURL}/chats/${id}`, {
       mode: "cors",
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: sessionStorage.getItem("token"),
       },
     })
       .then((response) => {

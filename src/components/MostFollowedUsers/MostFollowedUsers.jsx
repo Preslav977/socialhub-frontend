@@ -23,7 +23,7 @@ export function MostFollowedUsers() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: JSON.stringify({
             id: user.id,

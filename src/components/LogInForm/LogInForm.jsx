@@ -49,7 +49,7 @@ export function LogInForm() {
 
         const bearerToken = `Bearer ${token}`;
 
-        localStorage.setItem("token", bearerToken);
+        sessionStorage.setItem("token", bearerToken);
 
         setInvalidCredentials("");
 
@@ -57,7 +57,7 @@ export function LogInForm() {
 
         const loggedInUser = await fetch(`${localhostURL}/users/details`, {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
         });
 
@@ -91,13 +91,13 @@ export function LogInForm() {
 
       const bearerToken = `Bearer ${token}`;
 
-      localStorage.setItem("token", bearerToken);
+      sessionStorage.setItem("token", bearerToken);
 
       setLoading(true);
 
       const loggedInGuestUser = await fetch(`${localhostURL}/users/details`, {
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
       });
 

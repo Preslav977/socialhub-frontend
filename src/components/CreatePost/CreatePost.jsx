@@ -42,7 +42,7 @@ export function CreatePost() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           content,
@@ -82,7 +82,7 @@ export function CreatePost() {
       await fetch(`${localhostURL}/posts/with-image`, {
         method: "POST",
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: formData,
       });
