@@ -1,8 +1,9 @@
 import { format } from "date-fns";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { socket } from "../../../utility/socket";
 import { useFetchSingleChat } from "../../api/useFetchSingleChat";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
@@ -65,6 +66,23 @@ export function ChatsDetails() {
     }
   };
 
+  useEffect(() => {
+    socket.on("chat:message", (sendTextMessage) => {
+      console.log(sendTextMessage);
+
+      if (sendTextMessage) {
+        setChatDetails((prev) => ({
+          ...prev,
+          messages: sendTextMessage.messages,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("chat:message");
+    };
+  }, []);
+
   const onSubmitMessageImage = async (e) => {
     e.preventDefault();
 
@@ -100,6 +118,23 @@ export function ChatsDetails() {
       setSendMessageOrImage(false);
     }
   };
+
+  useEffect(() => {
+    socket.on("chat:message-image", (sendTextMessage) => {
+      console.log(sendTextMessage);
+
+      if (sendTextMessage) {
+        setChatDetails((prev) => ({
+          ...prev,
+          messages: sendTextMessage.messages,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("chat:message-image");
+    };
+  }, []);
 
   if (loading) return <Loading></Loading>;
 
