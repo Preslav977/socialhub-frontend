@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
 import { socket } from "../../../utility/socket";
 import { useFetchUser } from "../../api/useFetchUser";
+import { useFetchChats } from "../../api/userFetchChats";
 import { EditUserProfileContext } from "../../context/EditUserProfileContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Posts } from "../../pages/Posts/Posts";
@@ -20,6 +21,8 @@ export function UserProfile() {
   const { userDetails, setUserDetails, error, loading } = useFetchUser(
     Number(id),
   );
+
+  const { setChats } = useFetchChats();
 
   const [editUserProfile, setEditUserProfile] = useContext(
     EditUserProfileContext,
@@ -204,6 +207,20 @@ export function UserProfile() {
       setIsTokenHasExpired(error);
     }
   }
+
+  useEffect(() => {
+    socket.on("chat:created", (chatBetweenUsers) => {
+      console.log(chatBetweenUsers);
+
+      if (chatBetweenUsers) {
+        setChats((prev) => [...prev, chatBetweenUsers]);
+      }
+    });
+
+    return () => {
+      socket.off("chat:created");
+    };
+  }, []);
 
   if (loading) return <Loading></Loading>;
 

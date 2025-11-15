@@ -8,7 +8,7 @@ import { UserLogInContext } from "../../context/UserLogInContext";
 import styles from "./Chats.module.css";
 
 export function Chats() {
-  const { chats, loading, error } = useFetchChats();
+  const { chats, setChats, loading, error } = useFetchChats();
 
   const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 

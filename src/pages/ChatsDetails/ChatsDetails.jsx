@@ -59,12 +59,16 @@ export function ChatsDetails() {
       setChatDetails(chatDetailsMessagesObject);
 
       reset();
+
+      window.scrollTo(0, document.body.scrollHeight);
     } catch (error) {
       setIsTokenHasExpired(error);
     } finally {
       setSendMessageOrImage(false);
     }
   };
+
+  socket.emit("join", id);
 
   useEffect(() => {
     socket.on("chat:message", (sendTextMessage) => {
@@ -81,7 +85,24 @@ export function ChatsDetails() {
     return () => {
       socket.off("chat:message");
     };
-  }, []);
+  }, [setChatDetails]);
+
+  useEffect(() => {
+    socket.on("chat:message-image", (sendTextMessage) => {
+      console.log(sendTextMessage);
+
+      if (sendTextMessage) {
+        setChatDetails((prev) => ({
+          ...prev,
+          messages: sendTextMessage.messages,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("chat:message-image");
+    };
+  }, [setChatDetails]);
 
   const onSubmitMessageImage = async (e) => {
     e.preventDefault();
@@ -119,22 +140,22 @@ export function ChatsDetails() {
     }
   };
 
-  useEffect(() => {
-    socket.on("chat:message-image", (sendTextMessage) => {
-      console.log(sendTextMessage);
+  // useEffect(() => {
+  //   socket.on("chat:message-image", (sendTextMessage) => {
+  //     console.log(sendTextMessage);
 
-      if (sendTextMessage) {
-        setChatDetails((prev) => ({
-          ...prev,
-          messages: sendTextMessage.messages,
-        }));
-      }
-    });
+  //     if (sendTextMessage) {
+  //       setChatDetails((prev) => ({
+  //         ...prev,
+  //         messages: sendTextMessage.messages,
+  //       }));
+  //     }
+  //   });
 
-    return () => {
-      socket.off("chat:message-image");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("chat:message-image");
+  //   };
+  // }, [setChatDetails]);
 
   if (loading) return <Loading></Loading>;
 

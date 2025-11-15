@@ -24,33 +24,33 @@ export function Posts({ postsHeader }) {
 
   let { posts, setPosts, loading, error } = useFetchPosts(url);
 
-  useEffect(() => {
-    socket.on("post:created", (postWithText) => {
-      console.log(postWithText);
+  // useEffect(() => {
+  //   socket.on("post:created", (postWithText) => {
+  //     console.log(postWithText);
 
-      if (postWithText) {
-        setPosts((prev) => [...prev, postWithText]);
-      }
-    });
+  //     if (postWithText) {
+  //       setPosts((prev) => [...prev, postWithText]);
+  //     }
+  //   });
 
-    return () => {
-      socket.off("post:created");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("post:created");
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    socket.on("post:created-image", (postWithImg) => {
-      console.log(postWithImg);
+  // useEffect(() => {
+  //   socket.on("post:created-image", (postWithImg) => {
+  //     console.log(postWithImg);
 
-      if (postWithImg) {
-        setPosts((prev) => [...prev, postWithImg]);
-      }
-    });
+  //     if (postWithImg) {
+  //       setPosts((prev) => [...prev, postWithImg]);
+  //     }
+  //   });
 
-    return () => {
-      socket.off("post:created-image");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("post:created-image");
+  //   };
+  // }, []);
 
   useEffect(() => {
     socket.on("post:liked", (likedPost) => {
