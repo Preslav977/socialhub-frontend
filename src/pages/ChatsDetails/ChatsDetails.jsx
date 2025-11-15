@@ -59,8 +59,6 @@ export function ChatsDetails() {
       setChatDetails(chatDetailsMessagesObject);
 
       reset();
-
-      window.scrollTo(0, document.body.scrollHeight);
     } catch (error) {
       setIsTokenHasExpired(error);
     } finally {
@@ -68,7 +66,13 @@ export function ChatsDetails() {
     }
   };
 
-  socket.emit("join", id);
+  useEffect(() => {
+    socket.emit("join-room", id);
+
+    return () => {
+      socket.off("join-room");
+    };
+  }, []);
 
   useEffect(() => {
     socket.on("chat:message", (sendTextMessage) => {

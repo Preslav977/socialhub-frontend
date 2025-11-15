@@ -72,10 +72,3 @@
   color: #121212;
   outline: none;
 }
-
-@media screen and (max-width: 1200px) {
-  .latestUsersContainer {
-    display: flex;
-    gap: 0;
-  }
-}
