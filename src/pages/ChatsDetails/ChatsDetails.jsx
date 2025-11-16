@@ -66,6 +66,7 @@ export function ChatsDetails() {
     }
   };
 
+  //send to the server roomID with this event
   useEffect(() => {
     socket.emit("join-room", id);
 
@@ -76,8 +77,6 @@ export function ChatsDetails() {
 
   useEffect(() => {
     socket.on("chat:message", (sendTextMessage) => {
-      console.log(sendTextMessage);
-
       if (sendTextMessage) {
         setChatDetails((prev) => ({
           ...prev,
@@ -93,8 +92,6 @@ export function ChatsDetails() {
 
   useEffect(() => {
     socket.on("chat:message-image", (sendTextMessage) => {
-      console.log(sendTextMessage);
-
       if (sendTextMessage) {
         setChatDetails((prev) => ({
           ...prev,
@@ -143,23 +140,6 @@ export function ChatsDetails() {
       setSendMessageOrImage(false);
     }
   };
-
-  // useEffect(() => {
-  //   socket.on("chat:message-image", (sendTextMessage) => {
-  //     console.log(sendTextMessage);
-
-  //     if (sendTextMessage) {
-  //       setChatDetails((prev) => ({
-  //         ...prev,
-  //         messages: sendTextMessage.messages,
-  //       }));
-  //     }
-  //   });
-
-  //   return () => {
-  //     socket.off("chat:message-image");
-  //   };
-  // }, [setChatDetails]);
 
   if (loading) return <Loading></Loading>;
 

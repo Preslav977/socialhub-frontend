@@ -22,7 +22,7 @@ export function UserProfile() {
     Number(id),
   );
 
-  const { setChats } = useFetchChats();
+  const { chats, setChats } = useFetchChats();
 
   const [editUserProfile, setEditUserProfile] = useContext(
     EditUserProfileContext,
@@ -152,8 +152,6 @@ export function UserProfile() {
       if (followerUser) {
         const [follower, following] = followerUser;
 
-        console.log("Follower", follower, "Following", following);
-
         if (userLoggedIn.id === following.id) {
           setUserDetails((prev) => ({
             ...prev,
@@ -202,6 +200,8 @@ export function UserProfile() {
       });
       const result = await response.json();
 
+      setChats([...chats, result]);
+
       navigate(`/message/${result.id}`);
     } catch (error) {
       setIsTokenHasExpired(error);
@@ -210,8 +210,6 @@ export function UserProfile() {
 
   useEffect(() => {
     socket.on("chat:created", (chatBetweenUsers) => {
-      console.log(chatBetweenUsers);
-
       if (chatBetweenUsers) {
         setChats((prev) => [...prev, chatBetweenUsers]);
       }

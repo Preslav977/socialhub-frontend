@@ -301,12 +301,12 @@ describe("should render MainGridInterface", () => {
     );
 
     expect(
-      screen.queryByText("Added latest users feature").textContent,
-    ).toMatch(/added latest users feature/i);
+      screen.queryByText("Added Live Updates via Socket IO").textContent,
+    ).toMatch(/added live updates via socket io/i);
 
     expect(
-      screen.queryByText("Added most followed users feature").textContent,
-    ).toMatch(/added most followed users feature/i);
+      screen.queryByText("Added Github Authentication").textContent,
+    ).toMatch(/added github authentication/i);
 
     await waitFor(() => screen.queryByTestId("loadingSkeletonUsers"));
 

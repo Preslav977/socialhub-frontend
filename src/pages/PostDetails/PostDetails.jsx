@@ -168,7 +168,6 @@ export function PostDetails() {
 
   useEffect(() => {
     socket.on("post:comment", (commentOnPost) => {
-      console.log(commentOnPost);
       if (commentOnPost) {
         setPost((prev) => ({
           ...prev,
