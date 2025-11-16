@@ -13,7 +13,7 @@ export const useFetchLatestUsers = () => {
     fetch(`${localhostURL}/users/latest`, {
       mode: "cors",
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: sessionStorage.getItem("token"),
       },
     })
       .then((response) => {

@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { socket } from "../../../utility/socket";
 import { useFetchPost } from "../../api/useFetchPost";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { Loading } from "../../components/Loading/Loading";
@@ -41,7 +42,7 @@ export function PostDetails() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           id: post.id,
@@ -65,6 +66,22 @@ export function PostDetails() {
     }
   }
 
+  useEffect(() => {
+    socket.on("post:liked", (likedPost) => {
+      if (likedPost) {
+        setPost((prev) => ({
+          ...prev,
+          postLikedByUsers: likedPost.postLikedByUsers,
+          likes: likedPost.likes,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("post:liked");
+    };
+  }, []);
+
   async function likeOrDislikeComment(comment) {
     try {
       const response = await fetch(
@@ -73,7 +90,7 @@ export function PostDetails() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: JSON.stringify({
             id: comment.commentRelatedToPostId,
@@ -98,6 +115,21 @@ export function PostDetails() {
     }
   }
 
+  useEffect(() => {
+    socket.on("post:comment-liked", (likedPostComment) => {
+      if (likedPostComment) {
+        setPost((prev) => ({
+          ...prev,
+          postCommentedByUsers: likedPostComment.postCommentedByUsers,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("post:comment-liked");
+    };
+  }, []);
+
   async function leavingAComment(data) {
     const { text } = data;
 
@@ -108,7 +140,7 @@ export function PostDetails() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           id: post.id,
@@ -134,6 +166,22 @@ export function PostDetails() {
     }
   }
 
+  useEffect(() => {
+    socket.on("post:comment", (commentOnPost) => {
+      if (commentOnPost) {
+        setPost((prev) => ({
+          ...prev,
+          postCommentedByUsers: commentOnPost.postCommentedByUsers,
+          comments: commentOnPost.comments,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("post:comment");
+    };
+  }, []);
+
   async function leavingACommentReply(data) {
     const { textReply } = data;
 
@@ -146,7 +194,7 @@ export function PostDetails() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: JSON.stringify({
             id: post.id,
@@ -173,13 +221,29 @@ export function PostDetails() {
     }
   }
 
+  useEffect(() => {
+    socket.on("post:comment-reply", (replyCommentOnPost) => {
+      if (replyCommentOnPost) {
+        setPost((prev) => ({
+          ...prev,
+          postCommentedByUsers: replyCommentOnPost.postCommentedByUsers,
+          comments: replyCommentOnPost.comments,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("post:comment-reply");
+    };
+  }, []);
+
   async function deletingAPost(post) {
     try {
       const response = await fetch(`${localhostURL}/posts/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           id: post.id,

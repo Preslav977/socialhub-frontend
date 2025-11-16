@@ -73,10 +73,3 @@
   color: #121212;
   outline: none;
 }
-
-@media screen and (max-width: 1200px) {
-  .mostFollowedUsersContainer {
-    display: flex;
-    gap: 0;
-  }
-}

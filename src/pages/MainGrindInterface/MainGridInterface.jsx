@@ -37,8 +37,11 @@ export function MainGridInterface({ pageProp }) {
           <div className={styles.announcementsContainer}>
             <p className={styles.announcementsPara}>Announcements</p>
             <hr className={styles.announcementsHr} />
-            <li>Added latest users feature</li>
-            <li>Added most followed users feature</li>
+            <li>Added Live Updates via Socket IO</li>
+            <li>Added GitHub Authentication</li>
+            <p className={styles.announcementDatePara}>
+              Last updated: 16 Nov 2025
+            </p>
           </div>
         </section>
       </main>

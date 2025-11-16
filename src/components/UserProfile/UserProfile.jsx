@@ -1,8 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { socket } from "../../../utility/socket";
 import { useFetchUser } from "../../api/useFetchUser";
+import { useFetchChats } from "../../api/userFetchChats";
 import { EditUserProfileContext } from "../../context/EditUserProfileContext";
 import { UserLogInContext } from "../../context/UserLogInContext";
 import { Posts } from "../../pages/Posts/Posts";
@@ -19,6 +21,8 @@ export function UserProfile() {
   const { userDetails, setUserDetails, error, loading } = useFetchUser(
     Number(id),
   );
+
+  const { chats, setChats } = useFetchChats();
 
   const [editUserProfile, setEditUserProfile] = useContext(
     EditUserProfileContext,
@@ -43,7 +47,7 @@ export function UserProfile() {
       const response = await fetch(`${localhostURL}/users/${Number(id)}`, {
         method: "PUT",
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: formData,
       });
@@ -72,6 +76,38 @@ export function UserProfile() {
     }
   };
 
+  useEffect(() => {
+    socket.on("user:update-profile", (updatedUserProfile) => {
+      if (updatedUserProfile) {
+        if (updatedUserProfile.id !== userLoggedIn.id) {
+          setUserDetails((prev) => ({
+            ...prev,
+            username: updatedUserProfile.username,
+            display_name: updatedUserProfile.display_name,
+            profile_picture: updatedUserProfile.profile_picture,
+            bio: updatedUserProfile.bio,
+            website: updatedUserProfile.website,
+            github: updatedUserProfile.github,
+          }));
+        } else {
+          setUserLoggedIn((prev) => ({
+            ...prev,
+            username: updatedUserProfile.username,
+            display_name: updatedUserProfile.display_name,
+            profile_picture: updatedUserProfile.profile_picture,
+            bio: updatedUserProfile.bio,
+            website: updatedUserProfile.website,
+            github: updatedUserProfile.github,
+          }));
+        }
+      }
+    });
+
+    return () => {
+      socket.off("user:update-profile");
+    };
+  }, []);
+
   async function followOrUnFollowUser() {
     try {
       const response = await fetch(
@@ -80,7 +116,7 @@ export function UserProfile() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: JSON.stringify({
             id: userDetails.id,
@@ -111,13 +147,51 @@ export function UserProfile() {
     }
   }
 
+  useEffect(() => {
+    socket.on("user:followed", (followerUser) => {
+      if (followerUser) {
+        const [follower, following] = followerUser;
+
+        if (userLoggedIn.id === following.id) {
+          setUserDetails((prev) => ({
+            ...prev,
+            followedBy: follower.followedBy,
+            followersNumber: follower.followersNumber,
+          }));
+
+          setUserLoggedIn((prev) => ({
+            ...prev,
+            following: following.following,
+            followingNumber: following.followingNumber,
+          }));
+        } else {
+          setUserDetails((prev) => ({
+            ...prev,
+            following: following.following,
+            followingNumber: following.followingNumber,
+          }));
+
+          setUserLoggedIn((prev) => ({
+            ...prev,
+            followedBy: follower.followedBy,
+            followersNumber: follower.followersNumber,
+          }));
+        }
+      }
+    });
+
+    return () => {
+      socket.off("user:followed");
+    };
+  }, []);
+
   async function startChatWithUser() {
     try {
       const response = await fetch(`${localhostURL}/chats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           senderId: userLoggedIn.id,
@@ -126,11 +200,25 @@ export function UserProfile() {
       });
       const result = await response.json();
 
+      setChats([...chats, result]);
+
       navigate(`/message/${result.id}`);
     } catch (error) {
       setIsTokenHasExpired(error);
     }
   }
+
+  useEffect(() => {
+    socket.on("chat:created", (chatBetweenUsers) => {
+      if (chatBetweenUsers) {
+        setChats((prev) => [...prev, chatBetweenUsers]);
+      }
+    });
+
+    return () => {
+      socket.off("chat:created");
+    };
+  }, []);
 
   if (loading) return <Loading></Loading>;
 

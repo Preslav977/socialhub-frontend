@@ -20,7 +20,7 @@ export function SearchForUser() {
         {
           mode: "cors",
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
         },
       );

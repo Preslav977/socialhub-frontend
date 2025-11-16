@@ -15,7 +15,7 @@ export const useFetchPost = () => {
     fetch(`${localhostURL}/posts/${Number(id)}`, {
       mode: "cors",
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: sessionStorage.getItem("token"),
       },
     })
       .then((response) => {

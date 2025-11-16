@@ -13,7 +13,7 @@ export const useFetchMostFollowedUsers = () => {
     fetch(`${localhostURL}/users/followed`, {
       mode: "cors",
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: sessionStorage.getItem("token"),
       },
     })
       .then((response) => {

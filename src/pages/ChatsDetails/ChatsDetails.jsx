@@ -1,8 +1,9 @@
 import { format } from "date-fns";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { localhostURL } from "../../../utility/localhostURL";
+import { socket } from "../../../utility/socket";
 import { useFetchSingleChat } from "../../api/useFetchSingleChat";
 import { ErrorElement } from "../../components/ErrorElement/ErrorElement";
 import { LeftArrow } from "../../components/LeftArrow/LeftArrow";
@@ -16,7 +17,7 @@ export function ChatsDetails() {
   const { chatDetails, setChatDetails, loading, error } =
     useFetchSingleChat(id);
 
-  const [userLoggedIn, setUserLoggedIn] = useContext(UserLogInContext);
+  const [userLogIn, setUserLogIn] = useContext(UserLogInContext);
 
   const [sendMessageOrImage, setSendMessageOrImage] = useState(false);
 
@@ -39,7 +40,7 @@ export function ChatsDetails() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: JSON.stringify({
             text,
@@ -65,6 +66,45 @@ export function ChatsDetails() {
     }
   };
 
+  //send to the server roomID with this event
+  useEffect(() => {
+    socket.emit("join-room", id);
+
+    return () => {
+      socket.off("join-room");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("chat:message", (sendTextMessage) => {
+      if (sendTextMessage) {
+        setChatDetails((prev) => ({
+          ...prev,
+          messages: sendTextMessage.messages,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("chat:message");
+    };
+  }, [setChatDetails]);
+
+  useEffect(() => {
+    socket.on("chat:message-image", (sendTextMessage) => {
+      if (sendTextMessage) {
+        setChatDetails((prev) => ({
+          ...prev,
+          messages: sendTextMessage.messages,
+        }));
+      }
+    });
+
+    return () => {
+      socket.off("chat:message-image");
+    };
+  }, [setChatDetails]);
+
   const onSubmitMessageImage = async (e) => {
     e.preventDefault();
 
@@ -78,7 +118,7 @@ export function ChatsDetails() {
         {
           method: "POST",
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
           body: formData,
         },
@@ -118,14 +158,18 @@ export function ChatsDetails() {
       {chatDetails ? (
         <>
           <LeftArrow
-            textProp={chatDetails.receiverChat.username}
+            textProp={
+              chatDetails.receiverChatId !== userLogIn.id
+                ? chatDetails.receiverChat.username
+                : chatDetails.senderChat.username
+            }
             navigation={"/messages"}
           />
 
           <div className={styles.chatDetailsContainer}>
             {chatDetails.messages.map((message) => (
               <Fragment key={message.id}>
-                {message.senderMessageId === userLoggedIn.id ? (
+                {message.senderMessageId === userLogIn.id ? (
                   <div className={styles.chatDetailsUserMessage}>
                     {message.text ? (
                       <div className={styles.chatDetailsMessage}>
