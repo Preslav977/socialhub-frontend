@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
+import { localhostURL } from "./localhostURL";
 
-export const socket = io("http://localhost:5000", {
+export const socket = io(`${localhostURL}`, {
   ackTimeout: 10000,
   retries: 3,
 });

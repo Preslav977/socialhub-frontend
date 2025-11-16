@@ -118,12 +118,12 @@ describe("should render MainGridInterface", () => {
     );
 
     expect(
-      screen.queryByText("Added latest users feature").textContent,
-    ).toMatch(/added latest users feature/i);
+      screen.queryByText("Added Live Updates via Socket IO").textContent,
+    ).toMatch(/added live updates via socket io/i);
 
     expect(
-      screen.queryByText("Added most followed users feature").textContent,
-    ).toMatch(/added most followed users feature/i);
+      screen.queryByText("Added GitHub Authentication").textContent,
+    ).toMatch(/added github authentication/i);
 
     screen.debug();
 
@@ -305,7 +305,7 @@ describe("should render MainGridInterface", () => {
     ).toMatch(/added live updates via socket io/i);
 
     expect(
-      screen.queryByText("Added Github Authentication").textContent,
+      screen.queryByText("Added GitHub Authentication").textContent,
     ).toMatch(/added github authentication/i);
 
     await waitFor(() => screen.queryByTestId("loadingSkeletonUsers"));
@@ -750,11 +750,11 @@ describe("should render MainGridInterface", () => {
 
     expect(screen.queryByRole("button", { name: "Post" })).toBeInTheDocument();
 
-    expect(screen.queryByText("View comments 0").textContent).toMatch(
-      /view comments 0/i,
-    );
-
     screen.debug();
+
+    expect(screen.queryByText("View comments (0)").textContent).toMatch(
+      /view comments (0)/i,
+    );
   });
 
   it("should navigate to post details and like the post", async () => {
