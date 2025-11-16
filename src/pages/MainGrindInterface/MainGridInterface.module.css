@@ -59,6 +59,11 @@
   position: relative;
 }
 
+.announcementDatePara {
+  margin-top: 1em;
+  font-weight: 500;
+}
+
 @media screen and (max-width >= 1200px) {
   .mainGridContainer {
     display: grid;

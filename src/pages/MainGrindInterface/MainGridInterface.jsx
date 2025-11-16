@@ -39,6 +39,9 @@ export function MainGridInterface({ pageProp }) {
             <hr className={styles.announcementsHr} />
             <li>Added Live Updates via Socket IO</li>
             <li>Added GitHub Authentication</li>
+            <p className={styles.announcementDatePara}>
+              Last updated: 16 Nov 2025
+            </p>
           </div>
         </section>
       </main>

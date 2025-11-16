@@ -43,9 +43,9 @@ export function Chats() {
               <img
                 className={styles.userReceiverImg}
                 src={
-                  !chat.receiverChat.profile_picture
-                    ? "/user-default-pfp.jpg"
-                    : chat.receiverChat.profile_picture
+                  userLogIn.id === chat.receiverChatId
+                    ? chat.senderChat.profile_picture
+                    : "/user-default-pfp.jpg"
                 }
                 alt="user profile picture"
               />
