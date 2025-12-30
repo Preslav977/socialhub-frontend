@@ -37,6 +37,8 @@ SocialHub is a full-stack social media clone that allows the users to create use
 - guest login
 - mobile menu
 - error page
+- github authentication
+- live updates (Socket IO)
 
 # Technology Used
 
@@ -65,8 +67,6 @@ SocialHub is a full-stack social media clone that allows the users to create use
 
 # Future Improvements
 
-- Implementing live updates for the application
-- GitHub authentication resolving the CORS blocked error
 - Updating part of the state, instead of updating the whole state
 - Reducing even more duplication and breaking down the component that is repeated with props
 - Focusing more on the SOLID principle
